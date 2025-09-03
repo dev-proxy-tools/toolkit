@@ -163,11 +163,19 @@
     "snippets": [
       {
         "language": "json",
-        "path": "./dist/snippets.json"
+        "path": "./dist/json-snippets.json"
       },
       {
         "language": "jsonc",
-        "path": "./dist/snippets.json"
+        "path": "./dist/json-snippets.json"
+      },
+      {
+        "language": "yaml",
+        "path": "./dist/yaml-snippets.json"
+      },
+      {
+        "language": "yml",
+        "path": "./dist/yaml-snippets.json"
       }
     ],
     "configuration": {

@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.0] - Unreleased
 
+### Added:
+
+- Snippets: Added `devproxy-action-setup` - GitHub Actions step: Setup Dev Proxy (recommended)
+- Snippets: Added `devproxy-action-start` - GitHub Actions step: Start Dev Proxy manually
+- Snippets: Added `devproxy-action-stop` - GitHub Actions step: Stop Dev Proxy
+- Snippets: Added `devproxy-action-record-start` - GitHub Actions step: Start Dev Proxy recording
+- Snippets: Added `devproxy-action-record-stop` - GitHub Actions step: Stop Dev Proxy recording
+- Snippets: Added `devproxy-action-chromium-cert` - GitHub Actions step: Install Dev Proxy certificate for Chromium browsers
+
 ### Changed:
 
 - Snippets: All snippets that reference schemas updated to use `v1.1.0` schema
