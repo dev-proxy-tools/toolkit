@@ -1,0 +1,67 @@
+{
+  "DevProxyActionSetup": {
+    "prefix": "devproxy-action-setup",
+    "body": [
+      "- name: Setup Dev Proxy",
+      "  id: setup-devproxy",
+      "  uses: dev-proxy-tools/actions/setup@v1",
+      "  with:",
+      "    version: ${1:latest} # Optional: specify version, e.g. v1.0.0",
+      "    auto-start: ${2:true} # Optional: automatically start Dev Proxy",
+      "    auto-stop: ${3:true} # Optional: automatically stop Dev Proxy after workflow completes",
+      "    auto-record: ${4:false} # Optional: automatically start Dev Proxy in recording mode",
+      "    config-file: ${5:devproxyrc.json} # Optional: path to Dev Proxy config file",
+      "    log-file: ${6:devproxy.log} # Optional: path to log Dev Proxy output",
+      "    enable-cache: ${7:true} # Optional: enable caching of Dev Proxy installation",
+      "    report-job-summary: ${8:\\$GITHUB_STEP_SUMMARY} # Optional: path to output report content"
+    ],
+    "description": "GitHub Actions step: Setup Dev Proxy (recommended)"
+  },
+  "DevProxyActionStart": {
+    "prefix": "devproxy-action-start",
+    "body": [
+      "- name: Start Dev Proxy",
+      "  id: start-devproxy",
+      "  uses: dev-proxy-tools/actions/start@v1",
+      "  with:",
+      "    auto-stop: ${1:true} # Optional: automatically stop Dev Proxy after workflow completes",
+      "    auto-record: ${2:false} # Optional: automatically start Dev Proxy in recording mode",
+      "    config-file: ${3:devproxyrc.json} # Optional: path to Dev Proxy config file",
+      "    log-file: ${4:devproxy.log} # Optional: path to log Dev Proxy output",
+      "    report-job-summary: ${5:\\$GITHUB_STEP_SUMMARY} # Optional: path to output report content"
+    ],
+    "description": "GitHub Actions step: Start Dev Proxy manually"
+  },
+  "DevProxyActionStop": {
+    "prefix": "devproxy-action-stop",
+    "body": [
+      "- name: Stop Dev Proxy",
+      "  uses: dev-proxy-tools/actions/stop@v1"
+    ],
+    "description": "GitHub Actions step: Stop Dev Proxy"
+  },
+  "DevProxyActionRecordStart": {
+    "prefix": "devproxy-action-record-start",
+    "body": [
+      "- name: Start recording",
+      "  uses: dev-proxy-tools/actions/record-start@v1"
+    ],
+    "description": "GitHub Actions step: Start Dev Proxy recording"
+  },
+  "DevProxyActionRecordStop": {
+    "prefix": "devproxy-action-record-stop",
+    "body": [
+      "- name: Stop recording",
+      "  uses: dev-proxy-tools/actions/record-stop@v1"
+    ],
+    "description": "GitHub Actions step: Stop Dev Proxy recording"
+  },
+  "DevProxyActionChromiumCert": {
+    "prefix": "devproxy-action-chromium-cert",
+    "body": [
+      "- name: Install Dev Proxy certificate for Chromium",
+      "  uses: dev-proxy-tools/actions/chromium-cert@v1"
+    ],
+    "description": "GitHub Actions step: Install Dev Proxy certificate for Chromium browsers"
+  }
+}

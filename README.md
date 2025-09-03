@@ -82,6 +82,8 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 
 ### Snippets
 
+#### JSON
+
 | Prefix | Description |
 | ------ | ----------- |
 | `devproxy-config-file` | Dev Proxy config file |
@@ -178,6 +180,17 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-reporter-plain-text` | PlainTextReporter instance |
 | `devproxy-task-start` | Start Dev Proxy VS Code Task |
 | `devproxy-task-stop` | Stop Dev Proxy VS Code Task |
+
+#### YAML
+
+| Prefix | Description |
+| ------ | ----------- |
+| `devproxy-action-setup` | GitHub Actions step: Setup Dev Proxy (recommended) |
+| `devproxy-action-start` | GitHub Actions step: Start Dev Proxy manually |
+| `devproxy-action-stop` | GitHub Actions step: Stop Dev Proxy |
+| `devproxy-action-record-start` | GitHub Actions step: Start Dev Proxy recording |
+| `devproxy-action-record-stop` | GitHub Actions step: Stop Dev Proxy recording |
+| `devproxy-action-chromium-cert` | GitHub Actions step: Install Dev Proxy certificate for Chromium browsers |
 
 ### Status Bar
 
