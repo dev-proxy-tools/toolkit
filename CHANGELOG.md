@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
-## [1.7.0] - Unreleased
+## [1.7.1] - Unreleased
 
 ### Changed:
 
 - Snippets: All snippets that reference schemas updated to use `v1.3.0` schema
+- Snippets: Added `devproxy-plugin-har-generator` - HarGeneratorPlugin instance
+- Snippets: Added `devproxy-plugin-har-generator-config` - HarGeneratorPlugin config section
 
 ## [1.6.0] - 2025-10-13
 

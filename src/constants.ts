@@ -104,6 +104,13 @@ export const pluginSnippets: PluginSnippets = {
   GraphSelectGuidancePlugin: {
     instance: 'devproxy-plugin-graph-select-guidance',
   },
+  HarGeneratorPlugin: {
+    instance: 'devproxy-plugin-har-generator',
+    config: {
+      name: 'devproxy-plugin-har-generator-config',
+      required: false,
+    }
+  },
   HttpFileGeneratorPlugin: {
     instance: 'devproxy-plugin-http-file-generator',
     config: {
@@ -301,6 +308,10 @@ export const pluginDocs: PluginDocs = {
   GraphSelectGuidancePlugin: {
     name: 'Graph Select Guidance Plugin',
     url: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/graphselectguidanceplugin',
+  },
+  HarGeneratorPlugin: {
+    name: 'HAR Generator Plugin',
+    url: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/hargeneratorplugin',
   },
   HttpFileGeneratorPlugin: {
     name: 'HTTP File Generator Plugin',
