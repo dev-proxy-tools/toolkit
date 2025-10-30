@@ -168,6 +168,11 @@ const validatePluginConfigurations = (
       .value as boolean;
     const pluginSnippet = pluginSnippets[pluginName];
 
+    // Skip validation for unknown plugins
+    if (!pluginSnippet) {
+      return;
+    }
+
     checkPluginConfiguration(
       pluginNode,
       diagnostics,
