@@ -136,6 +136,8 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-graph-random-error-config` | GraphRandomErrorPlugin config section |
 | `devproxy-plugin-graph-sdk-guidance` | GraphSdkGuidancePlugin instance |
 | `devproxy-plugin-graph-select-guidance` | GraphSdkGuidancePlugin instance |
+| `devproxy-plugin-har-generator` | HarGeneratorPlugin instance |
+| `devproxy-plugin-har-generator-config` | HarGeneratorPlugin config section |
 | `devproxy-plugin-http-file-generator` | HttpFileGeneratorPlugin instance |
 | `devproxy-plugin-http-file-generator-config` | HttpFileGeneratorPlugin config section |
 | `devproxy-plugin-latency` | LatencyPlugin instance |

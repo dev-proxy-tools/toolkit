@@ -663,6 +663,29 @@
     ],
     "description": "GraphSdkGuidancePlugin instance"
   },
+  "HarGeneratorPlugin": {
+    "prefix": "devproxy-plugin-har-generator",
+    "body": [
+      "{",
+      "\t\"name\": \"HarGeneratorPlugin\",",
+      "\t\"enabled\": true,",
+      "\t\"pluginPath\": \"~appFolder/plugins/DevProxy.Plugins.dll\",",
+      "\t\"configSection\": \"harGeneratorPlugin\"",
+      "}"
+    ],
+    "description": "HarGeneratorPlugin instance"
+  },
+  "HarGeneratorPluginConfig": {
+    "prefix": "devproxy-plugin-har-generator-config",
+    "body": [
+      "\"harGeneratorPlugin\": {",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/hargeneratorplugin.schema.json\",",
+      "\t\"includeSensitiveInformation\": false,",
+      "\t\"includeResponse\": true",
+      "}"
+    ],
+    "description": "HarGeneratorPlugin config section"
+  },
   "HttpFileGeneratorPlugin": {
     "prefix": "devproxy-plugin-http-file-generator",
     "body": [
