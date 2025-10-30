@@ -195,6 +195,9 @@ export const pluginSnippets: PluginSnippets = {
       required: true,
     }
   },
+  OpenAIUsageDebuggingPlugin: {
+    instance: 'devproxy-plugin-openai-usage-debugging',
+  },
   OpenApiSpecGeneratorPlugin: {
     instance: 'devproxy-plugin-open-api-spec-generator',
     config: {
@@ -368,6 +371,10 @@ export const pluginDocs: PluginDocs = {
   OpenAITelemetryPlugin: {
     name: 'OpenAI Telemetry Plugin',
     url: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/openaitelemetryplugin',
+  },
+  OpenAIUsageDebuggingPlugin: {
+    name: 'OpenAI Usage Debugging Plugin',
+    url: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/openaiusagedebuggingplugin',
   },
   OpenApiSpecGeneratorPlugin: {
     name: 'Open API Spec Generator Plugin',
