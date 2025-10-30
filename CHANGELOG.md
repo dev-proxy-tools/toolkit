@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Snippets: All snippets that reference schemas updated to use `v1.3.0` schema
 
+### Fixed:
+
+- Diagnostics: Fixed issue where unknown plugins would cause validation errors and incorrectly show "At least one plugin must be enabled" warning
+
 ## [1.6.0] - 2025-10-13
 
 ### Changed:
