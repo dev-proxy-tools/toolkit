@@ -2,7 +2,7 @@
   "name": "dev-proxy-toolkit",
   "displayName": "Dev Proxy Toolkit",
   "description": "Makes it easy to create and update Dev Proxy configuration files.",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "publisher": "garrytrinder",
   "engines": {
     "vscode": "^1.101.0"
