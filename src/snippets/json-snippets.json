@@ -975,6 +975,17 @@
     ],
     "description": "OpenAITelemetryPlugin config section"
   },
+  "OpenAIUsageDebuggingPlugin": {
+    "prefix": "devproxy-plugin-openai-usage-debugging",
+    "body": [
+      "{",
+      "\t\"name\": \"OpenAIUsageDebuggingPlugin\",",
+      "\t\"enabled\": true,",
+      "\t\"pluginPath\": \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "}"
+    ],
+    "description": "OpenAIUsageDebuggingPlugin instance"
+  },
   "OpenApiSpecGeneratorPlugin": {
     "prefix": "devproxy-plugin-open-api-spec-generator",
     "body": [

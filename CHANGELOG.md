@@ -9,11 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.1] - Unreleased
 
+### Added:
+
+- Snippets: Added `devproxy-plugin-har-generator` - HarGeneratorPlugin instance
+- Snippets: Added `devproxy-plugin-har-generator-config` - HarGeneratorPlugin config section
+- Snippets: Added `devproxy-plugin-openai-usage-debugging` - OpenAIUsageDebuggingPlugin instance
+
 ### Changed:
 
 - Snippets: All snippets that reference schemas updated to use `v1.3.0` schema
-- Snippets: Added `devproxy-plugin-har-generator` - HarGeneratorPlugin instance
-- Snippets: Added `devproxy-plugin-har-generator-config` - HarGeneratorPlugin config section
 
 ## [1.6.0] - 2025-10-13
 

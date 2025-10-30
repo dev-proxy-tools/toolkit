@@ -163,6 +163,7 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-openai-mock-response` | OpenAIMockResponsePlugin instance |
 | `devproxy-plugin-openai-telemetry` | OpenAITelemetryPlugin instance |
 | `devproxy-plugin-openai-telemetry-config` | OpenAITelemetryPlugin config section |
+| `devproxy-plugin-openai-usage-debugging` | OpenAIUsageDebuggingPlugin instance |
 | `devproxy-plugin-open-api-spec-generator` | OpenApiSpecGeneratorPlugin instance |
 | `devproxy-plugin-open-api-spec-generator-config` | OpenApiSpecGeneratorPlugin config section |
 | `devproxy-plugin-rate-limiting` | MockResponsePlugin instance |
