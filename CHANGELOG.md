@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
+## [1.9.0] - Unreleased
+
 ## [1.8.0] - 2025-30-10
 
 ### Added:
