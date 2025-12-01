@@ -3,7 +3,7 @@
     "prefix": "devproxy-config-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/rc.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/rc.schema.json\",",
       "\t\"plugins\": [",
       "\t\t$1",
       "\t],",
@@ -20,7 +20,7 @@
   "ConfigFileSchema": {
     "prefix": "devproxy-config-file-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/rc.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/rc.schema.json\","
     ],
     "description": "Dev Proxy config file schema"
   },
@@ -42,7 +42,7 @@
     "prefix": "devproxy-mocks-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockresponseplugin.mocksfile.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockresponseplugin.mocksfile.schema.json\",",
       "\t\"mocks\": [",
       "\t\t$1",
       "\t]",
@@ -53,7 +53,7 @@
   "MocksFileSchema": {
     "prefix": "devproxy-mocks-file-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockresponseplugin.mocksfile.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockresponseplugin.mocksfile.schema.json\","
     ],
     "description": "Dev Proxy mocks file schema"
   },
@@ -75,7 +75,7 @@
     "prefix": "devproxy-prices-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/openaitelemetryplugin.pricesfile.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/openaitelemetryplugin.pricesfile.schema.json\",",
       "\t\"prices\": {",
       "\t\t$1",
       "\t}",
@@ -162,7 +162,7 @@
     "prefix": "devproxy-plugin-auth-config-apikey",
     "body": [
       "\"auth\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/authplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/authplugin.schema.json\",",
       "\t\"type\": \"apiKey\",",
       "\t\"apiKey\": {",
       "\t\t\"parameters\": [",
@@ -187,7 +187,7 @@
     "prefix": "devproxy-plugin-auth-config-oauth2",
     "body": [
       "\"auth\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/authplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/authplugin.schema.json\",",
       "\t\"type\": \"oauth2\",",
       "\t\"oauth2\": {",
       "\t\t\"metadataUrl\": \"https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration\",",
@@ -230,7 +230,7 @@
     "prefix": "devproxy-plugin-api-center-minimal-permissions-config",
     "body": [
       "\"apiCenterMinimalPermissionsPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/apicenterminimalpermissionsplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/apicenterminimalpermissionsplugin.schema.json\",",
       "\t\"subscriptionId\": \"cdae2297-7aa6-4195-bbb1-dcd89153cc72\",",
       "\t\"resourceGroupName\": \"resource-group-name\",",
       "\t\"serviceName\": \"apic-instance\",",
@@ -255,7 +255,7 @@
     "prefix": "devproxy-plugin-api-center-onboarding-config",
     "body": [
       "\"apiCenterOnboardingPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/apicenteronboardingplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/apicenteronboardingplugin.schema.json\",",
       "\t\"subscriptionId\": \"cdae2297-7aa6-4195-bbb1-dcd89153cc72\",",
       "\t\"resourceGroupName\": \"resource-group-name\",",
       "\t\"serviceName\": \"apic-instance\",",
@@ -281,7 +281,7 @@
     "prefix": "devproxy-plugin-api-center-production-version-config",
     "body": [
       "\"apiCenterProductionVersionPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/apicenterproductionversionplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/apicenterproductionversionplugin.schema.json\",",
       "\t\"subscriptionId\": \"cdae2297-7aa6-4195-bbb1-dcd89153cc72\",",
       "\t\"resourceGroupName\": \"resource-group-name\",",
       "\t\"serviceName\": \"apic-instance\",",
@@ -305,7 +305,7 @@
     "prefix": "devproxy-plugin-caching-guidance-config",
     "body": [
       "\"cachingGuidance\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/cachingguidanceplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/cachingguidanceplugin.schema.json\",",
       "\t\"cacheThresholdSeconds\": 5",
       "}"
     ],
@@ -327,7 +327,7 @@
     "prefix": "devproxy-plugin-crud-api-config",
     "body": [
       "\"customersApi\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/crudapiplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/crudapiplugin.schema.json\",",
       "\t\"apiFile\": \"customers-api.json\"",
       "}"
     ],
@@ -337,7 +337,7 @@
     "prefix": "devproxy-plugin-crud-api-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/crudapiplugin.apifile.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/crudapiplugin.apifile.schema.json\",",
       "\t\"actions\": [",
       "\t\t$1",
       "\t],",
@@ -350,7 +350,7 @@
   "CrudApiPluginFileSchema": {
     "prefix": "devproxy-plugin-crud-api-file-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/crudapiplugin.apifile.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/crudapiplugin.apifile.schema.json\","
     ],
     "description": "CrudApiPlugin API file schema"
   },
@@ -381,7 +381,7 @@
     "prefix": "devproxy-plugin-dev-tools-config",
     "body": [
       "\"devTools\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/devtoolsplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/devtoolsplugin.schema.json\",",
       "\t\"preferredBrowser\": \"Edge\"",
       "}"
     ],
@@ -403,7 +403,7 @@
     "prefix": "devproxy-plugin-entra-mock-response-config",
     "body": [
       "\"entraMockResponsePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockresponseplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockresponseplugin.schema.json\",",
       "\t\"mocksFile\": \"mocks.json\"",
       "}"
     ],
@@ -424,7 +424,7 @@
     "prefix": "devproxy-plugin-execution-summary-config",
     "body": [
       "\"executionSummaryPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/executionsummaryplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/executionsummaryplugin.schema.json\",",
       "\t\"groupBy\": \"url\"",
       "}"
     ],
@@ -446,7 +446,7 @@
     "prefix": "devproxy-plugin-generic-random-error-config",
     "body": [
       "\"genericRandomErrorPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/genericrandomerrorplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/genericrandomerrorplugin.schema.json\",",
       "\t\"errorsFile\": \"errors.json\",",
       "\t\"rate\": 50",
       "}"
@@ -457,7 +457,7 @@
     "prefix": "devproxy-plugin-generic-random-error-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/genericrandomerrorplugin.errorsfile.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/genericrandomerrorplugin.errorsfile.schema.json\",",
       "\t\"errors\": [",
       "\t\t$1",
       "\t]",
@@ -468,7 +468,7 @@
   "GenericRandomErrorPluginFileSchema": {
     "prefix": "devproxy-plugin-generic-random-error-file-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/genericrandomerrorplugin.errorsfile.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/genericrandomerrorplugin.errorsfile.schema.json\","
     ],
     "description": "GenericRandomErrorPlugin errors file schema"
   },
@@ -525,7 +525,7 @@
     "prefix": "devproxy-plugin-graph-minimal-permissions-guidance-config",
     "body": [
       "\"graphMinimalPermissionsGuidancePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/graphminimalpermissionsguidanceplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/graphminimalpermissionsguidanceplugin.schema.json\",",
       "\t\"permissionsToIgnore\": [",
       "\t\t\"profile\",",
       "\t\t\"openid\",",
@@ -551,7 +551,7 @@
     "prefix": "devproxy-plugin-graph-minimal-permissions-config",
     "body": [
       "\"graphMinimalPermissionsPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/graphmininalpermissionsplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/graphmininalpermissionsplugin.schema.json\",",
       "\t\"type\": \"delegated\"",
       "}"
     ],
@@ -583,7 +583,7 @@
     "prefix": "devproxy-plugin-graph-mock-response-config",
     "body": [
       "\"graphMockResponsePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockresponseplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockresponseplugin.schema.json\",",
       "\t\"mocksFile\": \"mocks.json\"",
       "}"
     ],
@@ -614,7 +614,7 @@
     "prefix": "devproxy-plugin-graph-random-error-config",
     "body": [
       "\"graphRandomErrorPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/graphrandomerrorplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/graphrandomerrorplugin.schema.json\",",
       "\t\"allowedErrors\": [ 429, 500, 502, 503, 504, 507 ]",
       "\t\"rate\": 50",
       "}"
@@ -679,7 +679,7 @@
     "prefix": "devproxy-plugin-har-generator-config",
     "body": [
       "\"harGeneratorPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/hargeneratorplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/hargeneratorplugin.schema.json\",",
       "\t\"includeSensitiveInformation\": false,",
       "\t\"includeResponse\": true",
       "}"
@@ -701,7 +701,7 @@
     "prefix": "devproxy-plugin-http-file-generator-config",
     "body": [
       "\"httpFileGeneratorPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/httpfilegeneratorplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/httpfilegeneratorplugin.schema.json\",",
       "\t\"includeOptionsRequests\": false",
       "}"
     ],
@@ -723,7 +723,7 @@
     "prefix": "devproxy-plugin-latency-config",
     "body": [
       "\"latencyPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/latencyplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/latencyplugin.schema.json\",",
       "\t\"minMs\": 200,",
       "\t\"maxMs\": 10000",
       "}"
@@ -746,7 +746,7 @@
     "prefix": "devproxy-plugin-language-model-failure-config",
     "body": [
       "\"languageModelFailurePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/languagemodelfailureplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/languagemodelfailureplugin.schema.json\",",
       "\t\"failures\": [",
       "\t\t\"rate-limit-reached\",",
       "\t\t\"quota-exceeded\"",
@@ -771,7 +771,7 @@
     "prefix": "devproxy-plugin-language-model-rate-limiting-config",
     "body": [
       "\"languageModelRateLimitingPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/languagemodelratelimitingplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/languagemodelratelimitingplugin.schema.json\",",
       "\t\"promptTokenLimit\": 5000,",
       "\t\"completionTokenLimit\": 5000,",
       "\t\"resetTimeWindowSeconds\": 60,",
@@ -796,7 +796,7 @@
     "prefix": "devproxy-plugin-minimal-csom-permissions-config",
     "body": [
       "\"minimalCsomPermissionsPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/minimalcsompermissionsplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/minimalcsompermissionsplugin.schema.json\",",
       "\t\"typesFilePath\": \"./api-specs\"",
       "}"
     ],
@@ -818,7 +818,7 @@
     "prefix": "devproxy-plugin-minimal-permissions-config",
     "body": [
       "\"minimalPermissionsPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/minimalpermissionsplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/minimalpermissionsplugin.schema.json\",",
       "\t\"apiSpecsFolderPath\": \"./api-specs\"",
       "}"
     ],
@@ -840,7 +840,7 @@
     "prefix": "devproxy-plugin-minimal-permissions-guidance-config",
     "body": [
       "\"minimalPermissionsGuidancePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/minimalpermissionsguidanceplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/minimalpermissionsguidanceplugin.schema.json\",",
       "\t\"apiSpecsFolderPath\": \"./api-specs\"",
       "}"
     ],
@@ -873,7 +873,7 @@
     "prefix": "devproxy-plugin-mock-request-config",
     "body": [
       "\"mockRequestPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockrequestplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockrequestplugin.schema.json\",",
       "\t\"mockFile\": \"mock-request.json\"",
       "}"
     ],
@@ -895,7 +895,7 @@
     "prefix": "devproxy-plugin-mock-response-config",
     "body": [
       "\"mockResponsePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockresponseplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockresponseplugin.schema.json\",",
       "\t\"mocksFile\": \"mocks.json\"",
       "}"
     ],
@@ -904,7 +904,7 @@
   "MockResponsePluginFileSchema": {
     "prefix": "devproxy-plugin-mock-response-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/mockresponseplugin.mocksfile.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/mockresponseplugin.mocksfile.schema.json\","
     ],
     "description": "MockResponsePlugin schema"
   },
@@ -967,7 +967,7 @@
     "prefix": "devproxy-plugin-openai-telemetry-config",
     "body": [
       "\"openAITelemetryPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/openaitelemetryplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/openaitelemetryplugin.schema.json\",",
       "\t\"application\": \"My app\",",
       "\t\"includeCosts\": true,",
       "\t\"pricesFile\": \"prices.json\"",
@@ -1001,7 +1001,7 @@
     "prefix": "devproxy-plugin-open-api-spec-generator-config",
     "body": [
       "\"openApiSpecGeneratorPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/openapispecgeneratorplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/openapispecgeneratorplugin.schema.json\",",
       "\t\"includeOptionsRequests\": false,",
       "\t\"specVersion\": \"v3_0\",",
       "\t\"specFormat\": \"Json\"",
@@ -1024,7 +1024,7 @@
     "prefix": "devproxy-plugin-rate-limiting-config",
     "body": [
       "\"rateLimiting\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/ratelimitingplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/ratelimitingplugin.schema.json\",",
       "\t\"costPerRequest\": 2,",
       "\t\"rateLimit\": 120,",
       "\t\"retryAfterSeconds\": 5",
@@ -1036,7 +1036,7 @@
     "prefix": "devproxy-plugin-rate-limiting-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/ratelimitingplugin.customresponsefile.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/ratelimitingplugin.customresponsefile.schema.json\",",
       "\t\"body\": {",
       "\t\t$1",
       "\t},",
@@ -1051,7 +1051,7 @@
   "RateLimitingFileSchema": {
     "prefix": "devproxy-plugin-rate-limiting-file-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/ratelimitingplugin.customresponsefile.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/ratelimitingplugin.customresponsefile.schema.json\","
     ],
     "description": "Dev Proxy rate limiting file schema"
   },
@@ -1082,7 +1082,7 @@
     "prefix": "devproxy-plugin-rewrite-file",
     "body": [
       "{",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/rewriteplugin.rewritesfile.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/rewriteplugin.rewritesfile.schema.json\",",
       "\t\"rewrites\": [",
       "\t\t$1",
       "\t]",
@@ -1093,7 +1093,7 @@
   "RewritePluginFileSchema": {
     "prefix": "devproxy-plugin-rewrite-file-schema",
     "body": [
-      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/rewriteplugin.rewritesfile.schema.json\","
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/rewriteplugin.rewritesfile.schema.json\","
     ],
     "description": "RewritePlugin rewrites file schema"
   },
@@ -1101,7 +1101,7 @@
     "prefix": "devproxy-plugin-rewrite-config",
     "body": [
       "\"rewritePlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/rewriteplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/rewriteplugin.schema.json\",",
       "\t\"rewritesFile\": \"rewrites.json\"",
       "}"
     ],
@@ -1122,7 +1122,7 @@
     "prefix": "devproxy-plugin-typespec-generator-config",
     "body": [
       "\"typeSpecGeneratorPlugin\": {",
-      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.3.0/typespecgeneratorplugin.schema.json\",",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/typespecgeneratorplugin.schema.json\",",
       "\t\"ignoreResponseTypes\": false",
       "}"
     ],
