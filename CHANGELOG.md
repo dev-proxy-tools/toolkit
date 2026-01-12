@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.11.0] - Unreleased
 
+### Changed:
+
+- Snippets: All snippets that reference schemas updated to use `v2.1.0` schema
+
 ## [1.10.0] - 2025-12-03
 
 ### Changed:
