@@ -7,11 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
-## [1.11.0] - Unreleased
+## [1.11.1] - Unreleased
+
+### Added:
+
+- Snippets: Added `devproxy-plugin-graph-connector-guidance` - GraphConnectorGuidancePlugin instance
+- Snippets: Added `devproxy-plugin-mock-stdio-response` - MockStdioResponsePlugin instance
+- Snippets: Added `devproxy-plugin-mock-stdio-response-config` - MockStdioResponsePlugin config section
+- Snippets: Added `devproxy-plugin-mock-stdio-response-file` - MockStdioResponsePlugin mocks file
+- Snippets: Added `devproxy-plugin-mock-stdio-response-file-schema` - MockStdioResponsePlugin mocks file schema
 
 ### Changed:
 
 - Snippets: All snippets that reference schemas updated to use `v2.1.0` schema
+
+### Fixed:
+
+- Plugins: AuthPlugin now shows documentation link and configuration diagnostics
+- Plugins: LanguageModelFailurePlugin no longer incorrectly warns about requiring language model
 
 ## [1.10.0] - 2025-12-03
 

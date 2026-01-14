@@ -22,6 +22,13 @@
         "required": true
       }
     },
+    "AuthPlugin": {
+      "instance": "devproxy-plugin-auth",
+      "config": {
+        "name": "devproxy-plugin-auth-config-apikey",
+        "required": true
+      }
+    },
     "CachingGuidancePlugin": {
       "instance": "devproxy-plugin-caching-guidance",
       "config": {
@@ -69,6 +76,9 @@
     },
     "GraphClientRequestIdGuidancePlugin": {
       "instance": "devproxy-plugin-graph-client-request-id-guidance"
+    },
+    "GraphConnectorGuidancePlugin": {
+      "instance": "devproxy-plugin-graph-connector-guidance"
     },
     "GraphMinimalPermissionsPlugin": {
       "instance": "devproxy-plugin-graph-minimal-permissions",
@@ -123,8 +133,7 @@
       "config": {
         "name": "devproxy-plugin-language-model-failure-config",
         "required": true
-      },
-      "requiresLanguageModel": true
+      }
     },
     "LanguageModelRateLimitingPlugin": {
       "instance": "devproxy-plugin-language-model-rate-limiting",
@@ -176,6 +185,13 @@
       "instance": "devproxy-plugin-mock-response",
       "config": {
         "name": "devproxy-plugin-mock-response-config",
+        "required": true
+      }
+    },
+    "MockStdioResponsePlugin": {
+      "instance": "devproxy-plugin-mock-stdio-response",
+      "config": {
+        "name": "devproxy-plugin-mock-stdio-response-config",
         "required": true
       }
     },
@@ -255,6 +271,10 @@
       "name": "API Center Production Version Plugin",
       "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/apicenterproductionversionplugin"
     },
+    "AuthPlugin": {
+      "name": "Auth Plugin",
+      "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/authplugin"
+    },
     "CachingGuidancePlugin": {
       "name": "Caching Guidance Plugin",
       "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/cachingguidanceplugin"
@@ -286,6 +306,10 @@
     "GraphClientRequestIdGuidancePlugin": {
       "name": "Graph Client Request ID Guidance Plugin",
       "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/graphclientrequestidguidanceplugin"
+    },
+    "GraphConnectorGuidancePlugin": {
+      "name": "Graph Connector Guidance Plugin",
+      "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/graphconnectorguidanceplugin"
     },
     "GraphMinimalPermissionsPlugin": {
       "name": "Graph Minimal Permissions Plugin",
@@ -354,6 +378,10 @@
     "MockResponsePlugin": {
       "name": "Mock Response Plugin",
       "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/mockresponseplugin"
+    },
+    "MockStdioResponsePlugin": {
+      "name": "Mock Stdio Response Plugin",
+      "url": "https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/mockstdioresponseplugin"
     },
     "ODataPagingGuidancePlugin": {
       "name": "OData Paging Guidance Plugin",

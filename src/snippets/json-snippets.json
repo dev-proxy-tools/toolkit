@@ -510,6 +510,23 @@
     ],
     "description": "GraphClientRequestIdGuidancePlugin instance"
   },
+  "GraphConnectorGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-connector-guidance",
+    "body": [
+      "{",
+      "\t\"name\": \"GraphConnectorGuidancePlugin\",",
+      "\t\"enabled\": true,",
+      "\t\"pluginPath\": \"~appFolder/plugins/DevProxy.Plugins.dll\",",
+      "\t\"urlsToWatch\": [",
+      "\t\t\"https://graph.microsoft.com/*/external/connections/*/schema\",",
+      "\t\t\"https://graph.microsoft.us/*/external/connections/*/schema\",",
+      "\t\t\"https://dod-graph.microsoft.us/*/external/connections/*/schema\",",
+      "\t\t\"https://microsoftgraph.chinacloudapi.cn/*/external/connections/*/schema\"",
+      "\t]",
+      "}"
+    ],
+    "description": "GraphConnectorGuidancePlugin instance"
+  },
   "GraphMinimalPermissionsGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-minimal-permissions-guidance",
     "body": [
@@ -907,6 +924,47 @@
       "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\","
     ],
     "description": "MockResponsePlugin schema"
+  },
+  "MockStdioResponsePlugin": {
+    "prefix": "devproxy-plugin-mock-stdio-response",
+    "body": [
+      "{",
+      "\t\"name\": \"MockStdioResponsePlugin\",",
+      "\t\"enabled\": true,",
+      "\t\"pluginPath\": \"~appFolder/plugins/DevProxy.Plugins.dll\",",
+      "\t\"configSection\": \"mockStdioResponsePlugin\"",
+      "}"
+    ],
+    "description": "MockStdioResponsePlugin instance"
+  },
+  "MockStdioResponsePluginConfig": {
+    "prefix": "devproxy-plugin-mock-stdio-response-config",
+    "body": [
+      "\"mockStdioResponsePlugin\": {",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\",",
+      "\t\"mocksFile\": \"stdio-mocks.json\"",
+      "}"
+    ],
+    "description": "MockStdioResponsePlugin config section"
+  },
+  "MockStdioResponsePluginMocksFile": {
+    "prefix": "devproxy-plugin-mock-stdio-response-file",
+    "body": [
+      "{",
+      "\t\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\",",
+      "\t\"mocks\": [",
+      "\t\t$1",
+      "\t]",
+      "}"
+    ],
+    "description": "MockStdioResponsePlugin mocks file"
+  },
+  "MockStdioResponsePluginMocksFileSchema": {
+    "prefix": "devproxy-plugin-mock-stdio-response-file-schema",
+    "body": [
+      "\"\\$schema\": \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\","
+    ],
+    "description": "MockStdioResponsePlugin mocks file schema"
   },
   "ODataPagingGuidancePlugin": {
     "prefix": "devproxy-plugin-odata-paging-guidance",

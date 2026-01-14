@@ -126,6 +126,7 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-generic-random-error-file-schema` | GenericRandomErrorPlugin errors file schema |
 | `devproxy-plugin-graph-beta-support-guidance` | GraphBetaSupportGuidancePlugin instance |
 | `devproxy-plugin-graph-client-request-id-guidance` | GraphClientRequestIdGuidancePlugin instance |
+| `devproxy-plugin-graph-connector-guidance` | GraphConnectorGuidancePlugin instance |
 | `devproxy-plugin-graph-minimal-permissions-guidance` | GraphMinimalPermissionsGuidancePlugin instance |
 | `devproxy-plugin-graph-minimal-permissions-guidance-config` | GraphMinimalPermissionsGuidancePlugin config section |
 | `devproxy-plugin-graph-minimal-permissions` | GraphMinimalPermissionsPlugin instance |
@@ -158,6 +159,10 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-mock-response` | MockResponsePlugin instance |
 | `devproxy-plugin-mock-response-config` | MockResponsePlugin config section |
 | `devproxy-plugin-mock-response-schema` | MockResponsePlugin schema |
+| `devproxy-plugin-mock-stdio-response` | MockStdioResponsePlugin instance |
+| `devproxy-plugin-mock-stdio-response-config` | MockStdioResponsePlugin config section |
+| `devproxy-plugin-mock-stdio-response-file` | MockStdioResponsePlugin mocks file |
+| `devproxy-plugin-mock-stdio-response-file-schema` | MockStdioResponsePlugin mocks file schema |
 | `devproxy-plugin-odata-paging-guidance` | ODataPagingGuidancePlugin instance |
 | `devproxy-plugin-graph-odsp-search-guidance` | ODSPSearchGuidancePlugin instance |
 | `devproxy-plugin-openai-mock-response` | OpenAIMockResponsePlugin instance |
