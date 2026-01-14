@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import {DevProxyInstall} from './types';
 import parse from 'json-to-ast';
-import { getASTNode, getRangeFromASTNode } from './helpers';
+import { getASTNode, getRangeFromASTNode } from './utils';
 
 export const registerCodeActions = (context: vscode.ExtensionContext) => {
   const devProxyInstall =

@@ -1,5 +1,6 @@
 const typescriptEslint = require('@typescript-eslint/eslint-plugin');
 const typescriptParser = require('@typescript-eslint/parser');
+const prettierConfig = require('eslint-config-prettier');
 
 module.exports = [
   {
@@ -27,6 +28,7 @@ module.exports = [
       'no-throw-literal': 'warn',
     },
   },
+  prettierConfig,
   {
     ignores: ['out/**', 'dist/**', '**/*.d.ts', 'build/**'],
   },

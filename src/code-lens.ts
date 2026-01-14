@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { isConfigFile, getASTNode, getRangeFromASTNode } from './helpers';
+import { isConfigFile, getASTNode, getRangeFromASTNode } from './utils';
 import parse from 'json-to-ast';
-import { pluginSnippets } from './constants';
+import { pluginSnippets } from './data';
 
 export const registerCodeLens = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(

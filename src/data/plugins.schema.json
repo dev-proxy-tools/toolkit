@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dev Proxy Plugins Data",
+  "description": "Plugin metadata for the Dev Proxy Toolkit extension including snippet info and documentation URLs",
+  "type": "object",
+  "required": ["plugins", "docs"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "plugins": {
+      "type": "object",
+      "description": "Plugin snippet and configuration metadata",
+      "additionalProperties": {
+        "$ref": "#/$defs/pluginEntry"
+      }
+    },
+    "docs": {
+      "type": "object",
+      "description": "Plugin documentation URLs",
+      "additionalProperties": {
+        "$ref": "#/$defs/docsEntry"
+      }
+    }
+  },
+  "$defs": {
+    "pluginEntry": {
+      "type": "object",
+      "description": "Plugin configuration for snippets",
+      "required": ["instance"],
+      "properties": {
+        "instance": {
+          "type": "string",
+          "description": "Snippet name for the plugin instance"
+        },
+        "config": {
+          "type": "object",
+          "description": "Plugin configuration snippet info",
+          "required": ["name", "required"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Snippet name for the plugin configuration"
+            },
+            "required": {
+              "type": "boolean",
+              "description": "Whether the configuration is required for the plugin to work"
+            }
+          }
+        },
+        "requiresLanguageModel": {
+          "type": "boolean",
+          "description": "Whether the plugin requires a language model to be configured"
+        }
+      }
+    },
+    "docsEntry": {
+      "type": "object",
+      "description": "Documentation reference for a plugin",
+      "required": ["name", "url"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Human-readable plugin name"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to the plugin documentation"
+        }
+      }
+    }
+  }
+}

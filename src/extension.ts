@@ -2,13 +2,13 @@ import * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { handleStartNotification, processNotification } from './notifications';
 import { registerDocumentListeners } from './documents';
-import { registerCodeLens } from './codelens';
-import { createStatusBar, statusBarLoop, updateStatusBar } from './statusbar';
-import { registerCodeActions } from './codeactions';
+import { registerCodeLens } from './code-lens';
+import { createStatusBar, statusBarLoop, updateStatusBar } from './status-bar';
+import { registerCodeActions } from './code-actions';
 import { updateGlobalState } from './state';
 import { VersionPreference } from './enums';
 import { registerMcpServer } from './mcp';
-import { registerTaskProvider } from './taskprovider';
+import { registerTaskProvider } from './task-provider';
 
 // Global variable to track the interval
 let statusBarInterval: NodeJS.Timeout | undefined;

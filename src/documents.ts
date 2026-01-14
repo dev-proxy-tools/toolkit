@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { isConfigFile, isProxyFile } from './helpers';
+import { isConfigFile, isProxyFile } from './utils';
 import { updateFileDiagnostics, updateConfigFileDiagnostics } from './diagnostics';
 
 export const registerDocumentListeners = (context: vscode.ExtensionContext, collection: vscode.DiagnosticCollection) => {

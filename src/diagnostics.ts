@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import parse from 'json-to-ast';
-import {pluginSnippets} from './constants';
-import {getASTNode, getRangeFromASTNode} from './helpers';
+import { pluginSnippets } from './data';
+import { getASTNode, getRangeFromASTNode } from './utils';
 import {DevProxyInstall, PluginConfig} from './types';
 import * as semver from 'semver';
 
