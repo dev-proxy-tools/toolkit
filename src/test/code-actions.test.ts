@@ -7,6 +7,7 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { registerCodeActions } from '../code-actions';
 import { getExtensionContext, createDevProxyInstall } from './helpers';
+import { getDiagnosticCode, DiagnosticCodes } from '../constants';
 
 suite('Code Actions', () => {
   let sandbox: sinon.SinonSandbox;
@@ -87,7 +88,7 @@ suite('Code Actions', () => {
       // Create diagnostic
       const range = new vscode.Range(1, 14, 1, 45);
       const diagnostic = new vscode.Diagnostic(range, 'Invalid schema', vscode.DiagnosticSeverity.Warning);
-      diagnostic.code = 'invalidSchema';
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.invalidSchema);
 
       // Get code actions
       const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(

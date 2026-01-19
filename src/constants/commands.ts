@@ -69,6 +69,14 @@ export const DiagnosticCodes = {
   invalidConfigSection: 'invalidConfigSection',
   deprecatedPluginPath: 'deprecatedPluginPath',
   missingLanguageModel: 'missingLanguageModel',
+  noEnabledPlugins: 'noEnabledPlugins',
+  reporterPosition: 'reporterPosition',
+  summaryWithoutReporter: 'summaryWithoutReporter',
+  apiCenterPluginOrder: 'apiCenterPluginOrder',
+  emptyUrlsToWatch: 'emptyUrlsToWatch',
+  pluginConfigMissing: 'pluginConfigMissing',
+  pluginConfigRequired: 'pluginConfigRequired',
+  pluginConfigNotRequired: 'pluginConfigNotRequired',
 } as const;
 
 /**
@@ -78,7 +86,21 @@ export const Urls = {
   upgradeDoc: 'https://aka.ms/devproxy/upgrade',
   linuxInstall: 'https://aka.ms/devproxy/start/linux',
   schemaBase: 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas',
+  diagnosticsDoc: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/toolkit-diagnostics',
 } as const;
+
+/**
+ * Get a diagnostic code object with a clickable documentation link.
+ * @param code The diagnostic code from DiagnosticCodes
+ * @returns An object with value and target for VS Code diagnostic code
+ */
+export function getDiagnosticCode(code: string): { value: string; target: import('vscode').Uri } {
+  const vscode = require('vscode');
+  return {
+    value: code,
+    target: vscode.Uri.parse(`${Urls.diagnosticsDoc}#${code.toLowerCase()}`),
+  };
+}
 
 /**
  * Build a schema URL for a specific version.

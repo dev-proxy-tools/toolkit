@@ -3,6 +3,56 @@ import {DevProxyInstall} from './types';
 import parse from 'json-to-ast';
 import { getASTNode, getRangeFromASTNode } from './utils';
 
+/**
+ * Extract the diagnostic code value from the object format.
+ * All diagnostic codes use { value, target } objects for clickable links.
+ */
+function getDiagnosticCodeValue(diagnostic: vscode.Diagnostic): string | undefined {
+  if (typeof diagnostic.code === 'object' && diagnostic.code !== null) {
+    return (diagnostic.code as { value: string }).value;
+  }
+  return undefined;
+}
+
+/**
+ * Find a diagnostic by code, optionally requiring intersection with a range.
+ */
+function findDiagnosticByCode(
+  diagnostics: readonly vscode.Diagnostic[],
+  code: string,
+  range?: vscode.Range
+): vscode.Diagnostic | undefined {
+  return diagnostics.find(diagnostic => {
+    const diagnosticCode = getDiagnosticCodeValue(diagnostic);
+    if (diagnosticCode !== code) {
+      return false;
+    }
+    return range ? diagnostic.range.intersection(range) : true;
+  });
+}
+
+/**
+ * Get all diagnostics with a specific code from a document.
+ */
+function getDiagnosticsByCode(documentUri: vscode.Uri, code: string): vscode.Diagnostic[] {
+  return vscode.languages.getDiagnostics(documentUri).filter(diagnostic => {
+    return getDiagnosticCodeValue(diagnostic) === code;
+  });
+}
+
+/**
+ * Register a code action provider for both JSON and JSONC files.
+ */
+function registerJsonCodeActionProvider(
+  context: vscode.ExtensionContext,
+  provider: vscode.CodeActionProvider
+): void {
+  context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider('json', provider),
+    vscode.languages.registerCodeActionsProvider('jsonc', provider),
+  );
+}
+
 export const registerCodeActions = (context: vscode.ExtensionContext) => {
   const devProxyInstall =
     context.globalState.get<DevProxyInstall>('devProxyInstall');
@@ -25,50 +75,41 @@ function registerInvalidSchemaFixes(
   context: vscode.ExtensionContext,
 ) {
   const invalidSchema: vscode.CodeActionProvider = {
-    provideCodeActions: (document, range, context, token) => {
-      const diagnostic = context.diagnostics.find(diagnostic => {
-        return diagnostic.code === 'invalidSchema';
-      });
-      if (diagnostic) {
-        const fix = new vscode.CodeAction(
-          'Update schema',
-          vscode.CodeActionKind.QuickFix,
-        );
-        fix.edit = new vscode.WorkspaceEdit();
-        fix.edit.replace(
-          document.uri,
-          new vscode.Range(diagnostic.range.start, diagnostic.range.end),
-          `https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v${devProxyVersion}/rc.schema.json`,
-        );
-        return [fix];
+    provideCodeActions: (document, range, context) => {
+      const diagnostic = findDiagnosticByCode(context.diagnostics, 'invalidSchema');
+      if (!diagnostic) {
+        return;
       }
+
+      const fix = new vscode.CodeAction(
+        'Update schema',
+        vscode.CodeActionKind.QuickFix,
+      );
+      fix.edit = new vscode.WorkspaceEdit();
+      fix.edit.replace(
+        document.uri,
+        diagnostic.range,
+        `https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v${devProxyVersion}/rc.schema.json`,
+      );
+      fix.isPreferred = true;
+      return [fix];
     },
   };
 
-  // Code action for invalid schema
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider('json', invalidSchema),
-  );
-
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider('jsonc', invalidSchema),
-  );
+  registerJsonCodeActionProvider(context, invalidSchema);
 }
 
 function registerDeprecatedPluginPathFixes(context: vscode.ExtensionContext) {
+  const correctPluginPath = '~appFolder/plugins/DevProxy.Plugins.dll';
+
   const deprecatedPluginPaths: vscode.CodeActionProvider = {
-    provideCodeActions: (document, range, context, token) => {
-      const correctPluginPath = '~appFolder/plugins/DevProxy.Plugins.dll';
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'deprecatedPluginPath',
+        range
+      );
 
-      // Check if the current range intersects with a deprecated plugin path diagnostic
-      const currentDiagnostic = context.diagnostics.find(diagnostic => {
-        return (
-          diagnostic.code === 'deprecatedPluginPath' &&
-          diagnostic.range.intersection(range)
-        );
-      });
-
-      // Only provide deprecated plugin path actions if user is on a deprecated plugin path diagnostic
       if (!currentDiagnostic) {
         return [];
       }
@@ -83,88 +124,61 @@ function registerDeprecatedPluginPathFixes(context: vscode.ExtensionContext) {
       individualFix.edit = new vscode.WorkspaceEdit();
       individualFix.edit.replace(
         document.uri,
-        new vscode.Range(
-          currentDiagnostic.range.start,
-          currentDiagnostic.range.end,
-        ),
+        currentDiagnostic.range,
         correctPluginPath,
       );
       fixes.push(individualFix);
 
-      // Bulk fix for all deprecated plugin paths in the document (only show when on a deprecated plugin path)
-      const allDeprecatedPluginPathDiagnostics = vscode.languages
-        .getDiagnostics(document.uri)
-        .filter(diagnostic => {
-          return diagnostic.code === 'deprecatedPluginPath';
-        });
+      // Bulk fix for all deprecated plugin paths in the document
+      const allDeprecated = getDiagnosticsByCode(document.uri, 'deprecatedPluginPath');
 
-      if (allDeprecatedPluginPathDiagnostics.length > 1) {
+      if (allDeprecated.length > 1) {
         const bulkFix = new vscode.CodeAction(
-          `Update all plugin paths`,
+          'Update all plugin paths',
           vscode.CodeActionKind.QuickFix,
         );
         bulkFix.edit = new vscode.WorkspaceEdit();
 
-        // Update all deprecated plugin paths
-        allDeprecatedPluginPathDiagnostics.forEach(diagnostic => {
-          bulkFix.edit!.replace(
-            document.uri,
-            new vscode.Range(diagnostic.range.start, diagnostic.range.end),
-            correctPluginPath,
-          );
+        allDeprecated.forEach(diagnostic => {
+          bulkFix.edit!.replace(document.uri, diagnostic.range, correctPluginPath);
         });
 
         bulkFix.isPreferred = true;
         fixes.push(bulkFix);
+      } else {
+        individualFix.isPreferred = true;
       }
 
       return fixes;
     },
   };
-  // Code action for deprecated plugin paths (individual and bulk updates)
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider('json', deprecatedPluginPaths),
-  );
 
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider(
-      'jsonc',
-      deprecatedPluginPaths,
-    ),
-  );
+  registerJsonCodeActionProvider(context, deprecatedPluginPaths);
 }
 
 function registerLanguageModelFixes(context: vscode.ExtensionContext) {
   const languageModelMissing: vscode.CodeActionProvider = {
-    provideCodeActions: (document, range, context, token) => {
-      // Check if the current range intersects with a missing language model diagnostic
-      const currentDiagnostic = context.diagnostics.find(diagnostic => {
-        return (
-          diagnostic.code === 'missingLanguageModel' &&
-          diagnostic.range.intersection(range)
-        );
-      });
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'missingLanguageModel',
+        range
+      );
 
-      // Only provide language model actions if user is on a missing language model diagnostic
       if (!currentDiagnostic) {
         return [];
       }
 
-      const fixes: vscode.CodeAction[] = [];
-
-      // Fix to add languageModel configuration
-      const addLanguageModelFix = new vscode.CodeAction(
+      const fix = new vscode.CodeAction(
         'Add languageModel configuration',
         vscode.CodeActionKind.QuickFix,
       );
       
-      addLanguageModelFix.edit = new vscode.WorkspaceEdit();
+      fix.edit = new vscode.WorkspaceEdit();
       
       try {
-        // Parse the document using json-to-ast for accurate insertion
         const documentNode = parse(document.getText()) as parse.ObjectNode;
         
-        // Check if languageModel already exists
         const existingLanguageModel = getASTNode(
           documentNode.children,
           'Identifier',
@@ -181,45 +195,40 @@ function registerLanguageModelFixes(context: vscode.ExtensionContext) {
           );
           
           if (enabledNode) {
-            // Replace the enabled value
-            addLanguageModelFix.edit.replace(
+            fix.edit.replace(
               document.uri,
               getRangeFromASTNode(enabledNode.value),
               'true'
             );
           } else {
-            // Add enabled property
             const insertPosition = new vscode.Position(
               languageModelObjectNode.loc!.end.line - 1,
               languageModelObjectNode.loc!.end.column - 1
             );
-            addLanguageModelFix.edit.insert(
+            fix.edit.insert(
               document.uri,
               insertPosition,
               '\n    "enabled": true'
             );
           }
         } else {
-          // Add new languageModel object
-          // Find the last property to insert after it
+          // Add new languageModel object after the last property
           const lastProperty = documentNode.children[documentNode.children.length - 1] as parse.PropertyNode;
           const insertPosition = new vscode.Position(
             lastProperty.loc!.end.line - 1,
             lastProperty.loc!.end.column
           );
           
-          addLanguageModelFix.edit.insert(
+          fix.edit.insert(
             document.uri,
             insertPosition,
             ',\n  "languageModel": {\n    "enabled": true\n  }'
           );
         }
-      } catch (error) {
+      } catch {
         // Fallback to simple text-based insertion
-        const documentText = document.getText();
-        const lines = documentText.split('\n');
+        const lines = document.getText().split('\n');
         
-        // Find where to insert the languageModel config
         let insertLine = lines.length - 1;
         for (let i = lines.length - 1; i >= 0; i--) {
           if (lines[i].includes('}')) {
@@ -236,23 +245,17 @@ function registerLanguageModelFixes(context: vscode.ExtensionContext) {
           ',\n  "languageModel": {\n    "enabled": true\n  }' :
           '  "languageModel": {\n    "enabled": true\n  }';
         
-        const insertPosition = new vscode.Position(insertLine, 0);
-        addLanguageModelFix.edit.insert(document.uri, insertPosition, languageModelConfig + '\n');
+        fix.edit.insert(
+          document.uri,
+          new vscode.Position(insertLine, 0),
+          languageModelConfig + '\n'
+        );
       }
       
-      addLanguageModelFix.isPreferred = true;
-      fixes.push(addLanguageModelFix);
-
-      return fixes;
+      fix.isPreferred = true;
+      return [fix];
     },
   };
 
-  // Code action for missing language model configuration
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider('json', languageModelMissing),
-  );
-
-  context.subscriptions.push(
-    vscode.languages.registerCodeActionsProvider('jsonc', languageModelMissing),
-  );
+  registerJsonCodeActionProvider(context, languageModelMissing);
 }

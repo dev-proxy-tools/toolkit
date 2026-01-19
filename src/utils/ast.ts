@@ -23,7 +23,7 @@ export function getASTNode(
  * and properly excludes quotes from string literal ranges.
  */
 export function getRangeFromASTNode(
-  node: parse.PropertyNode | parse.LiteralNode | parse.ObjectNode | parse.ValueNode
+  node: parse.PropertyNode | parse.LiteralNode | parse.ObjectNode | parse.ValueNode | parse.IdentifierNode
 ): vscode.Range {
   const startLine = node?.loc?.start.line ?? 0;
   const endLine = node?.loc?.end.line ?? 0;
@@ -35,6 +35,10 @@ export function getRangeFromASTNode(
     // Start column points to quote, end column points after closing quote
     // We keep start as-is (0-based equivalent) and adjust end to exclude closing quote
     endColumn = endColumn - 2;
+  } else if (node.type === 'Identifier') {
+    // For identifiers (property keys), convert from 1-based to 0-based
+    startColumn = startColumn - 1;
+    endColumn = endColumn - 1;
   } else {
     // For non-string literals, just convert from 1-based to 0-based
     startColumn = startColumn - 1;
@@ -51,7 +55,7 @@ export function getRangeFromASTNode(
  * Get the start position of an AST node.
  */
 export function getStartPositionFromASTNode(
-  node: parse.PropertyNode | parse.LiteralNode | parse.ObjectNode | parse.ValueNode
+  node: parse.PropertyNode | parse.LiteralNode | parse.ObjectNode | parse.ValueNode | parse.IdentifierNode
 ): vscode.Position {
   const startLine = node?.loc?.start.line ?? 0;
   const startColumn = node?.loc?.start.column ?? 0;

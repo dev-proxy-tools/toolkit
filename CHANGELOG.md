@@ -16,10 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Snippets: Added `devproxy-plugin-mock-stdio-response-config` - MockStdioResponsePlugin config section
 - Snippets: Added `devproxy-plugin-mock-stdio-response-file` - MockStdioResponsePlugin mocks file
 - Snippets: Added `devproxy-plugin-mock-stdio-response-file-schema` - MockStdioResponsePlugin mocks file schema
+- Diagnostics: Added clickable diagnostic codes that link to documentation
+- Diagnostics: Added `emptyUrlsToWatch` warning when urlsToWatch array is empty
 
 ### Changed:
 
 - Snippets: All snippets that reference schemas updated to use `v2.1.0` schema
+- Diagnostics: Improved highlighting to target specific nodes instead of entire objects
+- Diagnostics: All diagnostics now use unique codes for better identification
 
 ### Fixed:
 

@@ -66,6 +66,35 @@ suite('schema', () => {
     });
     assert.deepStrictEqual(actual, expected);
   });
+
+  test('should show information when urlsToWatch is empty', async () => {
+    const fileName = 'config-urls-to-watch-required.json';
+    const filePath = getFixturePath(fileName);
+    const document = await vscode.workspace.openTextDocument(filePath);
+    await sleep(1000);
+    const diagnostics = vscode.languages.getDiagnostics(document.uri);
+
+    const expected = {
+      message: 'urlsToWatch is empty. Add URLs to intercept requests.',
+      severity: vscode.DiagnosticSeverity.Information,
+      code: 'emptyUrlsToWatch',
+    };
+    const diagnostic = diagnostics.find(d => {
+      const code = typeof d.code === 'object' && d.code !== null
+        ? (d.code as { value: string }).value
+        : d.code;
+      return code === 'emptyUrlsToWatch';
+    });
+    const diagnosticCode = typeof diagnostic?.code === 'object' && diagnostic?.code !== null
+      ? (diagnostic.code as { value: string }).value
+      : diagnostic?.code;
+    const actual = {
+      message: diagnostic?.message,
+      severity: diagnostic?.severity,
+      code: diagnosticCode,
+    };
+    assert.deepStrictEqual(actual, expected);
+  });
 });
 
 suite('diagnostic ranges', () => {

@@ -76,6 +76,14 @@ suite('DiagnosticCodes', () => {
     assert.ok(DiagnosticCodes.invalidConfigSection, 'Should have invalidConfigSection code');
     assert.ok(DiagnosticCodes.deprecatedPluginPath, 'Should have deprecatedPluginPath code');
     assert.ok(DiagnosticCodes.missingLanguageModel, 'Should have missingLanguageModel code');
+    assert.ok(DiagnosticCodes.noEnabledPlugins, 'Should have noEnabledPlugins code');
+    assert.ok(DiagnosticCodes.reporterPosition, 'Should have reporterPosition code');
+    assert.ok(DiagnosticCodes.summaryWithoutReporter, 'Should have summaryWithoutReporter code');
+    assert.ok(DiagnosticCodes.apiCenterPluginOrder, 'Should have apiCenterPluginOrder code');
+    assert.ok(DiagnosticCodes.emptyUrlsToWatch, 'Should have emptyUrlsToWatch code');
+    assert.ok(DiagnosticCodes.pluginConfigMissing, 'Should have pluginConfigMissing code');
+    assert.ok(DiagnosticCodes.pluginConfigRequired, 'Should have pluginConfigRequired code');
+    assert.ok(DiagnosticCodes.pluginConfigNotRequired, 'Should have pluginConfigNotRequired code');
   });
 });
 

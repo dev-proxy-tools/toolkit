@@ -3,6 +3,7 @@ import parse from 'json-to-ast';
 import { pluginSnippets } from './data';
 import { getASTNode, getRangeFromASTNode } from './utils';
 import {DevProxyInstall, PluginConfig} from './types';
+import { DiagnosticCodes, getDiagnosticCode } from './constants';
 import * as semver from 'semver';
 
 export const updateConfigFileDiagnostics = (
@@ -23,6 +24,7 @@ export const updateConfigFileDiagnostics = (
   checkPlugins(pluginsNode, diagnostics, documentNode, devProxyInstall);
   checkConfigSection(documentNode, diagnostics);
   checkLanguageModelRequirements(documentNode, diagnostics);
+  checkUrlsToWatch(documentNode, diagnostics);
 
   collection.set(document.uri, diagnostics);
 };
@@ -86,11 +88,11 @@ const checkConfigSection = (
     }
 
     const diagnostic = new vscode.Diagnostic(
-      getRangeFromASTNode(objectNode),
+      getRangeFromASTNode(objectNode.key),
       `Config section '${objectName}' does not correspond to any plugin. Remove it or add a plugin with a matching configSection.`,
       vscode.DiagnosticSeverity.Warning,
     );
-    diagnostic.code = 'invalidConfigSection';
+    diagnostic.code = getDiagnosticCode(DiagnosticCodes.invalidConfigSection);
     diagnostics.push(diagnostic);
   });
 };
@@ -113,7 +115,7 @@ const checkSchemaCompatibility = (
         `Schema version is not compatible with the installed version of Dev Proxy. Expected v${devProxyVersion}`,
         vscode.DiagnosticSeverity.Warning,
       );
-      diagnostic.code = 'invalidSchema';
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.invalidSchema);
       diagnostics.push(diagnostic);
     }
   }
@@ -221,11 +223,17 @@ const warnOnReporterPosition = (
       );
       // if there are, add a warning to the reporter plugin
       if (pluginAfterReporter) {
+        const reporterPluginNameNode = getASTNode(
+          pluginNodes[reporterIndex].children,
+          'Identifier',
+          'name',
+        );
         const diagnostic = new vscode.Diagnostic(
-          getRangeFromASTNode(pluginNodes[reporterIndex]),
+          getRangeFromASTNode(reporterPluginNameNode!.value),
           'Reporters should be placed after other plugins.',
           vscode.DiagnosticSeverity.Warning,
         );
+        diagnostic.code = getDiagnosticCode(DiagnosticCodes.reporterPosition);
         diagnostics.push(diagnostic);
       }
     }
@@ -239,13 +247,13 @@ const checkAtLeastOneEnabledPlugin = (
 ) => {
   // check if there are any plugins
   if (pluginNodes.length === 0) {
-    diagnostics.push(
-      new vscode.Diagnostic(
-        getRangeFromASTNode(pluginsNode),
-        'Add at least one plugin',
-        vscode.DiagnosticSeverity.Warning,
-      ),
+    const diagnostic = new vscode.Diagnostic(
+      getRangeFromASTNode(pluginsNode.key),
+      'Add at least one plugin',
+      vscode.DiagnosticSeverity.Warning,
     );
+    diagnostic.code = getDiagnosticCode(DiagnosticCodes.noEnabledPlugins);
+    diagnostics.push(diagnostic);
   } else {
     // check if there are any enabled plugins
     const enabledPlugins = pluginNodes.filter(
@@ -259,13 +267,13 @@ const checkAtLeastOneEnabledPlugin = (
       },
     );
     if (enabledPlugins.length === 0) {
-      diagnostics.push(
-        new vscode.Diagnostic(
-          getRangeFromASTNode(pluginsNode),
-          'At least one plugin must be enabled',
-          vscode.DiagnosticSeverity.Warning,
-        ),
+      const diagnostic = new vscode.Diagnostic(
+        getRangeFromASTNode(pluginsNode.key),
+        'At least one plugin must be enabled',
+        vscode.DiagnosticSeverity.Warning,
       );
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.noEnabledPlugins);
+      diagnostics.push(diagnostic);
     }
   }
 };
@@ -286,30 +294,35 @@ const checkPluginConfiguration = (
 
   // if the plugin does not require a config section, we should not have one
   if (!pluginSnippet.config && configSectionNode) {
-    diagnostics.push(
-      new vscode.Diagnostic(
-        getRangeFromASTNode(configSectionNode),
-        `${pluginName} does not require a config section.`,
-        isEnabled
-          ? vscode.DiagnosticSeverity.Error
-          : vscode.DiagnosticSeverity.Warning,
-      ),
+    const diagnostic = new vscode.Diagnostic(
+      getRangeFromASTNode(configSectionNode),
+      `${pluginName} does not require a config section.`,
+      isEnabled
+        ? vscode.DiagnosticSeverity.Error
+        : vscode.DiagnosticSeverity.Warning,
     );
+    diagnostic.code = getDiagnosticCode(DiagnosticCodes.pluginConfigNotRequired);
+    diagnostics.push(diagnostic);
     return;
   }
 
   // if there is no config section defined on the plugin, we should have one if the plugin requires it
   if (!configSectionNode) {
     if (pluginSnippet.config?.required) {
-      diagnostics.push(
-        new vscode.Diagnostic(
-          getRangeFromASTNode(pluginNode),
-          `${pluginName} requires a config section.`,
-          isEnabled
-            ? vscode.DiagnosticSeverity.Error
-            : vscode.DiagnosticSeverity.Warning,
-        ),
+      const pluginNameNode = getASTNode(
+        pluginNode.children,
+        'Identifier',
+        'name',
       );
+      const diagnostic = new vscode.Diagnostic(
+        getRangeFromASTNode(pluginNameNode!.value),
+        `${pluginName} requires a config section.`,
+        isEnabled
+          ? vscode.DiagnosticSeverity.Error
+          : vscode.DiagnosticSeverity.Warning,
+      );
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.pluginConfigRequired);
+      diagnostics.push(diagnostic);
     } else if (pluginSnippet.config?.required === false) {
       const pluginNameNode = getASTNode(
         pluginNode.children,
@@ -317,13 +330,12 @@ const checkPluginConfiguration = (
         'name',
       );
       if (pluginNameNode) {
-        diagnostics.push(
-          new vscode.Diagnostic(
-            getRangeFromASTNode(pluginNameNode.value),
-            `${pluginName} can be configured with a configSection. Use '${pluginSnippet.config?.name}' snippet to create one.`,
-            vscode.DiagnosticSeverity.Information,
-          ),
+        const diagnostic = new vscode.Diagnostic(
+          getRangeFromASTNode(pluginNameNode.value),
+          `${pluginName} can be configured with a configSection. Use '${pluginSnippet.config?.name}' snippet to create one.`,
+          vscode.DiagnosticSeverity.Information,
         );
+        diagnostics.push(diagnostic);
       }
     }
   } else {
@@ -337,15 +349,15 @@ const checkPluginConfiguration = (
     );
 
     if (!configSection) {
-      diagnostics.push(
-        new vscode.Diagnostic(
-          getRangeFromASTNode(configSectionNode.value),
-          `${configSectionName} config section is missing. Use '${pluginSnippet.config?.name}' snippet to create one.`,
-          isEnabled
-            ? vscode.DiagnosticSeverity.Error
-            : vscode.DiagnosticSeverity.Warning,
-        ),
+      const diagnostic = new vscode.Diagnostic(
+        getRangeFromASTNode(configSectionNode.value),
+        `${configSectionName} config section is missing. Use '${pluginSnippet.config?.name}' snippet to create one.`,
+        isEnabled
+          ? vscode.DiagnosticSeverity.Error
+          : vscode.DiagnosticSeverity.Warning,
       );
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.pluginConfigMissing);
+      diagnostics.push(diagnostic);
     }
   }
 };
@@ -404,13 +416,18 @@ function checkForSummaryPluginWithoutReporter(
     });
 
     if (!reporterPlugin) {
-      diagnostics.push(
-        new vscode.Diagnostic(
-          getRangeFromASTNode(summaryPlugin),
-          `Summary plugins should be used with a reporter plugin.`,
-          vscode.DiagnosticSeverity.Warning,
-        ),
+      const summaryPluginNameNode = getASTNode(
+        summaryPlugin.children,
+        'Identifier',
+        'name',
       );
+      const diagnostic = new vscode.Diagnostic(
+        getRangeFromASTNode(summaryPluginNameNode!.value),
+        `Summary plugins should be used with a reporter plugin.`,
+        vscode.DiagnosticSeverity.Warning,
+      );
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.summaryWithoutReporter);
+      diagnostics.push(diagnostic);
     }
   }
 }
@@ -455,13 +472,18 @@ function checkAPICOnboardingPluginAfterOpenApiSpecGeneratorPlugin(
       apiCenterOnboardingPluginIndex !== -1 &&
       apiCenterOnboardingPluginIndex < openApiSpecGeneratorPluginIndex
     ) {
-      diagnostics.push(
-        new vscode.Diagnostic(
-          getRangeFromASTNode(pluginNodes[openApiSpecGeneratorPluginIndex]),
-          'OpenApiSpecGeneratorPlugin should be placed before ApiCenterOnboardingPlugin.',
-          vscode.DiagnosticSeverity.Warning,
-        ),
+      const openApiPluginNameNode = getASTNode(
+        pluginNodes[openApiSpecGeneratorPluginIndex].children,
+        'Identifier',
+        'name',
       );
+      const diagnostic = new vscode.Diagnostic(
+        getRangeFromASTNode(openApiPluginNameNode!.value),
+        'OpenApiSpecGeneratorPlugin should be placed before ApiCenterOnboardingPlugin.',
+        vscode.DiagnosticSeverity.Warning,
+      );
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.apiCenterPluginOrder);
+      diagnostics.push(diagnostic);
     }
   }
 }
@@ -495,7 +517,7 @@ function checkDeprecatedPluginPath(
           `The pluginPath '${pluginPath}' was deprecated in v0.29. Use '~appFolder/plugins/DevProxy.Plugins.dll' instead.`,
           vscode.DiagnosticSeverity.Error,
         );
-        diagnostic.code = 'deprecatedPluginPath';
+        diagnostic.code = getDiagnosticCode(DiagnosticCodes.deprecatedPluginPath);
         diagnostics.push(diagnostic);
       }
     }
@@ -569,8 +591,32 @@ function checkLanguageModelRequirements(
         `${pluginName} requires languageModel.enabled to be set to true.`,
         vscode.DiagnosticSeverity.Warning,
       );
-      diagnostic.code = 'missingLanguageModel';
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.missingLanguageModel);
       diagnostics.push(diagnostic);
     }
   });
+}
+
+function checkUrlsToWatch(
+  documentNode: parse.ObjectNode,
+  diagnostics: vscode.Diagnostic[],
+) {
+  const urlsToWatchNode = getASTNode(
+    documentNode.children,
+    'Identifier',
+    'urlsToWatch',
+  );
+
+  if (urlsToWatchNode && urlsToWatchNode.value.type === 'Array') {
+    const urlsArray = urlsToWatchNode.value as parse.ArrayNode;
+    if (urlsArray.children.length === 0) {
+      const diagnostic = new vscode.Diagnostic(
+        getRangeFromASTNode(urlsToWatchNode.key),
+        'urlsToWatch is empty. Add URLs to intercept requests.',
+        vscode.DiagnosticSeverity.Information,
+      );
+      diagnostic.code = getDiagnosticCode(DiagnosticCodes.emptyUrlsToWatch);
+      diagnostics.push(diagnostic);
+    }
+  }
 }
