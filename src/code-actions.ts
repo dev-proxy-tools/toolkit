@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
-import {DevProxyInstall} from './types';
+import { DevProxyInstall } from './types';
 import parse from 'json-to-ast';
 import { getASTNode, getRangeFromASTNode } from './utils';
+import { pluginSnippets } from './data';
+import snippetsJson from './snippets/json-snippets.json';
 
 /**
  * Extract the diagnostic code value from the object format.
@@ -68,6 +70,8 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
   registerInvalidSchemaFixes(devProxyVersion, context);
   registerDeprecatedPluginPathFixes(context);
   registerLanguageModelFixes(context);
+  registerOptionalConfigFixes(context);
+  registerMissingConfigFixes(context);
 };
 
 function registerInvalidSchemaFixes(
@@ -258,4 +262,235 @@ function registerLanguageModelFixes(context: vscode.ExtensionContext) {
   };
 
   registerJsonCodeActionProvider(context, languageModelMissing);
+}
+
+function registerOptionalConfigFixes(context: vscode.ExtensionContext) {
+  const optionalConfig: vscode.CodeActionProvider = {
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'pluginConfigOptional',
+        range
+      );
+
+      if (!currentDiagnostic) {
+        return [];
+      }
+
+      // Extract plugin name from diagnostic message
+      const match = currentDiagnostic.message.match(/^(\w+) can be configured/);
+      if (!match) {
+        return [];
+      }
+
+      const pluginName = match[1];
+      const pluginSnippet = pluginSnippets[pluginName];
+
+      if (!pluginSnippet?.config) {
+        return [];
+      }
+
+      const configSnippetName = pluginSnippet.config.name;
+      const snippets = snippetsJson as Record<
+        string,
+        { prefix: string; body: string[]; description: string }
+      >;
+
+      // Find the config snippet by matching the prefix
+      const configSnippet = Object.values(snippets).find(
+        s => s.prefix === configSnippetName
+      );
+
+      if (!configSnippet) {
+        return [];
+      }
+
+      const fix = new vscode.CodeAction(
+        `Add ${pluginName} configuration`,
+        vscode.CodeActionKind.QuickFix
+      );
+
+      fix.edit = new vscode.WorkspaceEdit();
+
+      try {
+        const documentNode = parse(document.getText()) as parse.ObjectNode;
+        const pluginsNode = getASTNode(
+          documentNode.children,
+          'Identifier',
+          'plugins'
+        );
+
+        if (!pluginsNode || pluginsNode.value.type !== 'Array') {
+          return [];
+        }
+
+        // Find the plugin node that matches the diagnostic range
+        const pluginNodes = (pluginsNode.value as parse.ArrayNode)
+          .children as parse.ObjectNode[];
+
+        const targetPlugin = pluginNodes.find(pluginNode => {
+          const nameNode = getASTNode(pluginNode.children, 'Identifier', 'name');
+          if (!nameNode) return false;
+          const nodeRange = getRangeFromASTNode(nameNode.value);
+          return nodeRange.intersection(currentDiagnostic.range);
+        });
+
+        if (!targetPlugin) {
+          return [];
+        }
+
+        // Extract config section name from the snippet body (e.g., "cachingGuidance": { -> cachingGuidance)
+        const configSectionMatch = configSnippet.body[0].match(/"(\w+)":/);
+        if (!configSectionMatch) {
+          return [];
+        }
+
+        const configSectionName = configSectionMatch[1];
+
+        // 1. Add configSection property to the plugin
+        // Find the last property in the plugin to add after it
+        const lastPluginProperty =
+          targetPlugin.children[targetPlugin.children.length - 1];
+        const insertConfigSectionPos = new vscode.Position(
+          lastPluginProperty.loc!.end.line - 1,
+          lastPluginProperty.loc!.end.column
+        );
+
+        fix.edit.insert(
+          document.uri,
+          insertConfigSectionPos,
+          `,\n    "configSection": "${configSectionName}"`
+        );
+
+        // 2. Add the config section at the root level
+        // Find the last property in the document
+        const lastDocProperty =
+          documentNode.children[documentNode.children.length - 1];
+        const insertConfigPos = new vscode.Position(
+          lastDocProperty.loc!.end.line - 1,
+          lastDocProperty.loc!.end.column
+        );
+
+        // Build the config section from snippet body
+        // Remove tabstops ($1, $2) and unescape special characters (\$ -> $, \" -> ")
+        const configBody = configSnippet.body
+          .map(line =>
+            line
+              .replace(/\$\d+/g, '')
+              .replace(/\\"/g, '"')
+              .replace(/\\\$/g, '$')
+          )
+          .join('\n  ');
+
+        fix.edit.insert(document.uri, insertConfigPos, ',\n  ' + configBody);
+
+        // Format the document after the edit is applied
+        fix.command = {
+          command: 'editor.action.formatDocument',
+          title: 'Format Document',
+        };
+      } catch {
+        return [];
+      }
+
+      fix.isPreferred = true;
+      return [fix];
+    },
+  };
+
+  registerJsonCodeActionProvider(context, optionalConfig);
+}
+
+/**
+ * Registers code actions to add missing config sections.
+ * Triggered when a plugin has a configSection property but the config section doesn't exist.
+ */
+export function registerMissingConfigFixes(
+  context: vscode.ExtensionContext
+): void {
+  const missingConfig: vscode.CodeActionProvider = {
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'pluginConfigMissing',
+        range
+      );
+
+      if (!currentDiagnostic) {
+        return [];
+      }
+
+      // Extract config section name from diagnostic message
+      // Message format: "configSectionName config section is missing. Use 'snippet-name' snippet to create one."
+      const match = currentDiagnostic.message.match(
+        /^(\w+) config section is missing\. Use '([^']+)' snippet/
+      );
+      if (!match) {
+        return [];
+      }
+
+      const configSectionName = match[1];
+      const configSnippetName = match[2];
+
+      const snippets = snippetsJson as Record<
+        string,
+        { prefix: string; body: string[]; description: string }
+      >;
+
+      // Find the config snippet by matching the prefix
+      const configSnippet = Object.values(snippets).find(
+        s => s.prefix === configSnippetName
+      );
+
+      if (!configSnippet) {
+        return [];
+      }
+
+      const fix = new vscode.CodeAction(
+        `Add ${configSectionName} config section`,
+        vscode.CodeActionKind.QuickFix
+      );
+
+      fix.edit = new vscode.WorkspaceEdit();
+
+      try {
+        const documentNode = parse(document.getText()) as parse.ObjectNode;
+
+        // Add the config section at the root level
+        // Find the last property in the document
+        const lastDocProperty =
+          documentNode.children[documentNode.children.length - 1];
+        const insertConfigPos = new vscode.Position(
+          lastDocProperty.loc!.end.line - 1,
+          lastDocProperty.loc!.end.column
+        );
+
+        // Build the config section from snippet body
+        // Remove tabstops ($1, $2) and unescape special characters (\$ -> $, \" -> ")
+        const configBody = configSnippet.body
+          .map(line =>
+            line
+              .replace(/\$\d+/g, '')
+              .replace(/\\"/g, '"')
+              .replace(/\\\$/g, '$')
+          )
+          .join('\n  ');
+
+        fix.edit.insert(document.uri, insertConfigPos, ',\n  ' + configBody);
+
+        // Format the document after the edit is applied
+        fix.command = {
+          command: 'editor.action.formatDocument',
+          title: 'Format Document',
+        };
+      } catch {
+        return [];
+      }
+
+      fix.isPreferred = true;
+      return [fix];
+    },
+  };
+
+  registerJsonCodeActionProvider(context, missingConfig);
 }

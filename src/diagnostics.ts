@@ -336,6 +336,7 @@ const checkPluginConfiguration = (
           `${pluginName} can be configured with a configSection. Use '${pluginSnippet.config?.name}' snippet to create one.`,
           vscode.DiagnosticSeverity.Information,
         );
+        diagnostic.code = getDiagnosticCode(DiagnosticCodes.pluginConfigOptional);
         diagnostics.push(diagnostic);
       }
     }

@@ -183,6 +183,7 @@ Real-time validation of your configuration files. Click any diagnostic code to v
 | `emptyUrlsToWatch` | No URLs configured to intercept |
 | `pluginConfigRequired` | Plugin requires a config section |
 | `pluginConfigMissing` | Referenced config section doesn't exist |
+| `pluginConfigOptional` | Plugin can be configured (optional) |
 | `pluginConfigNotRequired` | Plugin doesn't support configuration |
 
 ### Quick Fixes
@@ -192,6 +193,8 @@ One-click fixes for common issues:
 - **Update schema** - Match schema to installed Dev Proxy version
 - **Update plugin path** - Fix deprecated `dev-proxy-plugins.dll` paths (single or all at once)
 - **Add languageModel configuration** - Enable language model for AI plugins
+- **Add plugin configuration** - Add optional config section for plugins that support it
+- **Add missing config section** - Create config section when plugin references one that doesn't exist
 
 ### Code Lens
 

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/dev-proxy/main/schemas/v0.24.0/rc.schema.json",
+  "plugins": [
+    {
+      "name": "CachingGuidancePlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/dev-proxy-plugins.dll"
+    }
+  ],
+  "urlsToWatch": ["https://jsonplaceholder.typicode.com/posts"]
+}

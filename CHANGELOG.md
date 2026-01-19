@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Snippets: Added `devproxy-plugin-mock-stdio-response-file-schema` - MockStdioResponsePlugin mocks file schema
 - Diagnostics: Added clickable diagnostic codes that link to documentation
 - Diagnostics: Added `emptyUrlsToWatch` warning when urlsToWatch array is empty
+- Diagnostics: Added `pluginConfigOptional` info when plugin can be configured with optional config section
+- Quick Fixes: Added fix to add optional plugin configuration (adds configSection + config)
+- Quick Fixes: Added fix to add missing config section when referenced but not defined
 
 ### Changed:
 

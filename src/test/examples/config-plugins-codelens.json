@@ -1,16 +1,25 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/dev-proxy/main/schemas/v0.29.0/rc.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/rc.schema.json",
   "plugins": [
     {
       "name": "CachingGuidancePlugin",
       "enabled": true,
-      "pluginPath": "~appFolder/plugins/dev-proxy-plugins.dll",
-      "configSection": "cachingGuidance" 
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      "configSection": "cachingGuidance"
     },
     {
       "name": "DevToolsPlugin",
       "enabled": true,
-      "pluginPath": "~appFolder/plugins/dev-proxy-plugins.dll"
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      "configSection": "devTools"
     }
-  ]
+  ],
+  "devTools": {
+    "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/devtoolsplugin.schema.json",
+    "preferredBrowser": "Edge"
+  },
+  "cachingGuidance": {
+    "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/cachingguidanceplugin.schema.json",
+    "cacheThresholdSeconds": 5
+  }
 }

@@ -77,6 +77,7 @@ export const DiagnosticCodes = {
   pluginConfigMissing: 'pluginConfigMissing',
   pluginConfigRequired: 'pluginConfigRequired',
   pluginConfigNotRequired: 'pluginConfigNotRequired',
+  pluginConfigOptional: 'pluginConfigOptional',
 } as const;
 
 /**

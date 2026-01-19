@@ -6,9 +6,9 @@ import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { registerCodeActions } from '../code-actions';
-import { getExtensionContext, createDevProxyInstall } from './helpers';
+import { getExtensionContext, createDevProxyInstall, getFixturePath } from './helpers';
 import { DiagnosticCodes } from '../constants';
-import { getDiagnosticCode } from '../utils';
+import { getDiagnosticCode, sleep } from '../utils';
 
 suite('Code Actions', () => {
   let sandbox: sinon.SinonSandbox;
@@ -53,8 +53,8 @@ suite('Code Actions', () => {
 
       registerCodeActions(contextWithInstall);
 
-      // Should register 6 providers (2 per fix type: json + jsonc)
-      assert.strictEqual(registerSpy.callCount, 6, 'Should register 6 code action providers');
+      // Should register 10 providers (2 per fix type: json + jsonc, 5 fix types)
+      assert.strictEqual(registerSpy.callCount, 10, 'Should register 10 code action providers');
     });
 
     test('should handle beta version correctly', () => {
@@ -140,6 +140,87 @@ suite('Code Actions', () => {
     });
   });
 
+  suite('Optional Config Fix', () => {
+    test('should return empty array when no pluginConfigOptional diagnostic', async () => {
+      const docContent = `{
+  "plugins": [
+    {
+      "name": "CachingGuidancePlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
+    }
+  ]
+}`;
+      const doc = await vscode.workspace.openTextDocument({
+        content: docContent,
+        language: 'json',
+      });
+
+      const range = new vscode.Range(2, 0, 2, 10);
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        doc.uri,
+        range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const configFix = codeActions?.find(
+        a => a.title.includes('Add') && a.title.includes('configuration')
+      );
+      assert.strictEqual(configFix, undefined, 'Should not provide fix without diagnostic');
+    });
+
+    test('should add configSection and config when fix is applied', async () => {
+      const fileName = 'config-plugin-config-optional.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const optionalConfigDiagnostic = diagnostics.find(d =>
+        d.message.includes('can be configured with a configSection')
+      );
+
+      assert.ok(optionalConfigDiagnostic, 'Should have pluginConfigOptional diagnostic');
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        optionalConfigDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const configFix = codeActions?.find(
+        a => a.title.includes('Add') && a.title.includes('configuration')
+      );
+
+      assert.ok(configFix, 'Should provide optional config fix');
+      assert.ok(configFix!.edit, 'Fix should have an edit');
+
+      // Apply the edit
+      const applied = await vscode.workspace.applyEdit(configFix!.edit!);
+      assert.ok(applied, 'Edit should be applied successfully');
+
+      // Verify the configSection was added to the plugin
+      const updatedText = document.getText();
+      assert.ok(
+        updatedText.includes('"configSection": "cachingGuidance"'),
+        'configSection should be added to plugin'
+      );
+
+      // Verify the config section was added at root level
+      assert.ok(
+        updatedText.includes('"cachingGuidance"'),
+        'Config section should be added at root level'
+      );
+
+      // Revert the changes
+      await vscode.commands.executeCommand('workbench.action.files.revert');
+    });
+  });
+
   suite('Language Model Fix', () => {
     test('should return empty array when no missingLanguageModel diagnostic', async () => {
       const docContent = `{
@@ -165,6 +246,90 @@ suite('Code Actions', () => {
 
       const lmFix = codeActions?.find(a => a.title === 'Add languageModel configuration');
       assert.strictEqual(lmFix, undefined, 'Should not provide fix without diagnostic');
+    });
+  });
+
+  suite('Missing Config Fix', () => {
+    test('should return empty array when no pluginConfigMissing diagnostic', async () => {
+      const docContent = `{
+  "plugins": [
+    {
+      "name": "LatencyPlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      "configSection": "latencyPlugin"
+    }
+  ],
+  "latencyPlugin": {
+    "minMs": 200,
+    "maxMs": 10000
+  }
+}`;
+      const doc = await vscode.workspace.openTextDocument({
+        content: docContent,
+        language: 'json',
+      });
+
+      const range = new vscode.Range(6, 0, 6, 10);
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        doc.uri,
+        range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const configFix = codeActions?.find(
+        a => a.title.includes('Add') && a.title.includes('config section')
+      );
+      assert.strictEqual(configFix, undefined, 'Should not provide fix without diagnostic');
+    });
+
+    test('should add config section when fix is applied', async () => {
+      const fileName = 'config-plugin-config-missing.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const missingConfigDiagnostic = diagnostics.find(d =>
+        d.message.includes('config section is missing')
+      );
+
+      assert.ok(missingConfigDiagnostic, 'Should have pluginConfigMissing diagnostic');
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        missingConfigDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const configFix = codeActions?.find(
+        a => a.title.includes('Add') && a.title.includes('config section')
+      );
+
+      assert.ok(configFix, 'Should provide config section fix');
+      assert.ok(configFix!.edit, 'Fix should have an edit');
+
+      // Apply the edit
+      const applied = await vscode.workspace.applyEdit(configFix!.edit!);
+      assert.ok(applied, 'Edit should be applied successfully');
+
+      // Verify the config section was added
+      const updatedText = document.getText();
+      assert.ok(
+        updatedText.includes('"genericRandomErrorPlugin"'),
+        'Config section should be added'
+      );
+      assert.ok(
+        updatedText.includes('"errorsFile"'),
+        'Config section should contain expected properties'
+      );
+
+      // Revert the changes
+      await vscode.commands.executeCommand('workbench.action.files.revert');
     });
   });
 });
@@ -320,8 +485,8 @@ suite('Code Action Provider Registration', () => {
     const jsonCalls = registerSpy.getCalls().filter(call => call.args[0] === 'json');
     const jsoncCalls = registerSpy.getCalls().filter(call => call.args[0] === 'jsonc');
 
-    assert.strictEqual(jsonCalls.length, 3, 'Should register 3 providers for json');
-    assert.strictEqual(jsoncCalls.length, 3, 'Should register 3 providers for jsonc');
+    assert.strictEqual(jsonCalls.length, 5, 'Should register 5 providers for json');
+    assert.strictEqual(jsoncCalls.length, 5, 'Should register 5 providers for jsonc');
   });
 
   test('should add subscriptions to context', () => {
@@ -344,7 +509,7 @@ suite('Code Action Provider Registration', () => {
 
     registerCodeActions(contextWithInstall);
 
-    assert.strictEqual(subscriptions.length, 6, 'Should add 6 subscriptions');
+    assert.strictEqual(subscriptions.length, 10, 'Should add 10 subscriptions');
   });
 
   test('should strip beta suffix from version for schema URL', () => {

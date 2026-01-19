@@ -126,11 +126,14 @@ src/
 ## Build & Test
 
 ```bash
-npm run compile      # Build extension
-npm test             # Run all tests
-npm run lint         # Check for issues
-npm run fix          # Auto-fix lint + format
+npm run compile        # Build extension
+npm run compile-tests  # Build tests (required after editing test files)
+npm test               # Run all tests
+npm run lint           # Check for issues
+npm run fix            # Auto-fix lint + format
 ```
+
+> **Note**: When editing test files, run `compile-tests` before `npm test`, or use the `tasks: watch-tests` VS Code task to auto-compile both extension and tests.
 
 ## Dependencies
 
