@@ -27,4 +27,3 @@ suite('Commands', () => {
     assert.ok(jwtCreateCommand, 'JWT create command should be registered');
   });
 });
-

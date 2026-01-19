@@ -3,7 +3,8 @@
  * Tests for utility functions in constants.
  */
 import * as assert from 'assert';
-import { getSchemaUrl, Commands, ContextKeys, DiagnosticCodes, Urls } from '../constants';
+import { Commands, ContextKeys, DiagnosticCodes, Urls } from '../constants';
+import { getSchemaUrl } from '../utils';
 
 suite('getSchemaUrl', () => {
   test('should build correct schema URL for version', () => {

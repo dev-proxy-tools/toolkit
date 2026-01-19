@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Commands, ContextKeys } from '../constants/commands';
+import { Commands, ContextKeys } from '../constants';
 import { DevProxyApiClient } from '../services/api-client';
 import { TerminalService } from '../services/terminal';
 import { isConfigFile } from '../utils';

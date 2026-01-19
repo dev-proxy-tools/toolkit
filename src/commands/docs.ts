@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Commands } from '../constants/commands';
+import { Commands } from '../constants';
 import { pluginDocs } from '../data';
 import parse from 'json-to-ast';
 import { getASTNode, getRangeFromASTNode } from '../utils/ast';

@@ -3,7 +3,8 @@ import parse from 'json-to-ast';
 import { pluginSnippets } from './data';
 import { getASTNode, getRangeFromASTNode } from './utils';
 import {DevProxyInstall, PluginConfig} from './types';
-import { DiagnosticCodes, getDiagnosticCode } from './constants';
+import { DiagnosticCodes } from './constants';
+import { getDiagnosticCode } from './utils';
 import * as semver from 'semver';
 
 export const updateConfigFileDiagnostics = (

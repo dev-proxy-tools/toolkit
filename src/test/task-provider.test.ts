@@ -177,7 +177,11 @@ suite('DevProxyTaskProvider', () => {
       const tasks = await provider.provideTasks();
 
       const startTask = tasks!.find(t => t.name.includes('Start'));
-      assert.strictEqual(startTask?.group, vscode.TaskGroup.Build, 'Start task should be in build group');
+      assert.strictEqual(
+        startTask?.group,
+        vscode.TaskGroup.Build,
+        'Start task should be in build group'
+      );
     });
 
     test('stop task should be in build group', async () => {
@@ -185,7 +189,11 @@ suite('DevProxyTaskProvider', () => {
       const tasks = await provider.provideTasks();
 
       const stopTask = tasks!.find(t => t.name.includes('Stop'));
-      assert.strictEqual(stopTask?.group, vscode.TaskGroup.Build, 'Stop task should be in build group');
+      assert.strictEqual(
+        stopTask?.group,
+        vscode.TaskGroup.Build,
+        'Stop task should be in build group'
+      );
     });
   });
 });

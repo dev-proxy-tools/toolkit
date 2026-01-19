@@ -1,6 +1,6 @@
 import { exec, ExecOptions } from 'child_process';
 import * as vscode from 'vscode';
-import { Urls } from '../constants/commands';
+import { Urls } from '../constants';
 import {
   HomebrewPackageIdentifier,
   PackageManager,

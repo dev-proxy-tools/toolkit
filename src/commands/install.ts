@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Commands, Urls } from '../constants/commands';
+import { Commands, Urls } from '../constants';
 import {
   executeCommand,
   getPackageIdentifier,

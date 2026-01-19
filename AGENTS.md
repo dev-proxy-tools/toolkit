@@ -8,10 +8,10 @@ This file provides instructions for AI coding assistants (GitHub Copilot, Claude
 src/
 ├── commands/        # Add new commands here (one file per feature group)
 ├── services/        # Business logic, API clients
-├── constants/       # All IDs, keys, URLs (commands.ts)
 ├── data/            # Plugin metadata (plugins.json) - edit JSON, not code
-├── utils/           # Pure helper functions
+├── utils/           # Pure helper functions + getDiagnosticCode, getSchemaUrl
 ├── test/            # Tests split by domain (*.test.ts)
+├── constants.ts     # All IDs, keys, URLs
 └── *.ts             # Core extension modules
 ```
 
@@ -19,7 +19,7 @@ src/
 
 ### Adding a New Command
 
-1. **Register the command ID** in `src/constants/commands.ts`:
+1. **Register the command ID** in `src/constants.ts`:
    ```typescript
    export const Commands = {
      // ... existing
@@ -38,6 +38,8 @@ src/
 
 3. **Create/update command file** in `src/commands/`:
    ```typescript
+   import { Commands } from '../constants';
+   
    export function registerMyCommands(context: vscode.ExtensionContext) {
      context.subscriptions.push(
        vscode.commands.registerCommand(Commands.MY_NEW_COMMAND, async () => {
@@ -72,7 +74,7 @@ src/
 
 ### Adding a Diagnostic
 
-1. Add diagnostic code to `DiagnosticCodes` in `src/constants/commands.ts`
+1. Add diagnostic code to `DiagnosticCodes` in `src/constants.ts`
 2. Add diagnostic creation in `src/diagnostics.ts`
 3. Add code action (quick fix) in `src/code-actions.ts`
 4. Add test in `src/test/schema.test.ts` or `src/test/plugins.test.ts`
@@ -86,8 +88,8 @@ src/
 ### Imports
 - Use barrel exports from `index.ts` files:
   ```typescript
-  import { Commands, DiagnosticCodes } from './constants';
-  import { DevProxyApiClient } from './services';
+  import { Commands, DiagnosticCodes } from '../constants';
+  import { getDiagnosticCode, getSchemaUrl } from '../utils';
   ```
 
 ### Testing
@@ -115,7 +117,7 @@ src/
 | File | Purpose |
 |------|---------|
 | `src/extension.ts` | Entry point, activation |
-| `src/constants/commands.ts` | All command IDs, context keys, URLs |
+| `src/constants.ts` | All command IDs, context keys, URLs |
 | `src/data/plugins.json` | Plugin metadata (editable without code) |
 | `src/services/api-client.ts` | All Dev Proxy HTTP API calls |
 | `src/test/helpers.ts` | Test utilities, mock factories |

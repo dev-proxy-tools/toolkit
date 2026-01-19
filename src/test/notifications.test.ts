@@ -4,11 +4,7 @@
  */
 import * as assert from 'assert';
 import { handleStartNotification } from '../notifications';
-import {
-  testDevProxyInstall,
-  getExtensionContext,
-  createDevProxyInstall,
-} from './helpers';
+import { testDevProxyInstall, getExtensionContext, createDevProxyInstall } from './helpers';
 
 suite('notifications', () => {
   suiteSetup(async () => {

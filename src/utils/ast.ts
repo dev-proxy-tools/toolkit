@@ -1,9 +1,29 @@
 import * as vscode from 'vscode';
 import parse from 'json-to-ast';
+import { Urls } from '../constants';
 
 /**
  * Utilities for working with json-to-ast nodes.
  */
+
+/**
+ * Get a diagnostic code object with a clickable documentation link.
+ * @param code The diagnostic code from DiagnosticCodes
+ * @returns An object with value and target for VS Code diagnostic code
+ */
+export function getDiagnosticCode(code: string): { value: string; target: vscode.Uri } {
+  return {
+    value: code,
+    target: vscode.Uri.parse(`${Urls.diagnosticsDoc}#${code.toLowerCase()}`),
+  };
+}
+
+/**
+ * Build a schema URL for a specific version.
+ */
+export function getSchemaUrl(version: string): string {
+  return `${Urls.schemaBase}/v${version}/rc.schema.json`;
+}
 
 /**
  * Find a property node by its key type and value.
@@ -23,7 +43,12 @@ export function getASTNode(
  * and properly excludes quotes from string literal ranges.
  */
 export function getRangeFromASTNode(
-  node: parse.PropertyNode | parse.LiteralNode | parse.ObjectNode | parse.ValueNode | parse.IdentifierNode
+  node:
+    | parse.PropertyNode
+    | parse.LiteralNode
+    | parse.ObjectNode
+    | parse.ValueNode
+    | parse.IdentifierNode
 ): vscode.Range {
   const startLine = node?.loc?.start.line ?? 0;
   const endLine = node?.loc?.end.line ?? 0;
@@ -55,7 +80,12 @@ export function getRangeFromASTNode(
  * Get the start position of an AST node.
  */
 export function getStartPositionFromASTNode(
-  node: parse.PropertyNode | parse.LiteralNode | parse.ObjectNode | parse.ValueNode | parse.IdentifierNode
+  node:
+    | parse.PropertyNode
+    | parse.LiteralNode
+    | parse.ObjectNode
+    | parse.ValueNode
+    | parse.IdentifierNode
 ): vscode.Position {
   const startLine = node?.loc?.start.line ?? 0;
   const startColumn = node?.loc?.start.column ?? 0;

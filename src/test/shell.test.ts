@@ -4,7 +4,12 @@
  */
 import * as assert from 'assert';
 import { getPackageIdentifier } from '../utils/shell';
-import { PackageManager, VersionPreference, HomebrewPackageIdentifier, WingetPackageIdentifier } from '../enums';
+import {
+  PackageManager,
+  VersionPreference,
+  HomebrewPackageIdentifier,
+  WingetPackageIdentifier,
+} from '../enums';
 
 suite('getPackageIdentifier', () => {
   test('should return stable Homebrew package for stable preference', () => {
@@ -28,7 +33,10 @@ suite('getPackageIdentifier', () => {
   });
 
   test('should return undefined for unknown package manager', () => {
-    const result = getPackageIdentifier(VersionPreference.Stable, 'unknown' as unknown as PackageManager);
+    const result = getPackageIdentifier(
+      VersionPreference.Stable,
+      'unknown' as unknown as PackageManager
+    );
     assert.strictEqual(result, undefined);
   });
 });

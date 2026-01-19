@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Commands } from '../constants/commands';
+import { Commands } from '../constants';
 import { executeCommand } from '../utils/shell';
 import { getDevProxyExe } from '../detect';
 import { VersionPreference } from '../enums';

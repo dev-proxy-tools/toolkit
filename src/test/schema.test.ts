@@ -80,14 +80,16 @@ suite('schema', () => {
       code: 'emptyUrlsToWatch',
     };
     const diagnostic = diagnostics.find(d => {
-      const code = typeof d.code === 'object' && d.code !== null
-        ? (d.code as { value: string }).value
-        : d.code;
+      const code =
+        typeof d.code === 'object' && d.code !== null
+          ? (d.code as { value: string }).value
+          : d.code;
       return code === 'emptyUrlsToWatch';
     });
-    const diagnosticCode = typeof diagnostic?.code === 'object' && diagnostic?.code !== null
-      ? (diagnostic.code as { value: string }).value
-      : diagnostic?.code;
+    const diagnosticCode =
+      typeof diagnostic?.code === 'object' && diagnostic?.code !== null
+        ? (diagnostic.code as { value: string }).value
+        : diagnostic?.code;
     const actual = {
       message: diagnostic?.message,
       severity: diagnostic?.severity,

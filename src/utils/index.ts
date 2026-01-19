@@ -7,7 +7,13 @@
  */
 
 // AST utilities
-export { getASTNode, getRangeFromASTNode, getStartPositionFromASTNode } from './ast';
+export {
+  getASTNode,
+  getRangeFromASTNode,
+  getStartPositionFromASTNode,
+  getDiagnosticCode,
+  getSchemaUrl,
+} from './ast';
 
 // Config file detection
 export { isConfigFile, isProxyFile } from './config-detection';

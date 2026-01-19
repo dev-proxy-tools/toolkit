@@ -8,11 +8,7 @@ import * as sinon from 'sinon';
 import * as detect from '../detect';
 import { VersionPreference } from '../enums';
 import { handleStatusBarUpdate, statusBarLoop } from '../status-bar';
-import {
-  testDevProxyInstall,
-  getExtensionContext,
-  createDevProxyInstall,
-} from './helpers';
+import { testDevProxyInstall, getExtensionContext, createDevProxyInstall } from './helpers';
 
 suite('statusbar', () => {
   suiteSetup(async () => {
