@@ -1,88 +1,49 @@
 # Dev Proxy Toolkit
 
-[Dev Proxy](https://aka.ms/devproxy) is an API simulator that helps you effortlessly test your app beyond the happy path.
+<!-- Update version badges when releasing: Stable = last published release, Pre-release = current manifest version -->
+[![Stable Version](https://img.shields.io/badge/Stable-v1.10.0-007ACC)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit) [![Pre-release Version](https://img.shields.io/badge/Pre--release-v1.11.0-24bfa5)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit) [![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/garrytrinder.dev-proxy-toolkit?label=Installs)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit)
 
-The Dev Proxy Toolkit extension for Visual Studio Code makes it easy to create and update configuration files.
+[![Install Stable](https://img.shields.io/badge/VS%20Code-Install_Stable-007ACC?logo=visualstudiocode)](vscode:extension/garrytrinder.dev-proxy-toolkit) [![Install Pre-release](https://img.shields.io/badge/VS%20Code%20Insiders-Install_Pre--release-24bfa5?logo=visualstudiocode)](vscode-insiders:extension/garrytrinder.dev-proxy-toolkit)
 
-> [!IMPORTANT]
->
-> Dev Proxy Toolkit is designed to be used with the latest version of Dev Proxy. If you are using an earlier build some features may not work as intended. You should update to the latest version.
->
+Supercharge your [Dev Proxy](https://aka.ms/devproxy) workflow with IntelliSense, diagnostics, and one-click commands.
+
+<!-- TODO: Add hero GIF showing extension in action -->
+
+## Quick Start
+
+1. **Install this extension** - [Install from VS Code](vscode:extension/garrytrinder.dev-proxy-toolkit). You'll be prompted to install Dev Proxy if it's not already installed.
+2. **Create a config** - Run `Dev Proxy Toolkit: Create configuration file` from the Command Palette
+3. **Configure your proxy** - Add URLs to watch and plugins using snippets (type `devproxy-`) or let [GitHub Copilot help](#mcp-server)
+4. **Start Dev Proxy** - Run `Dev Proxy Toolkit: Start` from the Command Palette
 
 ## Features
 
-The following sections describe the features that the extension contributes to Visual Studio Code when installed.
-
-### Code Actions
-
-- Update schema to match installed version of Dev Proxy
-- Update single or all plugin paths to DevProxy.Plugins.dll
-
-### Code Lenses
-
-- Plugin documentation link
-
 ### Commands
 
-- `Dev Proxy Toolkit: Start` - Only available when Dev Proxy is not running
-- `Dev Proxy Toolkit: Stop` - Only available when Dev Proxy is running
-- `Dev Proxy Toolkit: Restart` - Only available when Dev Proxy is running
-- `Dev Proxy Toolkit: Raise mock request` - Only available when Dev Proxy is running
-- `Dev Proxy Toolkit: Start recording` - Only available when Dev Proxy is running
-- `Dev Proxy Toolkit: Stop recording`- Only available when Dev Proxy is recording
-- `Dev Proxy Toolkit: Open configuration file`- Only available when Dev Proxy is installed
-- `Dev Proxy Toolkit: Create configuration file`- Only available when Dev Proxy is installed
-- `Dev Proxy Toolkit: Discover URLs to watch` - Only available when Dev Proxy is not running
-- `Dev Proxy Toolkit: Generate JWT` - Only available when Dev Proxy is installed
+Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`).
 
-### Diagnostics
-
-- Check for missing `configSection` property in plugin instance for plugins that require configuration
-- Check for missing `configSection` when defined in plugin instance
-- Check that schema matches installed version of Dev Proxy
-- Check that reporters are placed after plugins
-- Check that at least one plugin is enabled
-- Check that a plugin can be configured with a configSection
-- Check for configSections that are not used in plugins
-- Check for reporter plugin when a summary plugin is used
-- Check that ApiCenterOnboardingPlugin is placed after OpenApiSpecGeneratorPlugin
-- Check that pluginPath in plugin instance is correctly set to DevProxy.Plugins.dll when using Dev Proxy v0.29.0 or later
-
-### Editor Actions
-
-Shown when the active document is a Dev Proxy configuration file
-
-- Start Dev Proxy
-- Stop Dev Proxy
-- Raise mock request
-- Start recording
-- Stop recording
-
-### MCP Server
-
-See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more information on available tools.
-
-### Notifications
-
-- Not installed
-- New version detection
-- Upgrade Dev Proxy
-
-### Problem Watcher
-
-- `$devproxy-watch` - Used for background tasks to tell VS Code when Dev Proxy has started
-
-### Settings
-
-- `dev-proxy-toolkit.version` - Determines the version to use when Dev Proxy and Dev Proxy Beta are installed side by side. Can be `stable` (default) or `beta`.
-- `dev-proxy-toolkit.newTerminal` - Determines if Dev Proxy should be started in a new terminal. Can be `true` (default) or `false`.
-- `dev-proxy-toolkit.showTerminal` - Determines if the terminal should be shown when Dev Proxy is started. Can be `true` (default) or `false`.
-- `dev-proxy-toolkit.closeTerminal` - Determines if the terminal should be closed when Dev Proxy is stopped. Can be `true` (default) or `false`.
-- `dev-proxy-toolkit.apiPort` - Determines the port to use to communicate with Dev Proxy API. Default is `8897`.
+| Command | When Available |
+|---------|----------------|
+| Start | Dev Proxy not running |
+| Stop | Dev Proxy running |
+| Restart | Dev Proxy running |
+| Raise mock request | Dev Proxy running |
+| Start recording | Dev Proxy running |
+| Stop recording | Dev Proxy recording |
+| Open configuration file | Dev Proxy installed |
+| Create configuration file | Dev Proxy installed |
+| Discover URLs to watch | Dev Proxy not running |
+| Generate JWT | Dev Proxy installed |
 
 ### Snippets
 
-#### JSON
+Type `devproxy-` to access 80+ snippets:
+
+- **JSON** - Config files, plugins, mocks, and more
+- **YAML** - GitHub Actions workflow steps
+
+<details>
+<summary><strong>JSON Snippets</strong> (click to expand)</summary>
 
 | Prefix | Description |
 | ------ | ----------- |
@@ -136,7 +97,7 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-graph-random-error` | GraphRandomErrorPlugin instance |
 | `devproxy-plugin-graph-random-error-config` | GraphRandomErrorPlugin config section |
 | `devproxy-plugin-graph-sdk-guidance` | GraphSdkGuidancePlugin instance |
-| `devproxy-plugin-graph-select-guidance` | GraphSdkGuidancePlugin instance |
+| `devproxy-plugin-graph-select-guidance` | GraphSelectGuidancePlugin instance |
 | `devproxy-plugin-har-generator` | HarGeneratorPlugin instance |
 | `devproxy-plugin-har-generator-config` | HarGeneratorPlugin config section |
 | `devproxy-plugin-http-file-generator` | HttpFileGeneratorPlugin instance |
@@ -154,8 +115,8 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-minimal-permissions-guidance` | MinimalPermissionsGuidancePlugin instance |
 | `devproxy-plugin-minimal-permissions-guidance-config` | MinimalPermissionsGuidancePlugin config section |
 | `devproxy-plugin-mock-generator` | MockGeneratorPlugin instance |
-| `devproxy-plugin-mock-request` | MockResponsePlugin instance |
-| `devproxy-plugin-mock-request-config` | MockResponsePlugin config section |
+| `devproxy-plugin-mock-request` | MockRequestPlugin instance |
+| `devproxy-plugin-mock-request-config` | MockRequestPlugin config section |
 | `devproxy-plugin-mock-response` | MockResponsePlugin instance |
 | `devproxy-plugin-mock-response-config` | MockResponsePlugin config section |
 | `devproxy-plugin-mock-response-schema` | MockResponsePlugin schema |
@@ -171,7 +132,7 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-plugin-openai-usage-debugging` | OpenAIUsageDebuggingPlugin instance |
 | `devproxy-plugin-open-api-spec-generator` | OpenApiSpecGeneratorPlugin instance |
 | `devproxy-plugin-open-api-spec-generator-config` | OpenApiSpecGeneratorPlugin config section |
-| `devproxy-plugin-rate-limiting` | MockResponsePlugin instance |
+| `devproxy-plugin-rate-limiting` | RateLimitingPlugin instance |
 | `devproxy-plugin-rate-limiting-config` | RateLimitingPlugin config section |
 | `devproxy-plugin-rate-limiting-file` | Dev Proxy rate limiting file |
 | `devproxy-plugin-rate-limiting-file-schema` | Dev Proxy rate limiting file schema |
@@ -189,7 +150,10 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-task-start` | Start Dev Proxy VS Code Task |
 | `devproxy-task-stop` | Stop Dev Proxy VS Code Task |
 
-#### YAML
+</details>
+
+<details>
+<summary><strong>YAML Snippets</strong> (click to expand)</summary>
 
 | Prefix | Description |
 | ------ | ----------- |
@@ -200,21 +164,63 @@ See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for more info
 | `devproxy-action-record-stop` | GitHub Actions step: Stop Dev Proxy recording |
 | `devproxy-action-chromium-cert` | GitHub Actions step: Install Dev Proxy certificate for Chromium browsers |
 
+</details>
+
+### Diagnostics
+
+Real-time validation of your configuration files. Click any diagnostic code to view [detailed documentation](https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/toolkit-diagnostics).
+
+| Code | Description |
+|------|-------------|
+| `invalidSchema` | Schema version doesn't match installed Dev Proxy |
+| `invalidConfigSection` | Config section not used by any plugin |
+| `deprecatedPluginPath` | Using old plugin DLL path (pre-v0.29) |
+| `missingLanguageModel` | Plugin requires language model configuration |
+| `noEnabledPlugins` | No plugins are enabled |
+| `reporterPosition` | Reporter plugin should be last |
+| `summaryWithoutReporter` | Summary plugin needs a reporter |
+| `apiCenterPluginOrder` | OpenApiSpecGeneratorPlugin must come before ApiCenterOnboardingPlugin |
+| `emptyUrlsToWatch` | No URLs configured to intercept |
+| `pluginConfigRequired` | Plugin requires a config section |
+| `pluginConfigMissing` | Referenced config section doesn't exist |
+| `pluginConfigNotRequired` | Plugin doesn't support configuration |
+
+### Quick Fixes
+
+One-click fixes for common issues:
+
+- **Update schema** - Match schema to installed Dev Proxy version
+- **Update plugin path** - Fix deprecated `dev-proxy-plugins.dll` paths (single or all at once)
+- **Add languageModel configuration** - Enable language model for AI plugins
+
+### Code Lens
+
+- **View docs** - Click plugin names to open documentation
+
 ### Status Bar
 
-- Display installed Dev Proxy version
-- Display waring when Dev Proxy is not latest version
-- Display tick if Dev Proxy is latest version (check based on `newVersionNotification` config setting in Dev Proxy configuration file)
-- Display radio tower when Dev Proxy is running
-- Display error is Dev Proxy is not installed
-- Upgrade Dev Proxy progress
+Shows Dev Proxy status at a glance:
 
-### Task Provider
+- Version number and update availability
+- Running state (radio tower icon when active)
+- Error indicator if Dev Proxy is not installed
 
-- Start Dev Proxy Task
-- Stop Dev Proxy Task
+## Configuration
 
-Example `.vscode/tasks.json`:
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `dev-proxy-toolkit.version` | `stable` \| `beta` | `stable` | Version to use when both are installed |
+| `dev-proxy-toolkit.newTerminal` | `boolean` | `true` | Start Dev Proxy in a new terminal |
+| `dev-proxy-toolkit.showTerminal` | `boolean` | `true` | Show terminal when starting |
+| `dev-proxy-toolkit.closeTerminal` | `boolean` | `true` | Close terminal when stopping |
+| `dev-proxy-toolkit.apiPort` | `number` | `8897` | Port for Dev Proxy API communication |
+
+## Tasks
+
+Run Dev Proxy as a VS Code task for integration with build workflows.
+
+> [!TIP]
+> Use the `devproxy-task-start` and `devproxy-task-stop` snippets to quickly add tasks to your `tasks.json`.
 
 ```json
 {
@@ -235,3 +241,29 @@ Example `.vscode/tasks.json`:
   ]
 }
 ```
+
+## MCP Server
+
+This extension includes an MCP server for AI-assisted development. See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for available tools.
+
+## Troubleshooting
+
+**Dev Proxy not detected?**
+- Ensure Dev Proxy is installed and available in your PATH
+- Check the `dev-proxy-toolkit.version` setting if you have both stable and beta installed
+
+**Diagnostics not showing?**
+- Verify your file is recognized as a Dev Proxy config (check the status bar)
+- The file must be named `devproxyrc.json` or contain a valid `$schema` property
+
+**Commands not available?**
+- Some commands are only available when Dev Proxy is running or stopped
+- Check the status bar to see the current state
+
+## Contributing
+
+Found a bug or have a feature request? [Open an issue](https://github.com/dev-proxy-tools/toolkit/issues).
+
+## License
+
+[MIT](LICENSE)
