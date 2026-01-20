@@ -5,7 +5,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
 import * as vscode from 'vscode';
-import { registerCodeActions } from '../code-actions';
+import { registerCodeActions, extractSchemaFilename } from '../code-actions';
 import { getExtensionContext, createDevProxyInstall, getFixturePath } from './helpers';
 import { DiagnosticCodes } from '../constants';
 import { getDiagnosticCode, sleep } from '../utils';
@@ -531,5 +531,61 @@ suite('Code Action Provider Registration', () => {
 
     // Should not throw - verifies beta version handling
     registerCodeActions(contextWithInstall);
+  });
+});
+
+suite('extractSchemaFilename', () => {
+  test('should extract rc.schema.json from config file schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v0.29.0/rc.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'rc.schema.json');
+  });
+
+  test('should extract mockresponseplugin.mocksfile.schema.json from mocks file schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v0.24.0/mockresponseplugin.mocksfile.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'mockresponseplugin.mocksfile.schema.json');
+  });
+
+  test('should extract crudapiplugin.apifile.schema.json from CRUD API file schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'crudapiplugin.apifile.schema.json');
+  });
+
+  test('should extract rewriteplugin.rewritesfile.schema.json from rewrites file schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v0.25.0/rewriteplugin.rewritesfile.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'rewriteplugin.rewritesfile.schema.json');
+  });
+
+  test('should extract genericrandomerrorplugin.errorsfile.schema.json', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.0.0/genericrandomerrorplugin.errorsfile.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'genericrandomerrorplugin.errorsfile.schema.json');
+  });
+
+  test('should extract ratelimitingplugin.customresponsefile.schema.json', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v1.0.0/ratelimitingplugin.customresponsefile.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'ratelimitingplugin.customresponsefile.schema.json');
+  });
+
+  test('should return default rc.schema.json for URL without .schema.json', () => {
+    const url = 'https://example.com/some/path/file.json';
+    assert.strictEqual(extractSchemaFilename(url), 'rc.schema.json');
+  });
+
+  test('should return default rc.schema.json for empty string', () => {
+    assert.strictEqual(extractSchemaFilename(''), 'rc.schema.json');
+  });
+
+  test('should return default rc.schema.json for malformed URL', () => {
+    const url = 'not-a-valid-url';
+    assert.strictEqual(extractSchemaFilename(url), 'rc.schema.json');
+  });
+
+  test('should handle schema URL from old microsoft org', () => {
+    const url = 'https://raw.githubusercontent.com/microsoft/dev-proxy/main/schemas/v0.20.0/mockresponseplugin.schema.json';
+    assert.strictEqual(extractSchemaFilename(url), 'mockresponseplugin.schema.json');
+  });
+
+  test('should be case-insensitive for .schema.json extension', () => {
+    const url = 'https://example.com/path/MyPlugin.SCHEMA.JSON';
+    assert.strictEqual(extractSchemaFilename(url), 'MyPlugin.SCHEMA.JSON');
   });
 });

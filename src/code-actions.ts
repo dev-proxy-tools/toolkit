@@ -85,6 +85,10 @@ function registerInvalidSchemaFixes(
         return;
       }
 
+      // Extract the schema filename from the current schema URL
+      const currentSchemaText = document.getText(diagnostic.range);
+      const schemaFilename = extractSchemaFilename(currentSchemaText);
+
       const fix = new vscode.CodeAction(
         'Update schema',
         vscode.CodeActionKind.QuickFix,
@@ -93,7 +97,7 @@ function registerInvalidSchemaFixes(
       fix.edit.replace(
         document.uri,
         diagnostic.range,
-        `https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v${devProxyVersion}/rc.schema.json`,
+        `https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v${devProxyVersion}/${schemaFilename}`,
       );
       fix.isPreferred = true;
       return [fix];
@@ -101,6 +105,27 @@ function registerInvalidSchemaFixes(
   };
 
   registerJsonCodeActionProvider(context, invalidSchema);
+}
+
+/**
+ * Extract the schema filename from a schema URL.
+ * Returns the filename (e.g., 'mockresponseplugin.mocksfile.schema.json') 
+ * or defaults to 'rc.schema.json' if extraction fails.
+ */
+export function extractSchemaFilename(schemaUrl: string): string {
+  const defaultSchema = 'rc.schema.json';
+  
+  try {
+    // Match any .schema.json filename at the end of the URL
+    const match = schemaUrl.match(/([^/]+\.schema\.json)/i);
+    if (match) {
+      return match[1];
+    }
+  } catch {
+    // Fall through to default
+  }
+  
+  return defaultSchema;
 }
 
 function registerDeprecatedPluginPathFixes(context: vscode.ExtensionContext) {

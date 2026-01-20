@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Snippets: All snippets that reference schemas updated to use `v2.1.0` schema
 - Diagnostics: Improved highlighting to target specific nodes instead of entire objects
 - Diagnostics: All diagnostics now use unique codes for better identification
+- Quick Fixes: Update schema action now supports all Dev Proxy file schemas, not just config files
 
 ### Fixed:
 
