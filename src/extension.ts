@@ -9,6 +9,7 @@ import { updateGlobalState } from './state';
 import { VersionPreference } from './enums';
 import { registerMcpServer } from './mcp';
 import { registerTaskProvider } from './task-provider';
+import { promptForWorkspaceRecommendation } from './utils';
 
 // Global variable to track the interval
 let statusBarInterval: NodeJS.Timeout | undefined;
@@ -34,6 +35,9 @@ export const activate = async (context: vscode.ExtensionContext): Promise<vscode
 
   const notification = handleStartNotification(context);
   processNotification(notification);
+
+  // Prompt for workspace recommendations
+  promptForWorkspaceRecommendation(context);
 
   updateStatusBar(context, statusBar);
 
