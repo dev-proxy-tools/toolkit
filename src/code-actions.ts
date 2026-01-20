@@ -68,10 +68,12 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
     : devProxyInstall.version;
 
   registerInvalidSchemaFixes(devProxyVersion, context);
+  registerInvalidConfigSectionSchemaFixes(devProxyVersion, context);
   registerDeprecatedPluginPathFixes(context);
   registerLanguageModelFixes(context);
   registerOptionalConfigFixes(context);
   registerMissingConfigFixes(context);
+  registerUnknownConfigPropertyFixes(context);
 };
 
 function registerInvalidSchemaFixes(
@@ -126,6 +128,74 @@ export function extractSchemaFilename(schemaUrl: string): string {
   }
   
   return defaultSchema;
+}
+
+function registerInvalidConfigSectionSchemaFixes(
+  devProxyVersion: string,
+  context: vscode.ExtensionContext,
+) {
+  const invalidConfigSectionSchema: vscode.CodeActionProvider = {
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'invalidConfigSectionSchema',
+        range
+      );
+
+      if (!currentDiagnostic) {
+        return [];
+      }
+
+      // Extract the schema filename from the current schema URL
+      const currentSchemaText = document.getText(currentDiagnostic.range);
+      const schemaFilename = extractSchemaFilename(currentSchemaText);
+
+      const fixes: vscode.CodeAction[] = [];
+
+      // Individual fix for the current diagnostic
+      const individualFix = new vscode.CodeAction(
+        'Update config section schema',
+        vscode.CodeActionKind.QuickFix,
+      );
+      individualFix.edit = new vscode.WorkspaceEdit();
+      individualFix.edit.replace(
+        document.uri,
+        currentDiagnostic.range,
+        `https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v${devProxyVersion}/${schemaFilename}`,
+      );
+      fixes.push(individualFix);
+
+      // Bulk fix for all config section schema mismatches in the document
+      const allMismatched = getDiagnosticsByCode(document.uri, 'invalidConfigSectionSchema');
+
+      if (allMismatched.length > 1) {
+        const bulkFix = new vscode.CodeAction(
+          'Update all config section schemas',
+          vscode.CodeActionKind.QuickFix,
+        );
+        bulkFix.edit = new vscode.WorkspaceEdit();
+
+        allMismatched.forEach(diagnostic => {
+          const schemaText = document.getText(diagnostic.range);
+          const filename = extractSchemaFilename(schemaText);
+          bulkFix.edit!.replace(
+            document.uri,
+            diagnostic.range,
+            `https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v${devProxyVersion}/${filename}`,
+          );
+        });
+
+        bulkFix.isPreferred = true;
+        fixes.push(bulkFix);
+      } else {
+        individualFix.isPreferred = true;
+      }
+
+      return fixes;
+    },
+  };
+
+  registerJsonCodeActionProvider(context, invalidConfigSectionSchema);
 }
 
 function registerDeprecatedPluginPathFixes(context: vscode.ExtensionContext) {
@@ -518,4 +588,156 @@ export function registerMissingConfigFixes(
   };
 
   registerJsonCodeActionProvider(context, missingConfig);
+}
+
+/**
+ * Registers code actions to remove unknown config section properties.
+ * Triggered when a config section has properties not defined in its schema.
+ */
+export function registerUnknownConfigPropertyFixes(
+  context: vscode.ExtensionContext
+): void {
+  const unknownProperty: vscode.CodeActionProvider = {
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'unknownConfigProperty',
+        range
+      );
+
+      if (!currentDiagnostic) {
+        return [];
+      }
+
+      // Extract property name from diagnostic message
+      // Message format: "configSectionName: Unknown property 'propertyName'"
+      const match = currentDiagnostic.message.match(/Unknown property '(\w+)'/);
+      if (!match) {
+        return [];
+      }
+
+      const propertyName = match[1];
+
+      const fix = new vscode.CodeAction(
+        `Remove unknown property '${propertyName}'`,
+        vscode.CodeActionKind.QuickFix
+      );
+
+      fix.edit = new vscode.WorkspaceEdit();
+
+      try {
+        const documentNode = parse(document.getText()) as parse.ObjectNode;
+        
+        // Find the property in the document
+        const propertyToRemove = findPropertyInDocument(
+          documentNode,
+          propertyName,
+          currentDiagnostic.range
+        );
+
+        if (!propertyToRemove) {
+          return [];
+        }
+
+        // Calculate the range to delete including the comma
+        const deleteRange = calculatePropertyDeleteRange(
+          document,
+          propertyToRemove,
+          documentNode
+        );
+
+        fix.edit.delete(document.uri, deleteRange);
+
+        // Format the document after the edit is applied
+        fix.command = {
+          command: 'editor.action.formatDocument',
+          title: 'Format Document',
+        };
+      } catch {
+        return [];
+      }
+
+      fix.isPreferred = true;
+      return [fix];
+    },
+  };
+
+  registerJsonCodeActionProvider(context, unknownProperty);
+}
+
+/**
+ * Find a property node in the document that matches the given name and range.
+ */
+function findPropertyInDocument(
+  documentNode: parse.ObjectNode,
+  propertyName: string,
+  diagnosticRange: vscode.Range
+): parse.PropertyNode | undefined {
+  // Search recursively in all object nodes
+  function searchInObject(node: parse.ObjectNode): parse.PropertyNode | undefined {
+    for (const child of node.children) {
+      const propertyNode = child as parse.PropertyNode;
+      
+      // Check if this property matches
+      if (propertyNode.key.value === propertyName) {
+        const keyRange = getRangeFromASTNode(propertyNode.key);
+        if (keyRange.intersection(diagnosticRange)) {
+          return propertyNode;
+        }
+      }
+      
+      // Recurse into nested objects
+      if (propertyNode.value.type === 'Object') {
+        const found = searchInObject(propertyNode.value as parse.ObjectNode);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return undefined;
+  }
+
+  return searchInObject(documentNode);
+}
+
+/**
+ * Calculate the range to delete for a property, including any trailing comma.
+ */
+function calculatePropertyDeleteRange(
+  document: vscode.TextDocument,
+  propertyNode: parse.PropertyNode,
+  documentNode: parse.ObjectNode
+): vscode.Range {
+  const propertyRange = getRangeFromASTNode(propertyNode);
+  
+  // Get the text after the property to check for comma
+  const endLine = propertyRange.end.line;
+  const lineText = document.lineAt(endLine).text;
+  
+  // Check if there's a comma after the property on the same line
+  const afterProperty = lineText.substring(propertyRange.end.character);
+  const commaMatch = afterProperty.match(/^\s*,/);
+  
+  if (commaMatch) {
+    // Include the comma in the deletion
+    return new vscode.Range(
+      propertyRange.start,
+      new vscode.Position(endLine, propertyRange.end.character + commaMatch[0].length)
+    );
+  }
+  
+  // Check if we need to delete the preceding comma instead
+  const beforeProperty = lineText.substring(0, propertyRange.start.character);
+  if (beforeProperty.trim() === '' && endLine > 0) {
+    // Property is on its own line, check previous line for comma
+    const prevLineText = document.lineAt(endLine - 1).text;
+    if (prevLineText.trimEnd().endsWith(',')) {
+      return new vscode.Range(
+        new vscode.Position(endLine - 1, prevLineText.length - 1),
+        new vscode.Position(endLine, lineText.length)
+      );
+    }
+  }
+  
+  return propertyRange;
 }

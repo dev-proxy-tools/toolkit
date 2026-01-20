@@ -75,6 +75,9 @@ suite('DiagnosticCodes', () => {
   test('should have all expected diagnostic codes', () => {
     assert.ok(DiagnosticCodes.invalidSchema, 'Should have invalidSchema code');
     assert.ok(DiagnosticCodes.invalidConfigSection, 'Should have invalidConfigSection code');
+    assert.ok(DiagnosticCodes.invalidConfigSectionSchema, 'Should have invalidConfigSectionSchema code');
+    assert.ok(DiagnosticCodes.unknownConfigProperty, 'Should have unknownConfigProperty code');
+    assert.ok(DiagnosticCodes.invalidConfigValue, 'Should have invalidConfigValue code');
     assert.ok(DiagnosticCodes.deprecatedPluginPath, 'Should have deprecatedPluginPath code');
     assert.ok(DiagnosticCodes.missingLanguageModel, 'Should have missingLanguageModel code');
     assert.ok(DiagnosticCodes.noEnabledPlugins, 'Should have noEnabledPlugins code');

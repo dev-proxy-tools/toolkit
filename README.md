@@ -185,13 +185,17 @@ Real-time validation of your configuration files. Click any diagnostic code to v
 | `pluginConfigMissing` | Referenced config section doesn't exist |
 | `pluginConfigOptional` | Plugin can be configured (optional) |
 | `pluginConfigNotRequired` | Plugin doesn't support configuration |
+| `invalidConfigSectionSchema` | Config section schema version doesn't match installed Dev Proxy |
+| `unknownConfigProperty` | Config section has property not defined in schema |
+| `invalidConfigValue` | Config section property value doesn't match schema |
 
 ### Quick Fixes
 
 One-click fixes for common issues:
 
-- **Update schema** - Match schema to installed Dev Proxy version
+- **Update schema** - Match schema to installed Dev Proxy version (config file or config sections)
 - **Update plugin path** - Fix deprecated `dev-proxy-plugins.dll` paths (single or all at once)
+- **Remove unknown property** - Remove properties not defined in config section schema
 - **Add languageModel configuration** - Enable language model for AI plugins
 - **Add plugin configuration** - Add optional config section for plugins that support it
 - **Add missing config section** - Create config section when plugin references one that doesn't exist

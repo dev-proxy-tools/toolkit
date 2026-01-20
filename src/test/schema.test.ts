@@ -99,6 +99,98 @@ suite('schema', () => {
   });
 });
 
+suite('config section schema validation', () => {
+  setup(async () => {
+    const context = await getExtensionContext();
+    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+  });
+
+  teardown(async () => {
+    await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+  });
+
+  test('should show warning when config section $schema does not match installed version', async () => {
+    const context = await getExtensionContext();
+    await context.globalState.update(
+      'devProxyInstall',
+      createDevProxyInstall({ version: '0.24.0' })
+    );
+
+    const fileName = 'config-section-schema-mismatch.json';
+    const filePath = getFixturePath(fileName);
+    const document = await vscode.workspace.openTextDocument(filePath);
+    await sleep(1000);
+    const diagnostics = vscode.languages.getDiagnostics(document.uri);
+
+    const diagnostic = diagnostics.find(d => {
+      const code =
+        typeof d.code === 'object' && d.code !== null
+          ? (d.code as { value: string }).value
+          : d.code;
+      return code === 'invalidConfigSectionSchema';
+    });
+
+    assert.ok(diagnostic, 'Should have invalidConfigSectionSchema diagnostic');
+    assert.strictEqual(
+      diagnostic.message,
+      'Config section schema version is not compatible with the installed version of Dev Proxy. Expected v0.24.0'
+    );
+    assert.strictEqual(diagnostic.severity, vscode.DiagnosticSeverity.Warning);
+  });
+
+  test('should not show warning when config section $schema matches installed version', async () => {
+    const context = await getExtensionContext();
+    await context.globalState.update(
+      'devProxyInstall',
+      createDevProxyInstall({ version: '0.24.0' })
+    );
+
+    const fileName = 'config-section-schema-valid.json';
+    const filePath = getFixturePath(fileName);
+    const document = await vscode.workspace.openTextDocument(filePath);
+    await sleep(1000);
+    const diagnostics = vscode.languages.getDiagnostics(document.uri);
+
+    const diagnostic = diagnostics.find(d => {
+      const code =
+        typeof d.code === 'object' && d.code !== null
+          ? (d.code as { value: string }).value
+          : d.code;
+      return code === 'invalidConfigSectionSchema';
+    });
+
+    assert.ok(!diagnostic, 'Should not have invalidConfigSectionSchema diagnostic');
+  });
+
+  test('should show multiple warnings for multiple config sections with schema mismatches', async () => {
+    const context = await getExtensionContext();
+    await context.globalState.update(
+      'devProxyInstall',
+      createDevProxyInstall({ version: '0.24.0' })
+    );
+
+    const fileName = 'config-section-schema-multiple-mismatch.json';
+    const filePath = getFixturePath(fileName);
+    const document = await vscode.workspace.openTextDocument(filePath);
+    await sleep(1000);
+    const diagnostics = vscode.languages.getDiagnostics(document.uri);
+
+    const configSchemaDiagnostics = diagnostics.filter(d => {
+      const code =
+        typeof d.code === 'object' && d.code !== null
+          ? (d.code as { value: string }).value
+          : d.code;
+      return code === 'invalidConfigSectionSchema';
+    });
+
+    assert.strictEqual(
+      configSchemaDiagnostics.length,
+      2,
+      'Should have 2 invalidConfigSectionSchema diagnostics'
+    );
+  });
+});
+
 suite('diagnostic ranges', () => {
   teardown(async () => {
     await vscode.commands.executeCommand('workbench.action.closeActiveEditor');

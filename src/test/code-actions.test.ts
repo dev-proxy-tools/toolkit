@@ -53,8 +53,8 @@ suite('Code Actions', () => {
 
       registerCodeActions(contextWithInstall);
 
-      // Should register 10 providers (2 per fix type: json + jsonc, 5 fix types)
-      assert.strictEqual(registerSpy.callCount, 10, 'Should register 10 code action providers');
+      // Should register 14 providers (2 per fix type: json + jsonc, 7 fix types)
+      assert.strictEqual(registerSpy.callCount, 14, 'Should register 14 code action providers');
     });
 
     test('should handle beta version correctly', () => {
@@ -107,6 +107,134 @@ suite('Code Actions', () => {
       const schemaFix = codeActions?.find(a => a.title === 'Update schema');
       // Note: This may not find the fix if diagnostics aren't set up properly in test env
       // The main point is the code path is exercised
+    });
+  });
+
+  suite('Invalid Config Section Schema Fix', () => {
+    test('should provide fix when invalidConfigSectionSchema diagnostic exists', async () => {
+      const context = await getExtensionContext();
+      await context.globalState.update(
+        'devProxyInstall',
+        createDevProxyInstall({ version: '0.24.0' })
+      );
+
+      const fileName = 'config-section-schema-mismatch.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const configSchemaDiagnostic = diagnostics.find(d => {
+        const code =
+          typeof d.code === 'object' && d.code !== null
+            ? (d.code as { value: string }).value
+            : d.code;
+        return code === 'invalidConfigSectionSchema';
+      });
+
+      assert.ok(configSchemaDiagnostic, 'Should have invalidConfigSectionSchema diagnostic');
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        configSchemaDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const schemaFix = codeActions?.find(a => a.title === 'Update config section schema');
+      assert.ok(schemaFix, 'Should provide config section schema fix');
+      assert.ok(schemaFix!.edit, 'Fix should have an edit');
+
+      // Verify the fix would update to the correct version
+      await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+    });
+
+    test('should provide bulk fix when multiple config section schemas are outdated', async () => {
+      const context = await getExtensionContext();
+      await context.globalState.update(
+        'devProxyInstall',
+        createDevProxyInstall({ version: '0.24.0' })
+      );
+
+      const fileName = 'config-section-schema-multiple-mismatch.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const configSchemaDiagnostic = diagnostics.find(d => {
+        const code =
+          typeof d.code === 'object' && d.code !== null
+            ? (d.code as { value: string }).value
+            : d.code;
+        return code === 'invalidConfigSectionSchema';
+      });
+
+      assert.ok(configSchemaDiagnostic, 'Should have invalidConfigSectionSchema diagnostic');
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        configSchemaDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const bulkFix = codeActions?.find(a => a.title === 'Update all config section schemas');
+      assert.ok(bulkFix, 'Should provide bulk fix for multiple schema mismatches');
+      assert.ok(bulkFix!.isPreferred, 'Bulk fix should be preferred');
+
+      await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+    });
+
+    test('should apply config section schema fix correctly', async () => {
+      const context = await getExtensionContext();
+      await context.globalState.update(
+        'devProxyInstall',
+        createDevProxyInstall({ version: '0.24.0' })
+      );
+
+      const fileName = 'config-section-schema-mismatch.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const configSchemaDiagnostic = diagnostics.find(d => {
+        const code =
+          typeof d.code === 'object' && d.code !== null
+            ? (d.code as { value: string }).value
+            : d.code;
+        return code === 'invalidConfigSectionSchema';
+      });
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        configSchemaDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const schemaFix = codeActions?.find(a => a.title === 'Update config section schema');
+      assert.ok(schemaFix, 'Should have schema fix');
+      assert.ok(schemaFix!.edit, 'Fix should have an edit');
+
+      // Apply the edit
+      const applied = await vscode.workspace.applyEdit(schemaFix!.edit!);
+      assert.ok(applied, 'Edit should be applied successfully');
+
+      // Verify the schema was updated by checking document text
+      const updatedText = document.getText();
+      assert.ok(
+        updatedText.includes('v0.24.0'),
+        'Schema should be updated to version 0.24.0'
+      );
+
+      // Revert the changes
+      await vscode.commands.executeCommand('workbench.action.files.revert');
+      await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
     });
   });
 
@@ -485,8 +613,8 @@ suite('Code Action Provider Registration', () => {
     const jsonCalls = registerSpy.getCalls().filter(call => call.args[0] === 'json');
     const jsoncCalls = registerSpy.getCalls().filter(call => call.args[0] === 'jsonc');
 
-    assert.strictEqual(jsonCalls.length, 5, 'Should register 5 providers for json');
-    assert.strictEqual(jsoncCalls.length, 5, 'Should register 5 providers for jsonc');
+    assert.strictEqual(jsonCalls.length, 7, 'Should register 7 providers for json');
+    assert.strictEqual(jsoncCalls.length, 7, 'Should register 7 providers for jsonc');
   });
 
   test('should add subscriptions to context', () => {
@@ -509,7 +637,7 @@ suite('Code Action Provider Registration', () => {
 
     registerCodeActions(contextWithInstall);
 
-    assert.strictEqual(subscriptions.length, 10, 'Should add 10 subscriptions');
+    assert.strictEqual(subscriptions.length, 14, 'Should add 14 subscriptions');
   });
 
   test('should strip beta suffix from version for schema URL', () => {

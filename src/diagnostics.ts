@@ -6,12 +6,13 @@ import {DevProxyInstall, PluginConfig} from './types';
 import { DiagnosticCodes } from './constants';
 import { getDiagnosticCode } from './utils';
 import * as semver from 'semver';
+import { fetchSchema, validateAgainstSchema } from './services';
 
-export const updateConfigFileDiagnostics = (
+export const updateConfigFileDiagnostics = async (
   context: vscode.ExtensionContext,
   document: vscode.TextDocument,
   collection: vscode.DiagnosticCollection,
-): void => {
+): Promise<void> => {
   const devProxyInstall =
     context.globalState.get<DevProxyInstall>('devProxyInstall');
   if (!devProxyInstall) {
@@ -24,10 +25,18 @@ export const updateConfigFileDiagnostics = (
   checkSchemaCompatibility(documentNode, devProxyInstall, diagnostics);
   checkPlugins(pluginsNode, diagnostics, documentNode, devProxyInstall);
   checkConfigSection(documentNode, diagnostics);
+  checkConfigSectionSchemas(documentNode, devProxyInstall, diagnostics);
   checkLanguageModelRequirements(documentNode, diagnostics);
   checkUrlsToWatch(documentNode, diagnostics);
 
+  // Set initial diagnostics synchronously
   collection.set(document.uri, diagnostics);
+
+  // Run async schema content validation and update diagnostics
+  const asyncDiagnostics = await validateConfigSectionContents(document, documentNode);
+  if (asyncDiagnostics.length > 0) {
+    collection.set(document.uri, [...diagnostics, ...asyncDiagnostics]);
+  }
 };
 
 export const updateFileDiagnostics = (
@@ -621,4 +630,278 @@ function checkUrlsToWatch(
       diagnostics.push(diagnostic);
     }
   }
+}
+
+/**
+ * Check config section $schema properties for version mismatches.
+ * Config sections can have their own $schema property that should match the installed Dev Proxy version.
+ */
+function checkConfigSectionSchemas(
+  documentNode: parse.ObjectNode,
+  devProxyInstall: DevProxyInstall,
+  diagnostics: vscode.Diagnostic[],
+) {
+  const devProxyVersion = devProxyInstall.isBeta
+    ? devProxyInstall.version.split('-')[0]
+    : devProxyInstall.version;
+
+  // Find all object properties that could be config sections (excluding known non-config properties)
+  const nonConfigProperties = ['$schema', 'plugins', 'urlsToWatch', 'logLevel', 
+    'newVersionNotification', 'showSkipMessages', 'languageModel', 'rate', 'labelMode'];
+
+  documentNode.children.forEach(property => {
+    const propertyNode = property as parse.PropertyNode;
+    const propertyName = propertyNode.key.value as string;
+
+    // Skip non-config section properties
+    if (nonConfigProperties.includes(propertyName)) {
+      return;
+    }
+
+    // Check if this property is an object (config sections are objects)
+    if (propertyNode.value.type !== 'Object') {
+      return;
+    }
+
+    const configSectionObject = propertyNode.value as parse.ObjectNode;
+    
+    // Look for $schema property within the config section
+    const schemaNode = getASTNode(configSectionObject.children, 'Identifier', '$schema');
+    
+    if (schemaNode) {
+      const schemaValueNode = schemaNode.value as parse.LiteralNode;
+      const schemaValue = schemaValueNode.value as string;
+      
+      // Check if the schema version matches the installed Dev Proxy version
+      if (!schemaValue.includes(`${devProxyVersion}`)) {
+        const diagnostic = new vscode.Diagnostic(
+          getRangeFromASTNode(schemaValueNode),
+          `Config section schema version is not compatible with the installed version of Dev Proxy. Expected v${devProxyVersion}`,
+          vscode.DiagnosticSeverity.Warning,
+        );
+        diagnostic.code = getDiagnosticCode(DiagnosticCodes.invalidConfigSectionSchema);
+        diagnostics.push(diagnostic);
+      }
+    }
+  });
+}
+
+/**
+ * Validate config section contents against their schemas.
+ * This is an async function that fetches schemas and validates properties.
+ */
+async function validateConfigSectionContents(
+  document: vscode.TextDocument,
+  documentNode: parse.ObjectNode,
+): Promise<vscode.Diagnostic[]> {
+  const diagnostics: vscode.Diagnostic[] = [];
+  
+  // Find all object properties that could be config sections (excluding known non-config properties)
+  const nonConfigProperties = ['$schema', 'plugins', 'urlsToWatch', 'logLevel', 
+    'newVersionNotification', 'showSkipMessages', 'languageModel', 'rate', 'labelMode'];
+
+  const validationPromises: Promise<void>[] = [];
+
+  documentNode.children.forEach(property => {
+    const propertyNode = property as parse.PropertyNode;
+    const propertyName = propertyNode.key.value as string;
+
+    // Skip non-config section properties
+    if (nonConfigProperties.includes(propertyName)) {
+      return;
+    }
+
+    // Check if this property is an object (config sections are objects)
+    if (propertyNode.value.type !== 'Object') {
+      return;
+    }
+
+    const configSectionObject = propertyNode.value as parse.ObjectNode;
+    
+    // Look for $schema property within the config section
+    const schemaNode = getASTNode(configSectionObject.children, 'Identifier', '$schema');
+    
+    if (!schemaNode) {
+      return;
+    }
+
+    const schemaUrl = (schemaNode.value as parse.LiteralNode).value as string;
+    
+    // Parse the config section content from the document
+    const promise = validateSingleConfigSection(
+      document,
+      configSectionObject,
+      schemaUrl,
+      propertyName,
+      diagnostics,
+    );
+    validationPromises.push(promise);
+  });
+
+  await Promise.all(validationPromises);
+  return diagnostics;
+}
+
+/**
+ * Validate a single config section against its schema.
+ */
+async function validateSingleConfigSection(
+  document: vscode.TextDocument,
+  configSectionObject: parse.ObjectNode,
+  schemaUrl: string,
+  configSectionName: string,
+  diagnostics: vscode.Diagnostic[],
+): Promise<void> {
+  try {
+    const schema = await fetchSchema(schemaUrl);
+    if (!schema) {
+      // Schema couldn't be fetched - skip validation
+      return;
+    }
+
+    // Convert AST to plain object for validation
+    const configObject = astToObject(configSectionObject);
+    
+    const result = validateAgainstSchema(configObject, schema);
+    
+    if (!result.valid) {
+      result.errors.forEach(error => {
+        const diagnostic = createDiagnosticForValidationError(
+          document,
+          configSectionObject,
+          error,
+          configSectionName,
+        );
+        if (diagnostic) {
+          diagnostics.push(diagnostic);
+        }
+      });
+    }
+  } catch (error) {
+    console.warn(`Error validating config section ${configSectionName}:`, error);
+  }
+}
+
+/**
+ * Convert an AST ObjectNode to a plain JavaScript object.
+ */
+function astToObject(node: parse.ObjectNode): Record<string, unknown> {
+  const obj: Record<string, unknown> = {};
+  
+  node.children.forEach(child => {
+    const propertyNode = child as parse.PropertyNode;
+    const key = propertyNode.key.value as string;
+    const value = astValueToJS(propertyNode.value);
+    obj[key] = value;
+  });
+  
+  return obj;
+}
+
+/**
+ * Convert an AST value node to a JavaScript value.
+ */
+function astValueToJS(node: parse.ValueNode): unknown {
+  switch (node.type) {
+    case 'Literal':
+      return (node as parse.LiteralNode).value;
+    case 'Object':
+      return astToObject(node as parse.ObjectNode);
+    case 'Array':
+      return (node as parse.ArrayNode).children.map(astValueToJS);
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Create a diagnostic for a validation error, locating the property in the AST.
+ */
+function createDiagnosticForValidationError(
+  document: vscode.TextDocument,
+  configSectionObject: parse.ObjectNode,
+  error: { path: string; message: string; keyword: string; params?: Record<string, unknown> },
+  configSectionName: string,
+): vscode.Diagnostic | undefined {
+  let targetNode: parse.PropertyNode | parse.ValueNode | undefined;
+  let diagnosticCode: string;
+  let severity: vscode.DiagnosticSeverity;
+
+  // Determine the diagnostic code and severity based on the error type
+  if (error.keyword === 'additionalProperties') {
+    diagnosticCode = DiagnosticCodes.unknownConfigProperty;
+    severity = vscode.DiagnosticSeverity.Warning;
+    
+    // Find the unknown property node
+    const unknownPropertyName = error.params?.additionalProperty as string;
+    if (unknownPropertyName) {
+      targetNode = getASTNode(configSectionObject.children, 'Identifier', unknownPropertyName);
+    }
+  } else {
+    diagnosticCode = DiagnosticCodes.invalidConfigValue;
+    severity = vscode.DiagnosticSeverity.Error;
+    
+    // Navigate to the error location using the JSON path
+    targetNode = findNodeByPath(configSectionObject, error.path);
+  }
+
+  if (!targetNode) {
+    // Fallback: use the config section name as the location
+    return undefined;
+  }
+
+  const range = getRangeFromASTNode(
+    targetNode.type === 'Property' ? (targetNode as parse.PropertyNode).key : targetNode
+  );
+
+  const diagnostic = new vscode.Diagnostic(
+    range,
+    `${configSectionName}: ${error.message}`,
+    severity,
+  );
+  diagnostic.code = getDiagnosticCode(diagnosticCode);
+  
+  return diagnostic;
+}
+
+/**
+ * Find a node in the AST by JSON pointer path (e.g., "/property/nested").
+ */
+function findNodeByPath(
+  node: parse.ObjectNode,
+  path: string,
+): parse.PropertyNode | parse.ValueNode | undefined {
+  if (!path || path === '/') {
+    return node;
+  }
+
+  // Remove leading slash and split by /
+  const parts = path.replace(/^\//, '').split('/');
+  let currentNode: parse.ValueNode = node;
+
+  for (const part of parts) {
+    if (currentNode.type === 'Object') {
+      const objectNode = currentNode as parse.ObjectNode;
+      const propertyNode = getASTNode(objectNode.children, 'Identifier', part);
+      if (!propertyNode) {
+        return undefined;
+      }
+      // Return the property node for the last part
+      if (part === parts[parts.length - 1]) {
+        return propertyNode;
+      }
+      currentNode = propertyNode.value;
+    } else if (currentNode.type === 'Array') {
+      const arrayNode = currentNode as parse.ArrayNode;
+      const index = parseInt(part, 10);
+      if (isNaN(index) || index < 0 || index >= arrayNode.children.length) {
+        return undefined;
+      }
+      currentNode = arrayNode.children[index];
+    } else {
+      return undefined;
+    }
+  }
+
+  return currentNode;
 }

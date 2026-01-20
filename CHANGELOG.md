@@ -19,8 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Diagnostics: Added clickable diagnostic codes that link to documentation
 - Diagnostics: Added `emptyUrlsToWatch` warning when urlsToWatch array is empty
 - Diagnostics: Added `pluginConfigOptional` info when plugin can be configured with optional config section
+- Diagnostics: Added `invalidConfigSectionSchema` warning when config section schema version doesn't match installed Dev Proxy
+- Diagnostics: Added `unknownConfigProperty` warning when config section has properties not defined in its schema
+- Diagnostics: Added `invalidConfigValue` error when config section property value doesn't match schema requirements
 - Quick Fixes: Added fix to add optional plugin configuration (adds configSection + config)
 - Quick Fixes: Added fix to add missing config section when referenced but not defined
+- Quick Fixes: Added fix to update config section schema version (single or all at once)
+- Quick Fixes: Added fix to remove unknown config section properties
 
 ### Changed:
 

@@ -67,6 +67,9 @@ export const ContextKeys = {
 export const DiagnosticCodes = {
   invalidSchema: 'invalidSchema',
   invalidConfigSection: 'invalidConfigSection',
+  invalidConfigSectionSchema: 'invalidConfigSectionSchema',
+  unknownConfigProperty: 'unknownConfigProperty',
+  invalidConfigValue: 'invalidConfigValue',
   deprecatedPluginPath: 'deprecatedPluginPath',
   missingLanguageModel: 'missingLanguageModel',
   noEnabledPlugins: 'noEnabledPlugins',
