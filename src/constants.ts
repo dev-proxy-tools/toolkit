@@ -92,3 +92,11 @@ export const Urls = {
   schemaBase: 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas',
   diagnosticsDoc: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/toolkit-diagnostics',
 } as const;
+
+/**
+ * Extension-related constants.
+ */
+export const Extension = {
+  id: 'garrytrinder.dev-proxy-toolkit',
+  extensionsJsonPath: '.vscode/extensions.json',
+} as const;
