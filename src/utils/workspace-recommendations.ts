@@ -104,8 +104,9 @@ export async function addExtensionToRecommendations(): Promise<boolean> {
  */
 export async function promptForWorkspaceRecommendation(context: vscode.ExtensionContext): Promise<void> {
   // Check if we've already prompted for this workspace
-  const workspaceKey = vscode.workspace.workspaceFolders?.[0]?.uri.toString() ?? '';
-  const storageKey = `recommendation-prompted-${workspaceKey}`;
+  const workspaceKey = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? '';
+  // Use a safe storage key by replacing path separators with underscores
+  const storageKey = `recommendation-prompted-${workspaceKey.replace(/[/\\:]/g, '_')}`;
   
   if (context.globalState.get(storageKey)) {
     // Already prompted for this workspace
