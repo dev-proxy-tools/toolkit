@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added:
 
+- Setting: Added `devProxyPath` setting to specify custom path to Dev Proxy executable
+- Detection: Added auto-detection fallback using login shell and common installation paths
 - Snippets: Added `devproxy-plugin-graph-connector-guidance` - GraphConnectorGuidancePlugin instance
 - Snippets: Added `devproxy-plugin-mock-stdio-response` - MockStdioResponsePlugin instance
 - Snippets: Added `devproxy-plugin-mock-stdio-response-config` - MockStdioResponsePlugin config section

@@ -1,7 +1,7 @@
 import { DevProxyInstall } from './types';
 import os from 'os';
 import { VersionExeName, VersionPreference } from './enums';
-import { executeCommand } from './utils/shell';
+import { executeCommand, resolveDevProxyExecutable } from './utils/shell';
 import * as vscode from 'vscode';
 
 export const getVersion = async (devProxyExe: string) => {
@@ -16,7 +16,10 @@ export const getVersion = async (devProxyExe: string) => {
 };
 
 export const detectDevProxyInstall = async (versionPreference: VersionPreference): Promise<DevProxyInstall> => {
-    const devProxyExe = getDevProxyExe(versionPreference);
+    const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
+    const customPath = configuration.get<string>('devProxyPath');
+    const exeName = getDevProxyExe(versionPreference);
+    const devProxyExe = await resolveDevProxyExecutable(exeName, customPath);
     const version = await getVersion(devProxyExe);
     const isInstalled = version !== '';
     const isBeta = version.includes('beta');

@@ -1,5 +1,7 @@
 import { exec, ExecOptions } from 'child_process';
 import * as vscode from 'vscode';
+import * as os from 'os';
+import * as fs from 'fs';
 import { Urls } from '../constants';
 import {
   HomebrewPackageIdentifier,
@@ -124,4 +126,100 @@ export async function upgradeDevProxyWithPackageManager(
  */
 export function openUpgradeDocumentation(): void {
   vscode.env.openExternal(vscode.Uri.parse(Urls.upgradeDoc));
+}
+
+/**
+ * Common installation paths for Dev Proxy on different platforms.
+ */
+const COMMON_PATHS: Record<string, string[]> = {
+  darwin: ['/opt/homebrew/bin', '/usr/local/bin'],
+  linux: ['/usr/local/bin', '/home/linuxbrew/.linuxbrew/bin'],
+  win32: [], // Windows typically has correct PATH from installer
+};
+
+/**
+ * Resolve the Dev Proxy executable path.
+ *
+ * Priority:
+ * 1. Custom path from settings (if set and non-empty)
+ * 2. Auto-detection:
+ *    a. Try bare command (devproxy/devproxy-beta)
+ *    b. Try via login shell (macOS/Linux only)
+ *    c. Try common installation paths
+ *
+ * @returns The resolved executable path, or the bare command name if not found
+ */
+export async function resolveDevProxyExecutable(
+  exeName: string,
+  customPath?: string
+): Promise<string> {
+  // 1. Use custom path if provided
+  if (customPath && customPath.trim() !== '') {
+    return customPath.trim();
+  }
+
+  // 2. Try bare command first
+  if (await canExecute(exeName)) {
+    return exeName;
+  }
+
+  const platform = os.platform();
+
+  // 3. Try via login shell (macOS/Linux only)
+  if (platform !== 'win32') {
+    const loginShellPath = await tryLoginShell(exeName);
+    if (loginShellPath) {
+      return loginShellPath;
+    }
+  }
+
+  // 4. Try common installation paths
+  const commonPaths = COMMON_PATHS[platform] || [];
+  for (const dir of commonPaths) {
+    const fullPath = `${dir}/${exeName}`;
+    if (fs.existsSync(fullPath)) {
+      return fullPath;
+    }
+  }
+
+  // Fallback to bare command (will fail gracefully in getVersion)
+  return exeName;
+}
+
+/**
+ * Check if a command can be executed successfully.
+ */
+async function canExecute(cmd: string): Promise<boolean> {
+  try {
+    await executeCommand(`${cmd} --version`);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Try to find the executable using a login shell.
+ * This sources the user's shell profile which may include custom PATH entries.
+ */
+async function tryLoginShell(exeName: string): Promise<string | undefined> {
+  const shells = ['/bin/zsh', '/bin/bash'];
+
+  for (const shell of shells) {
+    if (!fs.existsSync(shell)) {
+      continue;
+    }
+
+    try {
+      const result = await executeCommand(`${shell} -l -c "which ${exeName}"`);
+      const path = result.trim();
+      if (path && !path.includes('not found')) {
+        return path;
+      }
+    } catch {
+      // Shell failed, try next
+    }
+  }
+
+  return undefined;
 }

@@ -25,6 +25,7 @@ export {
   getPackageIdentifier,
   upgradeDevProxyWithPackageManager,
   openUpgradeDocumentation,
+  resolveDevProxyExecutable,
 } from './shell';
 
 // Re-export from detect for convenience

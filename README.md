@@ -221,6 +221,7 @@ Shows Dev Proxy status at a glance:
 | `dev-proxy-toolkit.showTerminal` | `boolean` | `true` | Show terminal when starting |
 | `dev-proxy-toolkit.closeTerminal` | `boolean` | `true` | Close terminal when stopping |
 | `dev-proxy-toolkit.apiPort` | `number` | `8897` | Port for Dev Proxy API communication |
+| `dev-proxy-toolkit.devProxyPath` | `string` | `""` | Custom path to Dev Proxy executable (uses auto-detection if empty) |
 
 ## Tasks
 
