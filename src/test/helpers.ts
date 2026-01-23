@@ -8,8 +8,9 @@ import { DevProxyInstall } from '../types';
  * avoiding the need to copy them to out/ during build.
  */
 export function getFixturePath(fileName: string): string {
-  // process.cwd() is the workspace root when running tests via VS Code test runner
-  return path.resolve(process.cwd(), 'src', 'test', 'examples', fileName);
+  // __dirname is out/test when tests are compiled
+  // Go up two levels to reach the workspace root, then into src/test/examples
+  return path.resolve(__dirname, '..', '..', 'src', 'test', 'examples', fileName);
 }
 
 /**

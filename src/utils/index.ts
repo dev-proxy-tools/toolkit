@@ -30,3 +30,11 @@ export {
 
 // Re-export from detect for convenience
 export { getDevProxyExe } from '../detect';
+
+// Workspace recommendations utilities
+export {
+  hasDevProxyConfig,
+  isExtensionRecommended,
+  addExtensionToRecommendations,
+  promptForWorkspaceRecommendation,
+} from './workspace-recommendations';
