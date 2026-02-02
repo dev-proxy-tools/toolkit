@@ -254,6 +254,12 @@ Run Dev Proxy as a VS Code task for integration with build workflows.
 
 This extension includes an MCP server for AI-assisted development. See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for available tools.
 
+## Chat Skill
+
+This extension provides a [chat skill](https://code.visualstudio.com/docs/copilot/chat-extensions#_use-skills) that teaches GitHub Copilot about Dev Proxy. When you ask Copilot about API simulation, mocking, error handling, rate limits, or other Dev Proxy topics, it automatically uses the skill to provide accurate, context-aware responses.
+
+The skill is automatically available in Copilot Chat — no configuration needed.
+
 ## Troubleshooting
 
 **Dev Proxy not detected?**
