@@ -1,6 +1,6 @@
 ---
 name: dev-proxy
-description: Configures Dev Proxy for API simulation, mocking, and error testing. Use when creating devproxyrc.json or devproxyrc.jsonc files, configuring Dev Proxy plugins, setting up API mocks, simulating rate limits or errors, or any task involving Dev Proxy configuration.
+description: API simulation and testing with Dev Proxy. Use when mocking API responses, testing error handling (500s, timeouts, failures), reducing API costs during development (especially AI/LLM apps), simulating rate limits or slow responses, intercepting HTTP traffic for debugging, testing without hitting production APIs, setting up API mocks in CI/CD, generating API documentation from traffic, optimizing Microsoft Graph API calls, validating APIs against governance policies (Azure API Center), or testing MCP servers.
 ---
 
 # Dev Proxy
