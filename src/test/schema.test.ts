@@ -97,6 +97,28 @@ suite('schema', () => {
     };
     assert.deepStrictEqual(actual, expected);
   });
+
+  test('should not show warning for language model plugins when languageModel.enabled is missing', async () => {
+    const fileName = 'config-language-model-required.json';
+    const filePath = getFixturePath(fileName);
+    const document = await vscode.workspace.openTextDocument(filePath);
+    await sleep(1000);
+    const diagnostics = vscode.languages.getDiagnostics(document.uri);
+
+    const missingLanguageModelDiagnostics = diagnostics.filter(d => {
+      const code =
+        typeof d.code === 'object' && d.code !== null
+          ? (d.code as { value: string }).value
+          : d.code;
+      return code === 'missingLanguageModel';
+    });
+
+    assert.strictEqual(
+      missingLanguageModelDiagnostics.length,
+      0,
+      'Should not have missingLanguageModel diagnostics when languageModel.enabled is missing'
+    );
+  });
 });
 
 suite('config section schema validation', () => {

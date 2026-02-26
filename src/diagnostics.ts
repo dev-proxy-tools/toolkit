@@ -554,7 +554,7 @@ function checkLanguageModelRequirements(
     'Identifier',
     'languageModel'
   );
-  let isLanguageModelEnabled = false;
+  let isLanguageModelEnabled: boolean | undefined;
   
   if (languageModelNode && languageModelNode.value.type === 'Object') {
     const languageModelObjectNode = languageModelNode.value as parse.ObjectNode;
@@ -564,7 +564,10 @@ function checkLanguageModelRequirements(
       'enabled'
     );
     if (enabledNode && enabledNode.value.type === 'Literal') {
-      isLanguageModelEnabled = (enabledNode.value as parse.LiteralNode).value as boolean;
+      const enabledValue = (enabledNode.value as parse.LiteralNode).value;
+      if (typeof enabledValue === 'boolean') {
+        isLanguageModelEnabled = enabledValue;
+      }
     }
   }
 
@@ -596,7 +599,7 @@ function checkLanguageModelRequirements(
     const isPluginEnabled = enabledNode ? 
       (enabledNode.value as parse.LiteralNode).value as boolean : false;
 
-    if (isPluginEnabled && !isLanguageModelEnabled) {
+    if (isPluginEnabled && isLanguageModelEnabled === false) {
       const diagnostic = new vscode.Diagnostic(
         getRangeFromASTNode(pluginNameNode.value),
         `${pluginName} requires languageModel.enabled to be set to true.`,
