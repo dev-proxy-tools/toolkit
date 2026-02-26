@@ -596,8 +596,13 @@ function checkLanguageModelRequirements(
       'Identifier',
       'enabled',
     );
-    const isPluginEnabled = enabledNode ? 
-      (enabledNode.value as parse.LiteralNode).value as boolean : false;
+    let isPluginEnabled = false;
+    if (enabledNode && enabledNode.value.type === 'Literal') {
+      const enabledValue = (enabledNode.value as parse.LiteralNode).value;
+      if (typeof enabledValue === 'boolean') {
+        isPluginEnabled = enabledValue;
+      }
+    }
 
     if (isPluginEnabled && isLanguageModelEnabled === false) {
       const diagnostic = new vscode.Diagnostic(
