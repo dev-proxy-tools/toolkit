@@ -583,7 +583,7 @@ function checkLanguageModelRequirements(
     const pluginName = (pluginNameNode.value as parse.LiteralNode).value as string;
     const pluginSnippet = pluginSnippets[pluginName];
     
-    if (!pluginSnippet?.requiresLanguageModel) {
+    if (!pluginSnippet?.usesLanguageModel) {
       return;
     }
 
@@ -599,8 +599,8 @@ function checkLanguageModelRequirements(
     if (isPluginEnabled && !isLanguageModelEnabled) {
       const diagnostic = new vscode.Diagnostic(
         getRangeFromASTNode(pluginNameNode.value),
-        `${pluginName} requires languageModel.enabled to be set to true.`,
-        vscode.DiagnosticSeverity.Warning,
+        `${pluginName} can use a local language model to enhance its output. Add languageModel configuration to enable this.`,
+        vscode.DiagnosticSeverity.Information,
       );
       diagnostic.code = getDiagnosticCode(DiagnosticCodes.missingLanguageModel);
       diagnostics.push(diagnostic);

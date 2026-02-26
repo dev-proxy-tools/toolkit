@@ -269,7 +269,7 @@ function registerLanguageModelFixes(context: vscode.ExtensionContext) {
       }
 
       const fix = new vscode.CodeAction(
-        'Add languageModel configuration',
+        'Enable local language model',
         vscode.CodeActionKind.QuickFix,
       );
       

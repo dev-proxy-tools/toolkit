@@ -201,7 +201,8 @@
       "instance": "devproxy-plugin-odsp-search-guidance"
     },
     "OpenAIMockResponsePlugin": {
-      "instance": "devproxy-plugin-openai-mock-response"
+      "instance": "devproxy-plugin-openai-mock-response",
+      "usesLanguageModel": true
     },
     "OpenAITelemetryPlugin": {
       "instance": "devproxy-plugin-openai-telemetry",
@@ -218,7 +219,8 @@
       "config": {
         "name": "devproxy-plugin-open-api-spec-generator-config",
         "required": false
-      }
+      },
+      "usesLanguageModel": true
     },
     "RateLimitingPlugin": {
       "instance": "devproxy-plugin-rate-limiting",
@@ -242,7 +244,8 @@
       "config": {
         "name": "devproxy-plugin-typespec-generator-config",
         "required": false
-      }
+      },
+      "usesLanguageModel": true
     },
     "UrlDiscoveryPlugin": {
       "instance": "devproxy-plugin-url-discovery"

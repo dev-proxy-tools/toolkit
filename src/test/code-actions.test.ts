@@ -372,7 +372,7 @@ suite('Code Actions', () => {
         vscode.CodeActionKind.QuickFix.value
       );
 
-      const lmFix = codeActions?.find(a => a.title === 'Add languageModel configuration');
+      const lmFix = codeActions?.find(a => a.title === 'Enable local language model');
       assert.strictEqual(lmFix, undefined, 'Should not provide fix without diagnostic');
     });
   });
@@ -506,7 +506,7 @@ suite('Language Model Code Action Logic', () => {
     const docContent = `{
   "plugins": [
     {
-      "name": "LanguageModelFailurePlugin"
+      "name": "OpenAIMockResponsePlugin"
     }
   ],
   "languageModel": {
@@ -526,7 +526,7 @@ suite('Language Model Code Action Logic', () => {
     const docContent = `{
   "plugins": [
     {
-      "name": "LanguageModelFailurePlugin"
+      "name": "OpenAIMockResponsePlugin"
     }
   ],
   "languageModel": {
@@ -546,7 +546,7 @@ suite('Language Model Code Action Logic', () => {
     const docContent = `{
   "plugins": [
     {
-      "name": "LanguageModelFailurePlugin"
+      "name": "OpenAIMockResponsePlugin"
     }
   ]
 }`;

@@ -62,6 +62,13 @@ suite('getLanguageModelPlugins', () => {
     assert.ok(Array.isArray(plugins), 'Should return an array');
   });
 
+  test('should include plugins that use a language model', () => {
+    const plugins = getLanguageModelPlugins();
+    assert.ok(plugins.includes('OpenAIMockResponsePlugin'), 'Should include OpenAIMockResponsePlugin');
+    assert.ok(plugins.includes('OpenApiSpecGeneratorPlugin'), 'Should include OpenApiSpecGeneratorPlugin');
+    assert.ok(plugins.includes('TypeSpecGeneratorPlugin'), 'Should include TypeSpecGeneratorPlugin');
+  });
+
   test('should not include language model failure and rate limiting plugins', () => {
     const plugins = getLanguageModelPlugins();
     assert.ok(!plugins.includes('LanguageModelFailurePlugin'));
