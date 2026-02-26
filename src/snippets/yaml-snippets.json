@@ -807,7 +807,7 @@
       "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
       "  configSection: mockRequestPlugin"
     ],
-    "description": "MockResponsePlugin instance"
+    "description": "MockRequestPlugin instance"
   },
   "MockRequestPluginConfigYaml": {
     "prefix": "devproxy-plugin-mock-request-config",
@@ -816,7 +816,7 @@
       "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockrequestplugin.schema.json\"",
       "  mockFile: mock-request.json"
     ],
-    "description": "MockResponsePlugin config section"
+    "description": "MockRequestPlugin config section"
   },
   "MockResponsePluginYaml": {
     "prefix": "devproxy-plugin-mock-response",
@@ -972,7 +972,7 @@
       "  enabled: true",
       "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
     ],
-    "description": "MockResponsePlugin instance"
+    "description": "RateLimitingPlugin instance"
   },
   "RateLimitingPluginConfigYaml": {
     "prefix": "devproxy-plugin-rate-limiting-config",
