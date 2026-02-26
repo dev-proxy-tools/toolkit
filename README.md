@@ -37,10 +37,10 @@ Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` /
 
 ### Snippets
 
-Type `devproxy-` to access 80+ snippets:
+Type `devproxy-` to access 100+ snippets:
 
 - **JSON** - Config files, plugins, mocks, and more
-- **YAML** - GitHub Actions workflow steps
+- **YAML** - Config files, plugins, mocks, GitHub Actions workflow steps, and more
 
 <details>
 <summary><strong>JSON Snippets</strong> (click to expand)</summary>
@@ -157,6 +157,106 @@ Type `devproxy-` to access 80+ snippets:
 
 | Prefix | Description |
 | ------ | ----------- |
+| `devproxy-config-file` | Dev Proxy config file |
+| `devproxy-config-file-schema` | Dev Proxy config file schema |
+| `devproxy-error` | Dev Proxy error |
+| `devproxy-mock` | Dev Proxy mock |
+| `devproxy-mocks-file` | Dev Proxy mocks file |
+| `devproxy-mocks-file-schema` | Dev Proxy mocks file schema |
+| `devproxy-plugin-api-center-minimal-permissions` | ApiCenterMinimalPermissionsPlugin instance |
+| `devproxy-plugin-api-center-minimal-permissions-config` | ApiCenterMinimalPermissionsPlugin config section |
+| `devproxy-plugin-api-center-onboarding` | ApiCenterOnboardingPlugin instance |
+| `devproxy-plugin-api-center-onboarding-config` | ApiCenterOnboardingPlugin config section |
+| `devproxy-plugin-api-center-production-version` | ApiCenterProductionVersionPlugin instance |
+| `devproxy-plugin-api-center-production-version-config` | ApiCenterProductionVersionPlugin config section |
+| `devproxy-plugin-auth` | AuthPlugin instance |
+| `devproxy-plugin-auth-config-apikey` | AuthPlugin API Key config section |
+| `devproxy-plugin-auth-config-oauth2` | AuthPlugin OAuth2 config section |
+| `devproxy-plugin-caching-guidance` | CachingGuidancePlugin instance |
+| `devproxy-plugin-caching-guidance-config` | CachingGuidancePlugin config section |
+| `devproxy-plugin-crud-api` | CrudApiPlugin instance |
+| `devproxy-plugin-crud-api-action` | CrudApiPlugin action |
+| `devproxy-plugin-crud-api-config` | CrudApiPlugin config section |
+| `devproxy-plugin-crud-api-file` | CrudApiPlugin API file |
+| `devproxy-plugin-crud-api-file-schema` | CrudApiPlugin API file schema |
+| `devproxy-plugin-dev-tools` | DevToolsPlugin instance |
+| `devproxy-plugin-dev-tools-config` | DevToolsPlugin config section |
+| `devproxy-plugin-entra-mock-response` | EntraMockResponsePlugin instance |
+| `devproxy-plugin-entra-mock-response-config` | EntraMockResponsePlugin config section |
+| `devproxy-plugin-execution-summary` | ExecutionSummaryPlugin instance |
+| `devproxy-plugin-execution-summary-config` | ExecutionSummaryPlugin config section |
+| `devproxy-plugin-generic-random-error` | GenericRandomErrorPlugin instance |
+| `devproxy-plugin-generic-random-error-config` | GenericRandomErrorPlugin config section |
+| `devproxy-plugin-generic-random-error-file` | GenericRandomErrorPlugin errors file |
+| `devproxy-plugin-generic-random-error-file-schema` | GenericRandomErrorPlugin errors file schema |
+| `devproxy-plugin-graph-beta-support-guidance` | GraphBetaSupportGuidancePlugin instance |
+| `devproxy-plugin-graph-client-request-id-guidance` | GraphClientRequestIdGuidancePlugin instance |
+| `devproxy-plugin-graph-connector-guidance` | GraphConnectorGuidancePlugin instance |
+| `devproxy-plugin-graph-minimal-permissions` | GraphMinimalPermissionsPlugin instance |
+| `devproxy-plugin-graph-minimal-permissions-config` | GraphMinimalPermissionsPlugin config section |
+| `devproxy-plugin-graph-minimal-permissions-guidance` | GraphMinimalPermissionsGuidancePlugin instance |
+| `devproxy-plugin-graph-minimal-permissions-guidance-config` | GraphMinimalPermissionsGuidancePlugin config section |
+| `devproxy-plugin-graph-mock-response` | GraphMockResponsePlugin instance |
+| `devproxy-plugin-graph-mock-response-config` | GraphMockResponsePlugin config section |
+| `devproxy-plugin-graph-odsp-search-guidance` | ODSPSearchGuidancePlugin instance |
+| `devproxy-plugin-graph-random-error` | GraphRandomErrorPlugin instance |
+| `devproxy-plugin-graph-random-error-config` | GraphRandomErrorPlugin config section |
+| `devproxy-plugin-graph-sdk-guidance` | GraphSdkGuidancePlugin instance |
+| `devproxy-plugin-graph-select-guidance` | GraphSelectGuidancePlugin instance |
+| `devproxy-plugin-har-generator` | HarGeneratorPlugin instance |
+| `devproxy-plugin-har-generator-config` | HarGeneratorPlugin config section |
+| `devproxy-plugin-http-file-generator` | HttpFileGeneratorPlugin instance |
+| `devproxy-plugin-http-file-generator-config` | HttpFileGeneratorPlugin config section |
+| `devproxy-plugin-language-model-failure` | LanguageModelFailurePlugin instance |
+| `devproxy-plugin-language-model-failure-config` | LanguageModelFailurePlugin config section |
+| `devproxy-plugin-language-model-rate-limiting` | LanguageModelRateLimitingPlugin instance |
+| `devproxy-plugin-language-model-rate-limiting-config` | LanguageModelRateLimitingPlugin config section |
+| `devproxy-plugin-latency` | LatencyPlugin instance |
+| `devproxy-plugin-latency-config` | LatencyPlugin config section |
+| `devproxy-plugin-minimal-csom-permissions` | MinimalCsomPermissionsPlugin instance |
+| `devproxy-plugin-minimal-csom-permissions-config` | MinimalCsomPermissionsPlugin config section |
+| `devproxy-plugin-minimal-permissions` | MinimalPermissionsPlugin instance |
+| `devproxy-plugin-minimal-permissions-config` | MinimalPermissionsPlugin config section |
+| `devproxy-plugin-minimal-permissions-guidance` | MinimalPermissionsGuidancePlugin instance |
+| `devproxy-plugin-minimal-permissions-guidance-config` | MinimalPermissionsGuidancePlugin config section |
+| `devproxy-plugin-mock-generator` | MockGeneratorPlugin instance |
+| `devproxy-plugin-mock-request` | MockRequestPlugin instance |
+| `devproxy-plugin-mock-request-config` | MockRequestPlugin config section |
+| `devproxy-plugin-mock-response` | MockResponsePlugin instance |
+| `devproxy-plugin-mock-response-config` | MockResponsePlugin config section |
+| `devproxy-plugin-mock-response-schema` | MockResponsePlugin schema |
+| `devproxy-plugin-mock-stdio-response` | MockStdioResponsePlugin instance |
+| `devproxy-plugin-mock-stdio-response-config` | MockStdioResponsePlugin config section |
+| `devproxy-plugin-mock-stdio-response-file` | MockStdioResponsePlugin mocks file |
+| `devproxy-plugin-mock-stdio-response-file-schema` | MockStdioResponsePlugin mocks file schema |
+| `devproxy-plugin-odata-paging-guidance` | ODataPagingGuidancePlugin instance |
+| `devproxy-plugin-open-api-spec-generator` | OpenApiSpecGeneratorPlugin instance |
+| `devproxy-plugin-open-api-spec-generator-config` | OpenApiSpecGeneratorPlugin config section |
+| `devproxy-plugin-openai-mock-response` | OpenAIMockResponsePlugin instance |
+| `devproxy-plugin-openai-telemetry` | OpenAITelemetryPlugin instance |
+| `devproxy-plugin-openai-telemetry-config` | OpenAITelemetryPlugin config section |
+| `devproxy-plugin-openai-usage-debugging` | OpenAIUsageDebuggingPlugin instance |
+| `devproxy-plugin-rate-limiting` | RateLimitingPlugin instance |
+| `devproxy-plugin-rate-limiting-config` | RateLimitingPlugin config section |
+| `devproxy-plugin-rate-limiting-file` | Dev Proxy rate limiting file |
+| `devproxy-plugin-rate-limiting-file-schema` | Dev Proxy rate limiting file schema |
+| `devproxy-plugin-retry-after` | RetryAfterPlugin instance |
+| `devproxy-plugin-rewrite` | RewritePlugin instance |
+| `devproxy-plugin-rewrite-config` | RewritePlugin config section |
+| `devproxy-plugin-rewrite-file` | RewritePlugin rewrites file |
+| `devproxy-plugin-rewrite-file-schema` | RewritePlugin rewrites file schema |
+| `devproxy-plugin-typespec-generator` | TypeSpecGeneratorPlugin instance |
+| `devproxy-plugin-typespec-generator-config` | TypeSpecGeneratorPlugin config section |
+| `devproxy-plugin-url-discovery` | UrlDiscoveryPlugin instance |
+| `devproxy-price` | Dev Proxy price |
+| `devproxy-prices-file` | Dev Proxy prices file |
+| `devproxy-reporter-json` | JsonReporter instance |
+| `devproxy-reporter-markdown` | MarkdownReporter instance |
+| `devproxy-reporter-plain-text` | PlainTextReporter instance |
+| `devproxy-request` | Dev Proxy request |
+| `devproxy-response` | Dev Proxy response |
+| `devproxy-response-header` | Dev Proxy response header |
+| `devproxy-rewrite` | Dev Proxy rewrite |
 | `devproxy-action-setup` | GitHub Actions step: Setup Dev Proxy (recommended) |
 | `devproxy-action-start` | GitHub Actions step: Start Dev Proxy manually |
 | `devproxy-action-stop` | GitHub Actions step: Stop Dev Proxy |
