@@ -104,6 +104,17 @@ src/
 - Use `vscode.window.showErrorMessage()` for user-facing errors
 - Log to output channel for debugging
 
+### Changelog & README
+
+When adding features, updating features, or fixing bugs:
+
+- **CHANGELOG.md**: Add an entry under the current unreleased version section
+  - New features → `### Added:`
+  - Updated features → `### Changed:`
+  - Bug fixes → `### Fixed:`
+  - Follow the formatting conventions already in the file
+- **README.md**: Update if adding user-facing features. Do not update for bugs or internal changes.
+
 ## Anti-Patterns (Don't Do This)
 
 ❌ **Don't hardcode command IDs** - use `Commands.*` from constants  
