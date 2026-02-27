@@ -108,7 +108,7 @@ src/
 
 When adding features, updating features, or fixing bugs:
 
-- **CHANGELOG.md**: Add an entry under the current unreleased version section
+- **CHANGELOG.md**: Add an entry under the current unreleased version section for **user-facing changes only**. Do not include internal changes such as test fixes, refactoring, dependency updates, or build/CI changes.
   - New features → `### Added:`
   - Updated features → `### Changed:`
   - Bug fixes → `### Fixed:`
