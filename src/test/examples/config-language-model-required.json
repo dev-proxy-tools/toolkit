@@ -2,24 +2,16 @@
   "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v0.29.0/rc.schema.json",
   "plugins": [
     {
-      "name": "LanguageModelFailurePlugin",
+      "name": "OpenAIMockResponsePlugin",
       "enabled": true,
-      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
-      "configSection": "devproxy-plugin-language-model-failure-config"
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
     },
     {
-      "name": "LanguageModelRateLimitingPlugin",
+      "name": "OpenApiSpecGeneratorPlugin",
       "enabled": true,
-      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
-      "configSection": "devproxy-plugin-language-model-rate-limiting-config"
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
     }
   ],
   "urlsToWatch": ["https://api.openai.com/*"],
-  "logLevel": "information",
-  "devproxy-plugin-language-model-failure-config": {
-    "failureRate": 10
-  },
-  "devproxy-plugin-language-model-rate-limiting-config": {
-    "requestsPerMinute": 100
-  }
+  "logLevel": "information"
 }

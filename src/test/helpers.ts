@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { DevProxyInstall } from '../types';
@@ -8,7 +9,19 @@ import { DevProxyInstall } from '../types';
  * avoiding the need to copy them to out/ during build.
  */
 export function getFixturePath(fileName: string): string {
-  // process.cwd() is the workspace root when running tests via VS Code test runner
+  const candidateRoots = [
+    process.cwd(),
+    path.resolve(__dirname, '..', '..'),
+    vscode.workspace.workspaceFolders?.[0]?.uri.fsPath,
+  ].filter((root): root is string => Boolean(root));
+
+  for (const root of candidateRoots) {
+    const fixturePath = path.resolve(root, 'src', 'test', 'examples', fileName);
+    if (fs.existsSync(fixturePath)) {
+      return fixturePath;
+    }
+  }
+
   return path.resolve(process.cwd(), 'src', 'test', 'examples', fileName);
 }
 

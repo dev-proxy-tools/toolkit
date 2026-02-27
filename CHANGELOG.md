@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.13.0] - Unreleased
 
+### Added:
+
+- Quick Fixes: Enable local language model fix now adds or updates `languageModel.enabled: true` for supported plugins only
+
+### Fixed:
+
+- Diagnostics: Language model diagnostic now correctly targets plugins that can use a local language model (OpenAIMockResponsePlugin, OpenApiSpecGeneratorPlugin, TypeSpecGeneratorPlugin) and shows as an informational hint instead of a warning
+
 ## [1.12.0] - 2026-01-29
 
 ### Added:

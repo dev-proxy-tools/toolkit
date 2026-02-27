@@ -48,7 +48,7 @@ export function getPluginDocUrl(name: string): string | undefined {
  */
 export function getLanguageModelPlugins(): string[] {
   return Object.entries(pluginSnippets)
-    .filter(([_, config]) => config.requiresLanguageModel)
+    .filter(([_, config]) => config.usesLanguageModel)
     .map(([name]) => name);
 }
 

@@ -175,7 +175,7 @@ Real-time validation of your configuration files. Click any diagnostic code to v
 | `invalidSchema` | Schema version doesn't match installed Dev Proxy |
 | `invalidConfigSection` | Config section not used by any plugin |
 | `deprecatedPluginPath` | Using old plugin DLL path (pre-v0.29) |
-| `missingLanguageModel` | Plugin requires language model configuration |
+| `missingLanguageModel` | Plugin can use a local language model to enhance its output |
 | `noEnabledPlugins` | No plugins are enabled |
 | `reporterPosition` | Reporter plugin should be last |
 | `summaryWithoutReporter` | Summary plugin needs a reporter |
@@ -196,7 +196,7 @@ One-click fixes for common issues:
 - **Update schema** - Match schema to installed Dev Proxy version (config file or config sections)
 - **Update plugin path** - Fix deprecated `dev-proxy-plugins.dll` paths (single or all at once)
 - **Remove unknown property** - Remove properties not defined in config section schema
-- **Add languageModel configuration** - Enable language model for AI plugins
+- **Enable local language model** - Add or update `languageModel.enabled: true` for plugins that support it
 - **Add plugin configuration** - Add optional config section for plugins that support it
 - **Add missing config section** - Create config section when plugin references one that doesn't exist
 

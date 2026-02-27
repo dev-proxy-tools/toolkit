@@ -49,9 +49,9 @@
             }
           }
         },
-        "requiresLanguageModel": {
+        "usesLanguageModel": {
           "type": "boolean",
-          "description": "Whether the plugin requires a language model to be configured"
+          "description": "Whether the plugin can use a local language model to enhance its output"
         }
       }
     },

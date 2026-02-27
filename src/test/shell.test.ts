@@ -3,8 +3,6 @@
  * Tests for pure utility functions in shell.ts.
  */
 import * as assert from 'assert';
-import * as sinon from 'sinon';
-import * as fs from 'fs';
 import { getPackageIdentifier, resolveDevProxyExecutable } from '../utils/shell';
 import {
   PackageManager,
@@ -44,15 +42,7 @@ suite('getPackageIdentifier', () => {
 });
 
 suite('resolveDevProxyExecutable', () => {
-  let existsSyncStub: sinon.SinonStub;
-
-  setup(() => {
-    existsSyncStub = sinon.stub(fs, 'existsSync');
-  });
-
-  teardown(() => {
-    sinon.restore();
-  });
+  const NONEXISTENT_DEVPROXY_COMMAND = 'devproxy-command-that-does-not-exist-for-tests';
 
   test('should return custom path when provided and non-empty', async () => {
     const customPath = '/custom/path/to/devproxy';
@@ -67,22 +57,18 @@ suite('resolveDevProxyExecutable', () => {
   });
 
   test('should ignore empty custom path and proceed with auto-detection', async () => {
-    // With empty custom path and no auto-detection success, should return bare command
-    existsSyncStub.returns(false);
-    const result = await resolveDevProxyExecutable('devproxy', '');
+    const result = await resolveDevProxyExecutable(NONEXISTENT_DEVPROXY_COMMAND, '');
     // Will fall through to bare command since nothing else succeeds
-    assert.strictEqual(result, 'devproxy');
+    assert.strictEqual(result, NONEXISTENT_DEVPROXY_COMMAND);
   });
 
   test('should ignore whitespace-only custom path', async () => {
-    existsSyncStub.returns(false);
-    const result = await resolveDevProxyExecutable('devproxy', '   ');
-    assert.strictEqual(result, 'devproxy');
+    const result = await resolveDevProxyExecutable(NONEXISTENT_DEVPROXY_COMMAND, '   ');
+    assert.strictEqual(result, NONEXISTENT_DEVPROXY_COMMAND);
   });
 
   test('should handle undefined custom path', async () => {
-    existsSyncStub.returns(false);
-    const result = await resolveDevProxyExecutable('devproxy', undefined);
-    assert.strictEqual(result, 'devproxy');
+    const result = await resolveDevProxyExecutable(NONEXISTENT_DEVPROXY_COMMAND, undefined);
+    assert.strictEqual(result, NONEXISTENT_DEVPROXY_COMMAND);
   });
 });
