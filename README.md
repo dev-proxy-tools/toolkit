@@ -196,7 +196,7 @@ One-click fixes for common issues:
 - **Update schema** - Match schema to installed Dev Proxy version (config file or config sections)
 - **Update plugin path** - Fix deprecated `dev-proxy-plugins.dll` paths (single or all at once)
 - **Remove unknown property** - Remove properties not defined in config section schema
-- **Enable local language model** - Add language model configuration for plugins that support it
+- **Enable local language model** - Add or update `languageModel.enabled: true` for plugins that support it
 - **Add plugin configuration** - Add optional config section for plugins that support it
 - **Add missing config section** - Create config section when plugin references one that doesn't exist
 
