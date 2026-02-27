@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { DevProxyInstall } from './types';
 import { getDevProxyExe, isDevProxyRunning } from './detect';
 import { VersionPreference } from './enums';
+import * as logger from './logger';
 
 export const createStatusBar = (context: vscode.ExtensionContext): vscode.StatusBarItem => {
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -64,6 +65,6 @@ export const statusBarLoop = async (context: vscode.ExtensionContext, statusBar:
         }
     } catch (error) {
         // Log but don't throw to prevent extension crashes
-        console.error('Error in statusBarLoop:', error);
+        logger.error('Error in statusBarLoop', error);
     }
 };

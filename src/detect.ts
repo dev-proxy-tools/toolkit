@@ -3,19 +3,23 @@ import os from 'os';
 import { VersionExeName, VersionPreference } from './enums';
 import { executeCommand, resolveDevProxyExecutable } from './utils/shell';
 import * as vscode from 'vscode';
+import * as logger from './logger';
 
 export const getVersion = async (devProxyExe: string) => {
     try {
         const version = await executeCommand(`${devProxyExe} --version`);
         const versionLines = version.trim().split('\n');
         const lastLine = versionLines[versionLines.length - 1];
+        logger.debug('Dev Proxy version detected', lastLine.trim());
         return lastLine.trim();
     } catch (error) {
+        logger.debug('Failed to get Dev Proxy version', error);
         return "";
     }
 };
 
 export const detectDevProxyInstall = async (versionPreference: VersionPreference): Promise<DevProxyInstall> => {
+    logger.debug('Detecting Dev Proxy installation', { versionPreference });
     const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
     const customPath = configuration.get<string>('devProxyPath');
     const exeName = getDevProxyExe(versionPreference);
@@ -28,7 +32,7 @@ export const detectDevProxyInstall = async (versionPreference: VersionPreference
     const isOutdated = isInstalled && outdatedVersion !== '';
     const isRunning = await isDevProxyRunning(devProxyExe);
     vscode.commands.executeCommand('setContext', 'isDevProxyRunning', isRunning);
-    return {
+    const install = {
         version,
         isInstalled,
         isBeta,
@@ -37,6 +41,8 @@ export const detectDevProxyInstall = async (versionPreference: VersionPreference
         isOutdated,
         isRunning
     };
+    logger.debug('Dev Proxy installation detected', install);
+    return install;
 };
 
 export const extractVersionFromOutput = (output: string): string => {
@@ -91,9 +97,12 @@ export const isDevProxyRunning = async (devProxyExe: string): Promise<boolean> =
         });
         
         // If we get any response (even an error), Dev Proxy is running
-        return response.status >= 200 && response.status < 500;
+        const running = response.status >= 200 && response.status < 500;
+        logger.debug('Dev Proxy running check', { running, status: response.status });
+        return running;
     } catch (error) {
         // If the request fails (connection refused, timeout, etc.), Dev Proxy is not running
+        logger.debug('Dev Proxy is not running');
         return false;
     }
 };

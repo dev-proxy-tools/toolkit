@@ -5,6 +5,7 @@ import { TerminalService } from '../services/terminal';
 import { isConfigFile } from '../utils';
 import { getDevProxyExe } from '../detect';
 import { VersionPreference } from '../enums';
+import * as logger from '../logger';
 
 /**
  * Proxy lifecycle commands: start, stop, restart.
@@ -47,6 +48,7 @@ async function startDevProxy(
   const configFilePath = getActiveConfigFilePath();
   const command = configFilePath ? `${devProxyExe} --config-file "${configFilePath}"` : devProxyExe;
 
+  logger.debug('Starting Dev Proxy', { command });
   terminalService.sendCommand(terminal, command);
 }
 
@@ -55,6 +57,7 @@ async function stopDevProxy(
   devProxyExe: string,
   configuration: vscode.WorkspaceConfiguration
 ): Promise<void> {
+  logger.debug('Stopping Dev Proxy');
   await apiClient.stop();
 
   const closeTerminal = configuration.get<boolean>('closeTerminal', true);
@@ -71,6 +74,7 @@ async function restartDevProxy(
   configuration: vscode.WorkspaceConfiguration,
   devProxyExe: string
 ): Promise<void> {
+  logger.debug('Restarting Dev Proxy');
   try {
     await apiClient.stop();
     await waitForProxyToStop(apiClient);

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Commands, ContextKeys } from '../constants';
 import { DevProxyApiClient } from '../services/api-client';
+import * as logger from '../logger';
 
 /**
  * Recording commands: start/stop recording API requests.
@@ -27,6 +28,7 @@ async function startRecording(apiClient: DevProxyApiClient): Promise<void> {
     await apiClient.startRecording();
     vscode.commands.executeCommand('setContext', ContextKeys.isRecording, true);
   } catch {
+    logger.error('Failed to start recording');
     vscode.window.showErrorMessage('Failed to start recording');
   }
 }
@@ -36,6 +38,7 @@ async function stopRecording(apiClient: DevProxyApiClient): Promise<void> {
     await apiClient.stopRecording();
     vscode.commands.executeCommand('setContext', ContextKeys.isRecording, false);
   } catch {
+    logger.error('Failed to stop recording');
     vscode.window.showErrorMessage('Failed to stop recording');
   }
 }

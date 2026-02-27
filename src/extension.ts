@@ -10,14 +10,21 @@ import { VersionPreference } from './enums';
 import { registerMcpServer } from './mcp';
 import { registerTaskProvider } from './task-provider';
 import { promptForWorkspaceRecommendation } from './utils';
+import * as logger from './logger';
 
 // Global variable to track the interval
 let statusBarInterval: NodeJS.Timeout | undefined;
 
 export const activate = async (context: vscode.ExtensionContext): Promise<vscode.ExtensionContext> => {
 
+  const logChannel = logger.initializeLogger();
+  context.subscriptions.push(logChannel);
+
+  logger.info('Activating Dev Proxy Toolkit extension');
+
   const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
   const versionPreference = configuration.get('version') as VersionPreference;
+  logger.debug('Configuration loaded', { versionPreference });
   
   const statusBar = createStatusBar(context);
   await updateGlobalState(context, versionPreference);
@@ -32,6 +39,7 @@ export const activate = async (context: vscode.ExtensionContext): Promise<vscode
   registerCommands(context, configuration);
   registerMcpServer(context);
   registerTaskProvider(context);
+  logger.debug('All providers and commands registered');
 
   const notification = handleStartNotification(context);
   processNotification(notification);
@@ -49,7 +57,7 @@ export const activate = async (context: vscode.ExtensionContext): Promise<vscode
     try {
       statusBarLoop(context, statusBar, versionPreference);
     } catch (error) {
-      console.error('Error in statusBarLoop:', error);
+      logger.error('Error in statusBarLoop', error);
     }
   }, 5000);
 
@@ -63,10 +71,13 @@ export const activate = async (context: vscode.ExtensionContext): Promise<vscode
     }
   });
 
+  logger.info('Dev Proxy Toolkit extension activated');
+
   return context;
 };
 
 export const deactivate = () => {
+  logger.info('Deactivating Dev Proxy Toolkit extension');
   // Clean up the interval if it's still running
   if (statusBarInterval) {
     clearInterval(statusBarInterval);

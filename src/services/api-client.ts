@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as logger from '../logger';
 
 /**
  * Client for communicating with the Dev Proxy API.
@@ -49,6 +50,7 @@ export class DevProxyApiClient {
    * Stop the proxy.
    */
   async stop(): Promise<void> {
+    logger.debug('Stopping Dev Proxy');
     await this.post('/proxy/stopproxy');
   }
 
@@ -56,6 +58,7 @@ export class DevProxyApiClient {
    * Raise a mock request.
    */
   async raiseMockRequest(): Promise<void> {
+    logger.debug('Raising mock request');
     await this.post('/proxy/mockrequest');
   }
 
@@ -63,6 +66,7 @@ export class DevProxyApiClient {
    * Start recording API requests.
    */
   async startRecording(): Promise<void> {
+    logger.debug('Starting recording');
     await this.post('/proxy', { recording: true });
   }
 
@@ -70,6 +74,7 @@ export class DevProxyApiClient {
    * Stop recording API requests.
    */
   async stopRecording(): Promise<void> {
+    logger.debug('Stopping recording');
     await this.post('/proxy', { recording: false });
   }
 

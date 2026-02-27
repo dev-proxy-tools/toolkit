@@ -7,6 +7,7 @@ import { DiagnosticCodes } from './constants';
 import { getDiagnosticCode } from './utils';
 import * as semver from 'semver';
 import { fetchSchema, validateAgainstSchema } from './services';
+import * as logger from './logger';
 
 export const updateConfigFileDiagnostics = async (
   context: vscode.ExtensionContext,
@@ -778,7 +779,7 @@ async function validateSingleConfigSection(
       });
     }
   } catch (error) {
-    console.warn(`Error validating config section ${configSectionName}:`, error);
+    logger.warn(`Error validating config section ${configSectionName}`, error);
   }
 }
 

@@ -1,4 +1,5 @@
 import Ajv, { ErrorObject } from 'ajv';
+import * as logger from '../logger';
 
 /**
  * Schema cache to avoid fetching the same schema multiple times.
@@ -54,7 +55,7 @@ export async function fetchSchema(schemaUrl: string): Promise<object | undefined
   try {
     const response = await fetch(schemaUrl);
     if (!response.ok) {
-      console.warn(`Failed to fetch schema from ${schemaUrl}: ${response.status}`);
+      logger.warn(`Failed to fetch schema from ${schemaUrl}: ${response.status}`);
       return undefined;
     }
 
@@ -62,7 +63,7 @@ export async function fetchSchema(schemaUrl: string): Promise<object | undefined
     schemaCache.set(schemaUrl, schema);
     return schema;
   } catch (error) {
-    console.warn(`Error fetching schema from ${schemaUrl}:`, error);
+    logger.warn(`Error fetching schema from ${schemaUrl}`, error);
     return undefined;
   }
 }
