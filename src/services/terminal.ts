@@ -10,11 +10,13 @@ export class TerminalService {
   private readonly createNewTerminal: boolean;
   private readonly showTerminal: boolean;
   private readonly closeTerminalOnStop: boolean;
+  private readonly env: { [key: string]: string } | undefined;
 
   constructor(config?: TerminalServiceConfig) {
     this.createNewTerminal = config?.createNewTerminal ?? true;
     this.showTerminal = config?.showTerminal ?? true;
     this.closeTerminalOnStop = config?.closeTerminalOnStop ?? true;
+    this.env = config?.env;
   }
 
   /**
@@ -22,10 +24,12 @@ export class TerminalService {
    */
   static fromConfiguration(): TerminalService {
     const config = vscode.workspace.getConfiguration('dev-proxy-toolkit');
+    const env = config.get<{ [key: string]: string }>('env');
     return new TerminalService({
       createNewTerminal: config.get<boolean>('newTerminal', true),
       showTerminal: config.get<boolean>('showTerminal', true),
       closeTerminalOnStop: config.get<boolean>('closeTerminal', true),
+      env: env && Object.keys(env).length > 0 ? env : undefined,
     });
   }
 
@@ -41,7 +45,15 @@ export class TerminalService {
       return vscode.window.activeTerminal;
     }
 
-    const terminal = vscode.window.createTerminal('Dev Proxy');
+    const terminalOptions: vscode.TerminalOptions = {
+      name: 'Dev Proxy',
+    };
+
+    if (this.env) {
+      terminalOptions.env = this.env;
+    }
+
+    const terminal = vscode.window.createTerminal(terminalOptions);
 
     if (this.showTerminal) {
       terminal.show();
@@ -79,4 +91,5 @@ export interface TerminalServiceConfig {
   createNewTerminal?: boolean;
   showTerminal?: boolean;
   closeTerminalOnStop?: boolean;
+  env?: { [key: string]: string };
 }

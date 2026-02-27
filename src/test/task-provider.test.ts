@@ -161,6 +161,28 @@ suite('DevProxyTaskProvider', () => {
 
       assert.ok(resolved, 'Should resolve task with args');
     });
+
+    test('should handle env in definition', () => {
+      const provider = new DevProxyTaskProvider(mockContext);
+
+      const taskDefinition = {
+        type: 'devproxy',
+        command: 'start' as const,
+        env: { 'NODE_ENV': 'test', 'DEBUG': 'true' },
+        label: 'Start with Env',
+      };
+
+      const mockTask = new vscode.Task(
+        taskDefinition,
+        vscode.TaskScope.Workspace,
+        'Start with Env',
+        'devproxy'
+      );
+
+      const resolved = provider.resolveTask(mockTask);
+
+      assert.ok(resolved, 'Should resolve task with env');
+    });
   });
 
   suite('task properties', () => {

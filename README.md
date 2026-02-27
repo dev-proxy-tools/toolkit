@@ -227,6 +227,7 @@ You can also manually add the extension to recommendations at any time using the
 | `dev-proxy-toolkit.closeTerminal` | `boolean` | `true` | Close terminal when stopping |
 | `dev-proxy-toolkit.apiPort` | `number` | `8897` | Port for Dev Proxy API communication |
 | `dev-proxy-toolkit.devProxyPath` | `string` | `""` | Custom path to Dev Proxy executable (uses auto-detection if empty) |
+| `dev-proxy-toolkit.env` | `object` | `{}` | Environment variables to set when starting Dev Proxy |
 
 ## Tasks
 
@@ -252,6 +253,22 @@ Run Dev Proxy as a VS Code task for integration with build workflows.
       "command": "stop"
     }
   ]
+}
+```
+
+You can pass environment variables to Dev Proxy using the `env` property:
+
+```json
+{
+  "label": "Start Dev Proxy",
+  "type": "devproxy",
+  "command": "start",
+  "env": {
+    "NODE_ENV": "development",
+    "DEBUG": "true"
+  },
+  "isBackground": true,
+  "problemMatcher": "$devproxy-watch"
 }
 ```
 

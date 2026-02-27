@@ -7,6 +7,7 @@ interface DevProxyTaskDefinition extends vscode.TaskDefinition {
     command: 'start' | 'stop';
     configFile?: string;
     args?: string[];
+    env?: { [key: string]: string };
     label?: string;
 }
 
@@ -68,9 +69,13 @@ export class DevProxyTaskProvider implements vscode.TaskProvider {
 
         if (definition.command === 'start') {
             const args = this.buildArgumentsFromDefinition(definition);
-            execution = new vscode.ShellExecution(this.devProxyExe, args, {
+            const shellOptions: vscode.ShellExecutionOptions = {
                 cwd: '${workspaceFolder}'
-            });
+            };
+            if (definition.env && Object.keys(definition.env).length > 0) {
+                shellOptions.env = definition.env;
+            }
+            execution = new vscode.ShellExecution(this.devProxyExe, args, shellOptions);
         } else if (definition.command === 'stop') {
             // Use curl to stop Dev Proxy via API
             const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');

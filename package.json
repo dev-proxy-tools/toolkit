@@ -166,6 +166,13 @@
               "type": "string"
             },
             "description": "Additional command-line arguments"
+          },
+          "env": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Environment variables to set when starting Dev Proxy"
           }
         }
       }
@@ -219,6 +226,14 @@
           "type": "string",
           "default": "",
           "description": "Custom path to the Dev Proxy executable. If empty, auto-detection is used."
+        },
+        "dev-proxy-toolkit.env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "default": {},
+          "description": "Environment variables to set when starting Dev Proxy."
         }
       }
     },

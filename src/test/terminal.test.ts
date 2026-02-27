@@ -111,6 +111,41 @@ suite('TerminalService', () => {
       assert.ok((mockTerminal.hide as sinon.SinonStub).calledOnce);
       assert.ok((mockTerminal.show as sinon.SinonStub).notCalled);
     });
+
+    test('should pass env to terminal when env is provided', () => {
+      const mockTerminal = {
+        show: sandbox.stub(),
+        hide: sandbox.stub(),
+        name: 'Dev Proxy',
+      } as unknown as vscode.Terminal;
+
+      const createStub = sandbox.stub(vscode.window, 'createTerminal').returns(mockTerminal);
+
+      const env = { 'NODE_ENV': 'test', 'DEBUG': 'true' };
+      const service = new TerminalService({ createNewTerminal: true, showTerminal: true, env });
+      service.getOrCreateTerminal();
+
+      assert.ok(createStub.calledOnce);
+      const options = createStub.firstCall.args[0] as vscode.TerminalOptions;
+      assert.deepStrictEqual(options.env, env, 'Should pass env to terminal options');
+    });
+
+    test('should not include env in terminal options when env is undefined', () => {
+      const mockTerminal = {
+        show: sandbox.stub(),
+        hide: sandbox.stub(),
+        name: 'Dev Proxy',
+      } as unknown as vscode.Terminal;
+
+      const createStub = sandbox.stub(vscode.window, 'createTerminal').returns(mockTerminal);
+
+      const service = new TerminalService({ createNewTerminal: true, showTerminal: true });
+      service.getOrCreateTerminal();
+
+      assert.ok(createStub.calledOnce);
+      const options = createStub.firstCall.args[0] as vscode.TerminalOptions;
+      assert.strictEqual(options.env, undefined, 'Should not include env in terminal options');
+    });
   });
 
   suite('disposeDevProxyTerminals', () => {
