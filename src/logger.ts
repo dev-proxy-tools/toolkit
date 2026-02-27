@@ -28,33 +28,43 @@ function getLogger(): vscode.LogOutputChannel | undefined {
  * Log a trace-level message.
  */
 export function trace(message: string, ...args: unknown[]): void {
-  getLogger()?.trace(message, ...args);
+  try {
+    getLogger()?.trace(message, ...args);
+  } catch { /* channel may be closed */ }
 }
 
 /**
  * Log a debug-level message.
  */
 export function debug(message: string, ...args: unknown[]): void {
-  getLogger()?.debug(message, ...args);
+  try {
+    getLogger()?.debug(message, ...args);
+  } catch { /* channel may be closed */ }
 }
 
 /**
  * Log an info-level message.
  */
 export function info(message: string, ...args: unknown[]): void {
-  getLogger()?.info(message, ...args);
+  try {
+    getLogger()?.info(message, ...args);
+  } catch { /* channel may be closed */ }
 }
 
 /**
  * Log a warning-level message.
  */
 export function warn(message: string, ...args: unknown[]): void {
-  getLogger()?.warn(message, ...args);
+  try {
+    getLogger()?.warn(message, ...args);
+  } catch { /* channel may be closed */ }
 }
 
 /**
  * Log an error-level message.
  */
 export function error(message: string, ...args: unknown[]): void {
-  getLogger()?.error(message, ...args);
+  try {
+    getLogger()?.error(message, ...args);
+  } catch { /* channel may be closed */ }
 }
