@@ -74,6 +74,7 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
   registerOptionalConfigFixes(context);
   registerMissingConfigFixes(context);
   registerUnknownConfigPropertyFixes(context);
+  registerInvalidConfigSectionFixes(context);
 };
 
 function registerInvalidSchemaFixes(
@@ -740,4 +741,198 @@ function calculatePropertyDeleteRange(
   }
   
   return propertyRange;
+}
+
+/**
+ * Registers code actions for invalid config sections.
+ * Provides "Remove section" and "Link to plugin" quick fixes.
+ */
+function registerInvalidConfigSectionFixes(context: vscode.ExtensionContext): void {
+  // Register the command for linking a config section to a plugin
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      'dev-proxy-toolkit.linkConfigSectionToPlugin',
+      async (documentUri: vscode.Uri, configSectionName: string) => {
+        const document = await vscode.workspace.openTextDocument(documentUri);
+
+        let documentNode: parse.ObjectNode;
+        try {
+          documentNode = parse(document.getText()) as parse.ObjectNode;
+        } catch {
+          return;
+        }
+
+        const pluginsNode = getASTNode(documentNode.children, 'Identifier', 'plugins');
+        if (!pluginsNode || pluginsNode.value.type !== 'Array') {
+          return;
+        }
+
+        const pluginNodes = (pluginsNode.value as parse.ArrayNode)
+          .children as parse.ObjectNode[];
+
+        // Find plugins that don't have a configSection property
+        const availablePlugins: { name: string; node: parse.ObjectNode }[] = [];
+        pluginNodes.forEach(pluginNode => {
+          const nameNode = getASTNode(pluginNode.children, 'Identifier', 'name');
+          const configSectionNode = getASTNode(pluginNode.children, 'Identifier', 'configSection');
+          if (nameNode && !configSectionNode) {
+            availablePlugins.push({
+              name: (nameNode.value as parse.LiteralNode).value as string,
+              node: pluginNode,
+            });
+          }
+        });
+
+        if (availablePlugins.length === 0) {
+          vscode.window.showInformationMessage('All plugins already have a configSection.');
+          return;
+        }
+
+        const selected = await vscode.window.showQuickPick(
+          availablePlugins.map(p => p.name),
+          { placeHolder: 'Select a plugin to link this config section to' }
+        );
+
+        if (!selected) {
+          return;
+        }
+
+        const selectedPlugin = availablePlugins.find(p => p.name === selected);
+        if (!selectedPlugin) {
+          return;
+        }
+
+        const edit = new vscode.WorkspaceEdit();
+        const lastProperty = selectedPlugin.node.children[selectedPlugin.node.children.length - 1];
+        const insertPos = new vscode.Position(
+          lastProperty.loc!.end.line - 1,
+          lastProperty.loc!.end.column
+        );
+
+        edit.insert(
+          documentUri,
+          insertPos,
+          `,\n    "configSection": "${configSectionName}"`
+        );
+
+        await vscode.workspace.applyEdit(edit);
+        await vscode.commands.executeCommand('editor.action.formatDocument');
+      }
+    )
+  );
+
+  const invalidConfigSection: vscode.CodeActionProvider = {
+    provideCodeActions: (document, range, context) => {
+      const currentDiagnostic = findDiagnosticByCode(
+        context.diagnostics,
+        'invalidConfigSection',
+        range
+      );
+
+      if (!currentDiagnostic) {
+        return [];
+      }
+
+      // Extract config section name from diagnostic message
+      const match = currentDiagnostic.message.match(/^Config section '(\w+)'/);
+      if (!match) {
+        return [];
+      }
+
+      const configSectionName = match[1];
+      const fixes: vscode.CodeAction[] = [];
+
+      // 1. "Remove section" fix
+      try {
+        const documentNode = parse(document.getText()) as parse.ObjectNode;
+        const configSectionProperty = getASTNode(
+          documentNode.children,
+          'Identifier',
+          configSectionName
+        );
+
+        if (configSectionProperty) {
+          const removeFix = new vscode.CodeAction(
+            `Remove '${configSectionName}' section`,
+            vscode.CodeActionKind.QuickFix
+          );
+
+          removeFix.edit = new vscode.WorkspaceEdit();
+
+          const deleteRange = calculateConfigSectionDeleteRange(
+            document,
+            configSectionProperty
+          );
+          removeFix.edit.delete(document.uri, deleteRange);
+
+          removeFix.command = {
+            command: 'editor.action.formatDocument',
+            title: 'Format Document',
+          };
+
+          removeFix.isPreferred = true;
+          fixes.push(removeFix);
+        }
+      } catch {
+        // If AST parsing fails, skip the remove fix
+      }
+
+      // 2. "Link to plugin" fix
+      const linkFix = new vscode.CodeAction(
+        `Link '${configSectionName}' to a plugin...`,
+        vscode.CodeActionKind.QuickFix
+      );
+      linkFix.command = {
+        command: 'dev-proxy-toolkit.linkConfigSectionToPlugin',
+        title: 'Link config section to plugin',
+        arguments: [document.uri, configSectionName],
+      };
+      fixes.push(linkFix);
+
+      return fixes;
+    },
+  };
+
+  registerJsonCodeActionProvider(context, invalidConfigSection);
+}
+
+/**
+ * Calculate the range to delete for a config section property, including comma handling.
+ */
+function calculateConfigSectionDeleteRange(
+  document: vscode.TextDocument,
+  propertyNode: parse.PropertyNode,
+): vscode.Range {
+  const propRange = getRangeFromASTNode(propertyNode);
+
+  // Check if there's a comma after the property on the end line
+  const endLineText = document.lineAt(propRange.end.line).text;
+  const afterProp = endLineText.substring(propRange.end.character);
+  const commaAfterMatch = afterProp.match(/^\s*,/);
+
+  if (commaAfterMatch) {
+    // Delete from start of line to end of line (including comma)
+    return new vscode.Range(
+      new vscode.Position(propRange.start.line, 0),
+      new vscode.Position(propRange.end.line + 1, 0)
+    );
+  }
+
+  // No comma after - remove preceding comma if exists
+  if (propRange.start.line > 0) {
+    const prevLineText = document.lineAt(propRange.start.line - 1).text;
+    if (prevLineText.trimEnd().endsWith(',')) {
+      const commaPos = prevLineText.lastIndexOf(',');
+      return new vscode.Range(
+        new vscode.Position(propRange.start.line - 1, commaPos),
+        new vscode.Position(propRange.end.line + 1, 0)
+      );
+    }
+  }
+
+  // Fallback: delete just the property lines
+  return new vscode.Range(
+    new vscode.Position(propRange.start.line, 0),
+    new vscode.Position(propRange.end.line + 1, 0)
+  );
 }
