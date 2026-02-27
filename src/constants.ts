@@ -93,6 +93,8 @@ export const DiagnosticCodes = {
 export const Urls = {
   upgradeDoc: 'https://aka.ms/devproxy/upgrade',
   linuxInstall: 'https://aka.ms/devproxy/start/linux',
+  linuxSetupScript: 'https://aka.ms/devproxy/setup.sh',
+  linuxSetupBetaScript: 'https://aka.ms/devproxy/setup-beta.sh',
   schemaBase: 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas',
   diagnosticsDoc: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/toolkit-diagnostics',
 } as const;

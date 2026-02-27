@@ -23,6 +23,7 @@ export {
   executeCommand,
   sleep,
   getPackageIdentifier,
+  getInstallScriptUrl,
   upgradeDevProxyWithPackageManager,
   openUpgradeDocumentation,
   resolveDevProxyExecutable,

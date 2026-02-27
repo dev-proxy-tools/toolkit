@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-import { Commands, Urls } from '../constants';
+import { Commands } from '../constants';
 import {
   executeCommand,
   getPackageIdentifier,
+  getInstallScriptUrl,
   upgradeDevProxyWithPackageManager,
   openUpgradeDocumentation,
 } from '../utils/shell';
@@ -40,8 +41,7 @@ async function installDevProxy(
     } else if (platform === 'darwin') {
       await installOnMac(versionPreference);
     } else if (platform === 'linux') {
-      // Linux requires manual installation
-      vscode.env.openExternal(vscode.Uri.parse(Urls.linuxInstall));
+      await installOnLinux(versionPreference);
     }
   } finally {
     message.dispose();
@@ -93,14 +93,62 @@ async function installOnMac(versionPreference: VersionPreference): Promise<void>
   }
 }
 
+async function installOnLinux(versionPreference: VersionPreference): Promise<void> {
+  const scriptUrl = getInstallScriptUrl(versionPreference);
+
+  // Check if bash is available
+  try {
+    await executeCommand('bash --version');
+  } catch {
+    vscode.window.showErrorMessage('Bash is not available. Please install bash and try again.');
+    return;
+  }
+
+  // Check if curl is available
+  try {
+    await executeCommand('curl --version');
+  } catch {
+    vscode.window.showErrorMessage('curl is not installed. Please install curl and try again.');
+    return;
+  }
+
+  try {
+    await executeCommand(`bash -c "$(curl -sL ${scriptUrl})"`);
+    const result = await vscode.window.showInformationMessage('Dev Proxy installed.', 'Reload');
+    if (result === 'Reload') {
+      await vscode.commands.executeCommand('workbench.action.reloadWindow');
+    }
+  } catch (error) {
+    vscode.window.showErrorMessage(`Failed to install Dev Proxy.\n${error}`);
+  }
+}
+
 async function upgradeDevProxy(configuration: vscode.WorkspaceConfiguration): Promise<void> {
   const platform = process.platform;
   const versionPreference = configuration.get('version') as VersionPreference;
   const isBeta = versionPreference === VersionPreference.Beta;
 
-  // Linux always redirects to documentation
+  // Linux uses install script to upgrade
   if (platform === 'linux') {
-    openUpgradeDocumentation();
+    const scriptUrl = getInstallScriptUrl(versionPreference);
+    const versionText = isBeta ? 'Dev Proxy Beta' : 'Dev Proxy';
+    const statusMessage = vscode.window.setStatusBarMessage(`Upgrading ${versionText}...`);
+
+    try {
+      await executeCommand(`bash -c "$(curl -sL ${scriptUrl})"`);
+      statusMessage.dispose();
+
+      const result = await vscode.window.showInformationMessage(
+        `${versionText} has been successfully upgraded!`,
+        'Reload Window'
+      );
+      if (result === 'Reload Window') {
+        await vscode.commands.executeCommand('workbench.action.reloadWindow');
+      }
+    } catch {
+      statusMessage.dispose();
+      openUpgradeDocumentation();
+    }
     return;
   }
 

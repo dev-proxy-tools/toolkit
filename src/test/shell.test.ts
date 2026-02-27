@@ -3,13 +3,14 @@
  * Tests for pure utility functions in shell.ts.
  */
 import * as assert from 'assert';
-import { getPackageIdentifier, resolveDevProxyExecutable } from '../utils/shell';
+import { getPackageIdentifier, getInstallScriptUrl, resolveDevProxyExecutable } from '../utils/shell';
 import {
   PackageManager,
   VersionPreference,
   HomebrewPackageIdentifier,
   WingetPackageIdentifier,
 } from '../enums';
+import { Urls } from '../constants';
 
 suite('getPackageIdentifier', () => {
   test('should return stable Homebrew package for stable preference', () => {
@@ -38,6 +39,18 @@ suite('getPackageIdentifier', () => {
       'unknown' as unknown as PackageManager
     );
     assert.strictEqual(result, undefined);
+  });
+});
+
+suite('getInstallScriptUrl', () => {
+  test('should return stable script URL for stable preference', () => {
+    const result = getInstallScriptUrl(VersionPreference.Stable);
+    assert.strictEqual(result, Urls.linuxSetupScript);
+  });
+
+  test('should return beta script URL for beta preference', () => {
+    const result = getInstallScriptUrl(VersionPreference.Beta);
+    assert.strictEqual(result, Urls.linuxSetupBetaScript);
   });
 });
 
