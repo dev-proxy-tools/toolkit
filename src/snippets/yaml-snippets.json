@@ -67,7 +67,7 @@
   "ConfigFile": {
     "prefix": "devproxy-config-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json",
       "plugins:",
       "  - $1",
       "urlsToWatch:",
@@ -77,13 +77,6 @@
       "showSkipMessages: true"
     ],
     "description": "Dev Proxy config file"
-  },
-  "ConfigFileSchema": {
-    "prefix": "devproxy-config-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json\""
-    ],
-    "description": "Dev Proxy config file schema"
   },
   "Error": {
     "prefix": "devproxy-error",
@@ -98,18 +91,11 @@
   "MocksFile": {
     "prefix": "devproxy-mocks-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json",
       "mocks:",
       "  - $1"
     ],
     "description": "Dev Proxy mocks file"
-  },
-  "MocksFileSchema": {
-    "prefix": "devproxy-mocks-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\""
-    ],
-    "description": "Dev Proxy mocks file schema"
   },
   "Mock": {
     "prefix": "devproxy-mock",
@@ -123,7 +109,7 @@
   "PricesFile": {
     "prefix": "devproxy-prices-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openaitelemetryplugin.pricesfile.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openaitelemetryplugin.pricesfile.schema.json",
       "prices: $1"
     ],
     "description": "Dev Proxy prices file"
@@ -188,7 +174,6 @@
     "prefix": "devproxy-plugin-auth-config-apikey",
     "body": [
       "auth:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/authplugin.schema.json\"",
       "  type: apiKey",
       "  apiKey:",
       "    parameters:",
@@ -205,7 +190,6 @@
     "prefix": "devproxy-plugin-auth-config-oauth2",
     "body": [
       "auth:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/authplugin.schema.json\"",
       "  type: oauth2",
       "  oauth2:",
       "    metadataUrl: \"https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration\"",
@@ -239,7 +223,6 @@
     "prefix": "devproxy-plugin-api-center-minimal-permissions-config",
     "body": [
       "apiCenterMinimalPermissionsPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/apicenterminimalpermissionsplugin.schema.json\"",
       "  subscriptionId: cdae2297-7aa6-4195-bbb1-dcd89153cc72",
       "  resourceGroupName: resource-group-name",
       "  serviceName: apic-instance",
@@ -261,7 +244,6 @@
     "prefix": "devproxy-plugin-api-center-onboarding-config",
     "body": [
       "apiCenterOnboardingPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/apicenteronboardingplugin.schema.json\"",
       "  subscriptionId: cdae2297-7aa6-4195-bbb1-dcd89153cc72",
       "  resourceGroupName: resource-group-name",
       "  serviceName: apic-instance",
@@ -284,7 +266,6 @@
     "prefix": "devproxy-plugin-api-center-production-version-config",
     "body": [
       "apiCenterProductionVersionPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/apicenterproductionversionplugin.schema.json\"",
       "  subscriptionId: cdae2297-7aa6-4195-bbb1-dcd89153cc72",
       "  resourceGroupName: resource-group-name",
       "  serviceName: apic-instance",
@@ -305,7 +286,6 @@
     "prefix": "devproxy-plugin-caching-guidance-config",
     "body": [
       "cachingGuidance:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/cachingguidanceplugin.schema.json\"",
       "  cacheThresholdSeconds: 5"
     ],
     "description": "CachingGuidancePlugin config section"
@@ -324,7 +304,6 @@
     "prefix": "devproxy-plugin-crud-api-config",
     "body": [
       "customersApi:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.schema.json\"",
       "  apiFile: customers-api.json"
     ],
     "description": "CrudApiPlugin config section"
@@ -332,20 +311,13 @@
   "CrudApiPluginApiFile": {
     "prefix": "devproxy-plugin-crud-api-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json",
       "actions:",
       "  - $1",
       "baseUrl: $2",
       "dataFile: $3"
     ],
     "description": "CrudApiPlugin API file"
-  },
-  "CrudApiPluginFileSchema": {
-    "prefix": "devproxy-plugin-crud-api-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json\""
-    ],
-    "description": "CrudApiPlugin API file schema"
   },
   "CrudApiPluginAction": {
     "prefix": "devproxy-plugin-crud-api-action",
@@ -370,7 +342,6 @@
     "prefix": "devproxy-plugin-dev-tools-config",
     "body": [
       "devTools:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/devtoolsplugin.schema.json\"",
       "  preferredBrowser: Edge"
     ],
     "description": "DevToolsPlugin config section"
@@ -389,7 +360,6 @@
     "prefix": "devproxy-plugin-entra-mock-response-config",
     "body": [
       "entraMockResponsePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json\"",
       "  mocksFile: mocks.json"
     ],
     "description": "EntraMockResponsePlugin config section"
@@ -407,7 +377,6 @@
     "prefix": "devproxy-plugin-execution-summary-config",
     "body": [
       "executionSummaryPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/executionsummaryplugin.schema.json\"",
       "  groupBy: url"
     ],
     "description": "ExecutionSummaryPlugin config section"
@@ -426,7 +395,6 @@
     "prefix": "devproxy-plugin-generic-random-error-config",
     "body": [
       "genericRandomErrorPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.schema.json\"",
       "  errorsFile: errors.json",
       "  rate: 50"
     ],
@@ -435,18 +403,11 @@
   "GenericRandomErrorPluginFile": {
     "prefix": "devproxy-plugin-generic-random-error-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json",
       "errors:",
       "  - $1"
     ],
     "description": "GenericRandomErrorPlugin errors file"
-  },
-  "GenericRandomErrorPluginFileSchema": {
-    "prefix": "devproxy-plugin-generic-random-error-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json\""
-    ],
-    "description": "GenericRandomErrorPlugin errors file schema"
   },
   "GraphBetaSupportGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-beta-support-guidance",
@@ -507,7 +468,6 @@
     "prefix": "devproxy-plugin-graph-minimal-permissions-guidance-config",
     "body": [
       "graphMinimalPermissionsGuidancePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/graphminimalpermissionsguidanceplugin.schema.json\"",
       "  permissionsToIgnore:",
       "    - profile",
       "    - openid",
@@ -529,7 +489,6 @@
     "prefix": "devproxy-plugin-graph-minimal-permissions-config",
     "body": [
       "graphMinimalPermissionsPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/graphmininalpermissionsplugin.schema.json\"",
       "  type: delegated"
     ],
     "description": "GraphMinimalPermissionsPlugin config section"
@@ -557,7 +516,6 @@
     "prefix": "devproxy-plugin-graph-mock-response-config",
     "body": [
       "graphMockResponsePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json\"",
       "  mocksFile: mocks.json"
     ],
     "description": "GraphMockResponsePlugin config section"
@@ -584,7 +542,6 @@
     "prefix": "devproxy-plugin-graph-random-error-config",
     "body": [
       "graphRandomErrorPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/graphrandomerrorplugin.schema.json\"",
       "  allowedErrors:",
       "    - 429",
       "    - 500",
@@ -646,7 +603,6 @@
     "prefix": "devproxy-plugin-har-generator-config",
     "body": [
       "harGeneratorPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/hargeneratorplugin.schema.json\"",
       "  includeSensitiveInformation: false",
       "  includeResponse: true"
     ],
@@ -665,7 +621,6 @@
     "prefix": "devproxy-plugin-http-file-generator-config",
     "body": [
       "httpFileGeneratorPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/httpfilegeneratorplugin.schema.json\"",
       "  includeOptionsRequests: false"
     ],
     "description": "HttpFileGeneratorPlugin config section"
@@ -684,7 +639,6 @@
     "prefix": "devproxy-plugin-latency-config",
     "body": [
       "latencyPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/latencyplugin.schema.json\"",
       "  minMs: 200",
       "  maxMs: 10000"
     ],
@@ -704,7 +658,6 @@
     "prefix": "devproxy-plugin-language-model-failure-config",
     "body": [
       "languageModelFailurePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/languagemodelfailureplugin.schema.json\"",
       "  failures:",
       "    - rate-limit-reached",
       "    - quota-exceeded"
@@ -725,7 +678,6 @@
     "prefix": "devproxy-plugin-language-model-rate-limiting-config",
     "body": [
       "languageModelRateLimitingPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/languagemodelratelimitingplugin.schema.json\"",
       "  promptTokenLimit: 5000",
       "  completionTokenLimit: 5000",
       "  resetTimeWindowSeconds: 60",
@@ -747,7 +699,6 @@
     "prefix": "devproxy-plugin-minimal-csom-permissions-config",
     "body": [
       "minimalCsomPermissionsPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/minimalcsompermissionsplugin.schema.json\"",
       "  typesFilePath: ./api-specs"
     ],
     "description": "MinimalCsomPermissionsPlugin config section"
@@ -766,7 +717,6 @@
     "prefix": "devproxy-plugin-minimal-permissions-config",
     "body": [
       "minimalPermissionsPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/minimalpermissionsplugin.schema.json\"",
       "  apiSpecsFolderPath: ./api-specs"
     ],
     "description": "MinimalPermissionsPlugin config section"
@@ -785,7 +735,6 @@
     "prefix": "devproxy-plugin-minimal-permissions-guidance-config",
     "body": [
       "minimalPermissionsGuidancePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/minimalpermissionsguidanceplugin.schema.json\"",
       "  apiSpecsFolderPath: ./api-specs"
     ],
     "description": "MinimalPermissionsGuidancePlugin config section"
@@ -813,7 +762,6 @@
     "prefix": "devproxy-plugin-mock-request-config",
     "body": [
       "mockRequestPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockrequestplugin.schema.json\"",
       "  mockFile: mock-request.json"
     ],
     "description": "MockRequestPlugin config section"
@@ -832,17 +780,9 @@
     "prefix": "devproxy-plugin-mock-response-config",
     "body": [
       "mockResponsePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json\"",
       "  mocksFile: mocks.json"
     ],
     "description": "MockResponsePlugin config section"
-  },
-  "MockResponsePluginFileSchema": {
-    "prefix": "devproxy-plugin-mock-response-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\""
-    ],
-    "description": "MockResponsePlugin schema"
   },
   "MockStdioResponsePlugin": {
     "prefix": "devproxy-plugin-mock-stdio-response",
@@ -858,7 +798,6 @@
     "prefix": "devproxy-plugin-mock-stdio-response-config",
     "body": [
       "mockStdioResponsePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\"",
       "  mocksFile: stdio-mocks.json"
     ],
     "description": "MockStdioResponsePlugin config section"
@@ -866,18 +805,11 @@
   "MockStdioResponsePluginMocksFile": {
     "prefix": "devproxy-plugin-mock-stdio-response-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json",
       "mocks:",
       "  - $1"
     ],
     "description": "MockStdioResponsePlugin mocks file"
-  },
-  "MockStdioResponsePluginMocksFileSchema": {
-    "prefix": "devproxy-plugin-mock-stdio-response-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\""
-    ],
-    "description": "MockStdioResponsePlugin mocks file schema"
   },
   "ODataPagingGuidancePlugin": {
     "prefix": "devproxy-plugin-odata-paging-guidance",
@@ -929,7 +861,6 @@
     "prefix": "devproxy-plugin-openai-telemetry-config",
     "body": [
       "openAITelemetryPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openaitelemetryplugin.schema.json\"",
       "  application: My app",
       "  includeCosts: true",
       "  pricesFile: prices.json"
@@ -958,7 +889,6 @@
     "prefix": "devproxy-plugin-open-api-spec-generator-config",
     "body": [
       "openApiSpecGeneratorPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openapispecgeneratorplugin.schema.json\"",
       "  includeOptionsRequests: false",
       "  specVersion: v3_0",
       "  specFormat: Json"
@@ -978,7 +908,6 @@
     "prefix": "devproxy-plugin-rate-limiting-config",
     "body": [
       "rateLimiting:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.schema.json\"",
       "  costPerRequest: 2",
       "  rateLimit: 120",
       "  retryAfterSeconds: 5"
@@ -988,20 +917,13 @@
   "RateLimitingFile": {
     "prefix": "devproxy-plugin-rate-limiting-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json",
       "body: $1",
       "headers:",
       "  - $2",
       "statusCode: ${3:429}"
     ],
     "description": "Dev Proxy rate limiting file"
-  },
-  "RateLimitingFileSchema": {
-    "prefix": "devproxy-plugin-rate-limiting-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json\""
-    ],
-    "description": "Dev Proxy rate limiting file schema"
   },
   "RetryAfterPlugin": {
     "prefix": "devproxy-plugin-retry-after",
@@ -1025,24 +947,16 @@
   "RewritePluginFile": {
     "prefix": "devproxy-plugin-rewrite-file",
     "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json\"",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json",
       "rewrites:",
       "  - $1"
     ],
     "description": "RewritePlugin rewrites file"
   },
-  "RewritePluginFileSchema": {
-    "prefix": "devproxy-plugin-rewrite-file-schema",
-    "body": [
-      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json\""
-    ],
-    "description": "RewritePlugin rewrites file schema"
-  },
   "RewritePluginConfig": {
     "prefix": "devproxy-plugin-rewrite-config",
     "body": [
       "rewritePlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.schema.json\"",
       "  rewritesFile: rewrites.json"
     ],
     "description": "RewritePlugin config section"
@@ -1060,7 +974,6 @@
     "prefix": "devproxy-plugin-typespec-generator-config",
     "body": [
       "typeSpecGeneratorPlugin:",
-      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/typespecgeneratorplugin.schema.json\"",
       "  ignoreResponseTypes: false"
     ],
     "description": "TypeSpecGeneratorPlugin config section"
