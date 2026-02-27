@@ -26,4 +26,10 @@ suite('Commands', () => {
     const jwtCreateCommand = commands.find(cmd => cmd === 'dev-proxy-toolkit.jwt-create');
     assert.ok(jwtCreateCommand, 'JWT create command should be registered');
   });
+
+  test('Upgrade configs command should be registered', async () => {
+    const commands = await vscode.commands.getCommands();
+    const upgradeConfigsCommand = commands.find(cmd => cmd === 'dev-proxy-toolkit.upgrade-configs');
+    assert.ok(upgradeConfigsCommand, 'Upgrade configs command should be registered');
+  });
 });

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { registerCommands } from './commands';
-import { handleStartNotification, processNotification } from './notifications';
+import { handleStartNotification, processNotification, handleOutdatedConfigFilesNotification } from './notifications';
 import { registerDocumentListeners } from './documents';
 import { registerCodeLens } from './code-lens';
 import { createStatusBar, statusBarLoop, updateStatusBar } from './status-bar';
@@ -36,8 +36,10 @@ export const activate = async (context: vscode.ExtensionContext): Promise<vscode
   const notification = handleStartNotification(context);
   processNotification(notification);
 
-  // Prompt for workspace recommendations
+// Prompt for workspace recommendations
   promptForWorkspaceRecommendation(context);
+
+  handleOutdatedConfigFilesNotification(context);
 
   updateStatusBar(context, statusBar);
 

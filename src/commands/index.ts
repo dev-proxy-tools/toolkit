@@ -8,6 +8,7 @@ import { registerDiscoveryCommands } from './discovery';
 import { registerDocCommands } from './docs';
 import { Commands } from '../constants';
 import { addExtensionToRecommendations } from '../utils';
+import { registerUpgradeConfigCommands } from './upgrade-config';
 
 /**
  * Register all commands for the extension.
@@ -58,6 +59,8 @@ export function registerCommands(
       });
     })
   );
+
+  registerUpgradeConfigCommands(context);
 }
 
 // Re-export individual modules for testing and direct access
@@ -68,3 +71,4 @@ export { registerInstallCommands } from './install';
 export { registerJwtCommands } from './jwt';
 export { registerDiscoveryCommands } from './discovery';
 export { registerDocCommands } from './docs';
+export { registerUpgradeConfigCommands } from './upgrade-config';

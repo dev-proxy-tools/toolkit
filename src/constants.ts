@@ -40,9 +40,12 @@ export const Commands = {
   // Language model commands
   addLanguageModelConfig: 'dev-proxy-toolkit.addLanguageModelConfig',
 
-  // Workspace commands
+// Workspace commands
   addToRecommendations: 'dev-proxy-toolkit.add-to-recommendations',
   resetState: 'dev-proxy-toolkit.reset-state',
+
+  // Config upgrade commands
+  upgradeConfigs: 'dev-proxy-toolkit.upgrade-configs',
 } as const;
 
 /**

@@ -16,7 +16,7 @@ export {
 } from './ast';
 
 // Config file detection
-export { isConfigFile, isProxyFile } from './config-detection';
+export { isConfigFile, isProxyFile, extractVersionFromSchemaUrl, findOutdatedConfigFiles } from './config-detection';
 
 // Shell execution utilities
 export {

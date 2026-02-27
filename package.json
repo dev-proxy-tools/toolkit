@@ -99,6 +99,12 @@
         "command": "dev-proxy-toolkit.reset-state",
         "title": "Reset State",
         "category": "Dev Proxy Toolkit"
+      },
+      {
+        "command": "dev-proxy-toolkit.upgrade-configs",
+        "title": "Upgrade config files",
+        "category": "Dev Proxy Toolkit",
+        "enablement": "isDevProxyInstalled"
       }
     ],
     "mcpServerDefinitionProviders": [

@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
 import parse from 'json-to-ast';
 
 /**
@@ -86,4 +87,66 @@ export function isProxyFile(document: vscode.TextDocument): boolean {
   } catch {
     return false;
   }
+}
+
+/**
+ * Extract version from a Dev Proxy schema URL.
+ *
+ * Schema URLs follow the pattern:
+ *   https://raw.githubusercontent.com/.../schemas/v{version}/{filename}
+ *
+ * @returns The version string (e.g., "0.24.0") or empty string if not found.
+ */
+export function extractVersionFromSchemaUrl(schemaUrl: string): string {
+  const match = schemaUrl.match(/\/v(\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?)\//);
+  return match ? match[1] : '';
+}
+
+/**
+ * Find all Dev Proxy config files in the workspace that have an outdated schema version.
+ *
+ * Scans the workspace for JSON files containing a Dev Proxy `$schema` property
+ * and compares the schema version against the installed Dev Proxy version.
+ *
+ * @param devProxyVersion The installed Dev Proxy version (e.g., "0.24.0")
+ * @returns Array of URIs for config files with mismatched schema versions.
+ */
+export async function findOutdatedConfigFiles(devProxyVersion: string): Promise<vscode.Uri[]> {
+  const outdatedFiles: vscode.Uri[] = [];
+
+  const jsonFiles = await vscode.workspace.findFiles('**/*.{json,jsonc}', '**/node_modules/**');
+
+  for (const uri of jsonFiles) {
+    try {
+      const content = fs.readFileSync(uri.fsPath, 'utf-8');
+
+      // Quick check before parsing
+      if (!content.includes('dev-proxy') || !content.includes('schema')) {
+        continue;
+      }
+
+      const documentNode = parse(content) as parse.ObjectNode;
+      const schemaNode = getASTNode(documentNode.children, 'Identifier', '$schema');
+
+      if (!schemaNode) {
+        continue;
+      }
+
+      const schemaValue = (schemaNode.value as parse.LiteralNode).value as string;
+
+      if (!schemaValue.includes('dev-proxy') || !schemaValue.endsWith('rc.schema.json')) {
+        continue;
+      }
+
+      const schemaVersion = extractVersionFromSchemaUrl(schemaValue);
+
+      if (schemaVersion && schemaVersion !== devProxyVersion) {
+        outdatedFiles.push(uri);
+      }
+    } catch {
+      // Skip files that can't be read or parsed
+    }
+  }
+
+  return outdatedFiles;
 }
