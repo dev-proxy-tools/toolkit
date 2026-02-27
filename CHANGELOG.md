@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added:
 
+- Install: Added automated install and upgrade support for Linux using official setup scripts
 - Quick Fixes: Enable local language model fix now adds or updates `languageModel.enabled: true` for supported plugins only
 - Workspace: Added automatic prompt to recommend extension in `.vscode/extensions.json` when Dev Proxy config files are detected
 - Command: Added `Add to Workspace Recommendations` to manually add extension to workspace recommendations

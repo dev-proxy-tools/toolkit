@@ -11,7 +11,7 @@ Supercharge your [Dev Proxy](https://aka.ms/devproxy) workflow with IntelliSense
 
 ## Quick Start
 
-1. **Install this extension** - [Install from VS Code](vscode:extension/garrytrinder.dev-proxy-toolkit). You'll be prompted to install Dev Proxy if it's not already installed.
+1. **Install this extension** - [Install from VS Code](vscode:extension/garrytrinder.dev-proxy-toolkit). You'll be prompted to install Dev Proxy if it's not already installed. Automated install is supported on Windows (winget), macOS (Homebrew), and Linux (setup script).
 2. **Create a config** - Run `Dev Proxy Toolkit: Create configuration file` from the Command Palette
 3. **Configure your proxy** - Add URLs to watch and plugins using snippets (type `devproxy-`) or let [GitHub Copilot help](#mcp-server)
 4. **Start Dev Proxy** - Run `Dev Proxy Toolkit: Start` from the Command Palette
