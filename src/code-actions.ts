@@ -798,7 +798,7 @@ function registerInvalidConfigSectionFixes(context: vscode.ExtensionContext): vo
         }
 
         const selectedPlugin = availablePlugins.find(p => p.name === selected);
-        if (!selectedPlugin) {
+        if (!selectedPlugin || selectedPlugin.node.children.length === 0) {
           return;
         }
 
