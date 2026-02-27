@@ -748,78 +748,84 @@ function calculatePropertyDeleteRange(
  * Provides "Remove section" and "Link to plugin" quick fixes.
  */
 function registerInvalidConfigSectionFixes(context: vscode.ExtensionContext): void {
-  // Register the command for linking a config section to a plugin
-  context.subscriptions.push(
-    vscode.commands.registerCommand(
-      'dev-proxy-toolkit.linkConfigSectionToPlugin',
-      async (documentUri: vscode.Uri, configSectionName: string) => {
-        const document = await vscode.workspace.openTextDocument(documentUri);
+  // Register the command for linking a config section to a plugin.
+  // Use try-catch to handle cases where the command is already registered
+  // (e.g., during test runs that call registerCodeActions multiple times).
+  try {
+    context.subscriptions.push(
+      vscode.commands.registerCommand(
+        'dev-proxy-toolkit.linkConfigSectionToPlugin',
+        async (documentUri: vscode.Uri, configSectionName: string) => {
+          const document = await vscode.workspace.openTextDocument(documentUri);
 
-        let documentNode: parse.ObjectNode;
-        try {
-          documentNode = parse(document.getText()) as parse.ObjectNode;
-        } catch {
-          return;
-        }
-
-        const pluginsNode = getASTNode(documentNode.children, 'Identifier', 'plugins');
-        if (!pluginsNode || pluginsNode.value.type !== 'Array') {
-          return;
-        }
-
-        const pluginNodes = (pluginsNode.value as parse.ArrayNode)
-          .children as parse.ObjectNode[];
-
-        // Find plugins that don't have a configSection property
-        const availablePlugins: { name: string; node: parse.ObjectNode }[] = [];
-        pluginNodes.forEach(pluginNode => {
-          const nameNode = getASTNode(pluginNode.children, 'Identifier', 'name');
-          const configSectionNode = getASTNode(pluginNode.children, 'Identifier', 'configSection');
-          if (nameNode && !configSectionNode) {
-            availablePlugins.push({
-              name: (nameNode.value as parse.LiteralNode).value as string,
-              node: pluginNode,
-            });
+          let documentNode: parse.ObjectNode;
+          try {
+            documentNode = parse(document.getText()) as parse.ObjectNode;
+          } catch {
+            return;
           }
-        });
 
-        if (availablePlugins.length === 0) {
-          vscode.window.showInformationMessage('All plugins already have a configSection.');
-          return;
+          const pluginsNode = getASTNode(documentNode.children, 'Identifier', 'plugins');
+          if (!pluginsNode || pluginsNode.value.type !== 'Array') {
+            return;
+          }
+
+          const pluginNodes = (pluginsNode.value as parse.ArrayNode)
+            .children as parse.ObjectNode[];
+
+          // Find plugins that don't have a configSection property
+          const availablePlugins: { name: string; node: parse.ObjectNode }[] = [];
+          pluginNodes.forEach(pluginNode => {
+            const nameNode = getASTNode(pluginNode.children, 'Identifier', 'name');
+            const configSectionNode = getASTNode(pluginNode.children, 'Identifier', 'configSection');
+            if (nameNode && !configSectionNode) {
+              availablePlugins.push({
+                name: (nameNode.value as parse.LiteralNode).value as string,
+                node: pluginNode,
+              });
+            }
+          });
+
+          if (availablePlugins.length === 0) {
+            vscode.window.showInformationMessage('All plugins already have a configSection.');
+            return;
+          }
+
+          const selected = await vscode.window.showQuickPick(
+            availablePlugins.map(p => p.name),
+            { placeHolder: 'Select a plugin to link this config section to' }
+          );
+
+          if (!selected) {
+            return;
+          }
+
+          const selectedPlugin = availablePlugins.find(p => p.name === selected);
+          if (!selectedPlugin || selectedPlugin.node.children.length === 0) {
+            return;
+          }
+
+          const edit = new vscode.WorkspaceEdit();
+          const lastProperty = selectedPlugin.node.children[selectedPlugin.node.children.length - 1];
+          const insertPos = new vscode.Position(
+            lastProperty.loc!.end.line - 1,
+            lastProperty.loc!.end.column
+          );
+
+          edit.insert(
+            documentUri,
+            insertPos,
+            `,\n    "configSection": "${configSectionName}"`
+          );
+
+          await vscode.workspace.applyEdit(edit);
+          await vscode.commands.executeCommand('editor.action.formatDocument');
         }
-
-        const selected = await vscode.window.showQuickPick(
-          availablePlugins.map(p => p.name),
-          { placeHolder: 'Select a plugin to link this config section to' }
-        );
-
-        if (!selected) {
-          return;
-        }
-
-        const selectedPlugin = availablePlugins.find(p => p.name === selected);
-        if (!selectedPlugin || selectedPlugin.node.children.length === 0) {
-          return;
-        }
-
-        const edit = new vscode.WorkspaceEdit();
-        const lastProperty = selectedPlugin.node.children[selectedPlugin.node.children.length - 1];
-        const insertPos = new vscode.Position(
-          lastProperty.loc!.end.line - 1,
-          lastProperty.loc!.end.column
-        );
-
-        edit.insert(
-          documentUri,
-          insertPos,
-          `,\n    "configSection": "${configSectionName}"`
-        );
-
-        await vscode.workspace.applyEdit(edit);
-        await vscode.commands.executeCommand('editor.action.formatDocument');
-      }
-    )
-  );
+      )
+    );
+  } catch {
+    // Command already registered, skip
+  }
 
   const invalidConfigSection: vscode.CodeActionProvider = {
     provideCodeActions: (document, range, context) => {

@@ -723,7 +723,7 @@ suite('Code Action Provider Registration', () => {
 
     registerCodeActions(contextWithInstall);
 
-    assert.strictEqual(subscriptions.length, 17, 'Should add 17 subscriptions');
+    assert.strictEqual(subscriptions.length, 16, 'Should add 16 subscriptions');
   });
 
   test('should strip beta suffix from version for schema URL', () => {
