@@ -64,7 +64,7 @@
     ],
     "description": "GitHub Actions step: Install Dev Proxy certificate for Chromium browsers"
   },
-  "ConfigFileYaml": {
+  "ConfigFile": {
     "prefix": "devproxy-config-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json\"",
@@ -78,14 +78,14 @@
     ],
     "description": "Dev Proxy config file"
   },
-  "ConfigFileSchemaYaml": {
+  "ConfigFileSchema": {
     "prefix": "devproxy-config-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json\""
     ],
     "description": "Dev Proxy config file schema"
   },
-  "ErrorYaml": {
+  "Error": {
     "prefix": "devproxy-error",
     "body": [
       "- request:",
@@ -95,7 +95,7 @@
     ],
     "description": "Dev Proxy error"
   },
-  "MocksFileYaml": {
+  "MocksFile": {
     "prefix": "devproxy-mocks-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\"",
@@ -104,14 +104,14 @@
     ],
     "description": "Dev Proxy mocks file"
   },
-  "MocksFileSchemaYaml": {
+  "MocksFileSchema": {
     "prefix": "devproxy-mocks-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\""
     ],
     "description": "Dev Proxy mocks file schema"
   },
-  "MockYaml": {
+  "Mock": {
     "prefix": "devproxy-mock",
     "body": [
       "- request:",
@@ -120,7 +120,7 @@
     ],
     "description": "Dev Proxy mock"
   },
-  "PricesFileYaml": {
+  "PricesFile": {
     "prefix": "devproxy-prices-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openaitelemetryplugin.pricesfile.schema.json\"",
@@ -128,7 +128,7 @@
     ],
     "description": "Dev Proxy prices file"
   },
-  "PriceYaml": {
+  "Price": {
     "prefix": "devproxy-price",
     "body": [
       "gpt-4:",
@@ -137,7 +137,7 @@
     ],
     "description": "Dev Proxy price"
   },
-  "RequestYaml": {
+  "Request": {
     "prefix": "devproxy-request",
     "body": [
       "- request:",
@@ -146,7 +146,7 @@
     ],
     "description": "Dev Proxy request"
   },
-  "ResponseYaml": {
+  "Response": {
     "prefix": "devproxy-response",
     "body": [
       "- statusCode: ${1:400}",
@@ -156,7 +156,7 @@
     ],
     "description": "Dev Proxy response"
   },
-  "ResponseHeaderYaml": {
+  "ResponseHeader": {
     "prefix": "devproxy-response-header",
     "body": [
       "- name: $1",
@@ -164,7 +164,7 @@
     ],
     "description": "Dev Proxy response header"
   },
-  "RewriteYaml": {
+  "Rewrite": {
     "prefix": "devproxy-rewrite",
     "body": [
       "- in:",
@@ -174,7 +174,7 @@
     ],
     "description": "Dev Proxy rewrite"
   },
-  "AuthPluginYaml": {
+  "AuthPlugin": {
     "prefix": "devproxy-plugin-auth",
     "body": [
       "- name: AuthPlugin",
@@ -184,7 +184,7 @@
     ],
     "description": "AuthPlugin instance"
   },
-  "AuthPluginAPIKeyConfigYaml": {
+  "AuthPluginAPIKeyConfig": {
     "prefix": "devproxy-plugin-auth-config-apikey",
     "body": [
       "auth:",
@@ -201,7 +201,7 @@
     ],
     "description": "AuthPlugin API Key config section"
   },
-  "AuthPluginOAuth2ConfigYaml": {
+  "AuthPluginOAuth2Config": {
     "prefix": "devproxy-plugin-auth-config-oauth2",
     "body": [
       "auth:",
@@ -225,7 +225,7 @@
     ],
     "description": "AuthPlugin OAuth2 config section"
   },
-  "ApiCenterMinimalPermissionsPluginYaml": {
+  "ApiCenterMinimalPermissionsPlugin": {
     "prefix": "devproxy-plugin-api-center-minimal-permissions",
     "body": [
       "- name: ApiCenterOnboardingPlugin",
@@ -235,7 +235,7 @@
     ],
     "description": "ApiCenterMinimalPermissionsPlugin instance"
   },
-  "ApiCenterMinimalPermissionsPluginConfigYaml": {
+  "ApiCenterMinimalPermissionsPluginConfig": {
     "prefix": "devproxy-plugin-api-center-minimal-permissions-config",
     "body": [
       "apiCenterMinimalPermissionsPlugin:",
@@ -247,7 +247,7 @@
     ],
     "description": "ApiCenterMinimalPermissionsPlugin config section"
   },
-  "ApiCenterOnboardingPluginYaml": {
+  "ApiCenterOnboardingPlugin": {
     "prefix": "devproxy-plugin-api-center-onboarding",
     "body": [
       "- name: ApiCenterOnboardingPlugin",
@@ -257,7 +257,7 @@
     ],
     "description": "ApiCenterOnboardingPlugin instance"
   },
-  "ApiCenterOnboardingPluginConfigYaml": {
+  "ApiCenterOnboardingPluginConfig": {
     "prefix": "devproxy-plugin-api-center-onboarding-config",
     "body": [
       "apiCenterOnboardingPlugin:",
@@ -270,7 +270,7 @@
     ],
     "description": "ApiCenterOnboardingPlugin config section"
   },
-  "ApiCenterProductionVersionPluginYaml": {
+  "ApiCenterProductionVersionPlugin": {
     "prefix": "devproxy-plugin-api-center-production-version",
     "body": [
       "- name: ApiCenterProductionVersionPlugin",
@@ -280,7 +280,7 @@
     ],
     "description": "ApiCenterProductionVersionPlugin instance"
   },
-  "ApiCenterProductionVersionPluginConfigYaml": {
+  "ApiCenterProductionVersionPluginConfig": {
     "prefix": "devproxy-plugin-api-center-production-version-config",
     "body": [
       "apiCenterProductionVersionPlugin:",
@@ -292,7 +292,7 @@
     ],
     "description": "ApiCenterProductionVersionPlugin config section"
   },
-  "CachingGuidancePluginYaml": {
+  "CachingGuidancePlugin": {
     "prefix": "devproxy-plugin-caching-guidance",
     "body": [
       "- name: CachingGuidancePlugin",
@@ -301,7 +301,7 @@
     ],
     "description": "CachingGuidancePlugin instance"
   },
-  "CachingGuidancePluginConfigYaml": {
+  "CachingGuidancePluginConfig": {
     "prefix": "devproxy-plugin-caching-guidance-config",
     "body": [
       "cachingGuidance:",
@@ -310,7 +310,7 @@
     ],
     "description": "CachingGuidancePlugin config section"
   },
-  "CrudApiPluginYaml": {
+  "CrudApiPlugin": {
     "prefix": "devproxy-plugin-crud-api",
     "body": [
       "- name: CrudApiPlugin",
@@ -320,7 +320,7 @@
     ],
     "description": "CrudApiPlugin instance"
   },
-  "CrudApiPluginConfigYaml": {
+  "CrudApiPluginConfig": {
     "prefix": "devproxy-plugin-crud-api-config",
     "body": [
       "customersApi:",
@@ -329,7 +329,7 @@
     ],
     "description": "CrudApiPlugin config section"
   },
-  "CrudApiPluginApiFileYaml": {
+  "CrudApiPluginApiFile": {
     "prefix": "devproxy-plugin-crud-api-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json\"",
@@ -340,14 +340,14 @@
     ],
     "description": "CrudApiPlugin API file"
   },
-  "CrudApiPluginFileSchemaYaml": {
+  "CrudApiPluginFileSchema": {
     "prefix": "devproxy-plugin-crud-api-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json\""
     ],
     "description": "CrudApiPlugin API file schema"
   },
-  "CrudApiPluginActionYaml": {
+  "CrudApiPluginAction": {
     "prefix": "devproxy-plugin-crud-api-action",
     "body": [
       "- action: $1",
@@ -357,7 +357,7 @@
     ],
     "description": "CrudApiPlugin action"
   },
-  "DevToolsPluginYaml": {
+  "DevToolsPlugin": {
     "prefix": "devproxy-plugin-dev-tools",
     "body": [
       "- name: DevToolsPlugin",
@@ -366,7 +366,7 @@
     ],
     "description": "DevToolsPlugin instance"
   },
-  "DevToolsPluginConfigYaml": {
+  "DevToolsPluginConfig": {
     "prefix": "devproxy-plugin-dev-tools-config",
     "body": [
       "devTools:",
@@ -375,7 +375,7 @@
     ],
     "description": "DevToolsPlugin config section"
   },
-  "EntraMockResponsePluginYaml": {
+  "EntraMockResponsePlugin": {
     "prefix": "devproxy-plugin-entra-mock-response",
     "body": [
       "- name: EntraMockResponsePlugin",
@@ -385,7 +385,7 @@
     ],
     "description": "EntraMockResponsePlugin instance"
   },
-  "EntraMockResponsePluginConfigYaml": {
+  "EntraMockResponsePluginConfig": {
     "prefix": "devproxy-plugin-entra-mock-response-config",
     "body": [
       "entraMockResponsePlugin:",
@@ -394,7 +394,7 @@
     ],
     "description": "EntraMockResponsePlugin config section"
   },
-  "ExecutionSummaryPluginYaml": {
+  "ExecutionSummaryPlugin": {
     "prefix": "devproxy-plugin-execution-summary",
     "body": [
       "- name: ExecutionSummaryPlugin",
@@ -403,7 +403,7 @@
     ],
     "description": "ExecutionSummaryPlugin instance"
   },
-  "ExecutionSummaryPluginConfigYaml": {
+  "ExecutionSummaryPluginConfig": {
     "prefix": "devproxy-plugin-execution-summary-config",
     "body": [
       "executionSummaryPlugin:",
@@ -412,7 +412,7 @@
     ],
     "description": "ExecutionSummaryPlugin config section"
   },
-  "GenericRandomErrorPluginYaml": {
+  "GenericRandomErrorPlugin": {
     "prefix": "devproxy-plugin-generic-random-error",
     "body": [
       "- name: GenericRandomErrorPlugin",
@@ -422,7 +422,7 @@
     ],
     "description": "GenericRandomErrorPlugin instance"
   },
-  "GenericRandomErrorPluginConfigYaml": {
+  "GenericRandomErrorPluginConfig": {
     "prefix": "devproxy-plugin-generic-random-error-config",
     "body": [
       "genericRandomErrorPlugin:",
@@ -432,7 +432,7 @@
     ],
     "description": "GenericRandomErrorPlugin config section"
   },
-  "GenericRandomErrorPluginFileYaml": {
+  "GenericRandomErrorPluginFile": {
     "prefix": "devproxy-plugin-generic-random-error-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json\"",
@@ -441,14 +441,14 @@
     ],
     "description": "GenericRandomErrorPlugin errors file"
   },
-  "GenericRandomErrorPluginFileSchemaYaml": {
+  "GenericRandomErrorPluginFileSchema": {
     "prefix": "devproxy-plugin-generic-random-error-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json\""
     ],
     "description": "GenericRandomErrorPlugin errors file schema"
   },
-  "GraphBetaSupportGuidancePluginYaml": {
+  "GraphBetaSupportGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-beta-support-guidance",
     "body": [
       "- name: GraphBetaSupportGuidancePlugin",
@@ -462,7 +462,7 @@
     ],
     "description": "GraphBetaSupportGuidancePlugin instance"
   },
-  "GraphClientRequestIdGuidancePluginYaml": {
+  "GraphClientRequestIdGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-client-request-id-guidance",
     "body": [
       "- name: GraphClientRequestIdGuidancePlugin",
@@ -480,7 +480,7 @@
     ],
     "description": "GraphClientRequestIdGuidancePlugin instance"
   },
-  "GraphConnectorGuidancePluginYaml": {
+  "GraphConnectorGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-connector-guidance",
     "body": [
       "- name: GraphConnectorGuidancePlugin",
@@ -494,7 +494,7 @@
     ],
     "description": "GraphConnectorGuidancePlugin instance"
   },
-  "GraphMinimalPermissionsGuidancePluginYaml": {
+  "GraphMinimalPermissionsGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-minimal-permissions-guidance",
     "body": [
       "- name: GraphMinimalPermissionsGuidancePlugin",
@@ -503,7 +503,7 @@
     ],
     "description": "GraphMinimalPermissionsGuidancePlugin instance"
   },
-  "GraphMinimalPermissionsGuidancePluginConfigYaml": {
+  "GraphMinimalPermissionsGuidancePluginConfig": {
     "prefix": "devproxy-plugin-graph-minimal-permissions-guidance-config",
     "body": [
       "graphMinimalPermissionsGuidancePlugin:",
@@ -516,7 +516,7 @@
     ],
     "description": "GraphMinimalPermissionsGuidancePlugin config section"
   },
-  "GraphMinimalPermissionsPluginYaml": {
+  "GraphMinimalPermissionsPlugin": {
     "prefix": "devproxy-plugin-graph-minimal-permissions",
     "body": [
       "- name: GraphMinimalPermissionsPlugin",
@@ -525,7 +525,7 @@
     ],
     "description": "GraphMinimalPermissionsPlugin instance"
   },
-  "GraphMinimalPermissionsPluginConfigYaml": {
+  "GraphMinimalPermissionsPluginConfig": {
     "prefix": "devproxy-plugin-graph-minimal-permissions-config",
     "body": [
       "graphMinimalPermissionsPlugin:",
@@ -534,7 +534,7 @@
     ],
     "description": "GraphMinimalPermissionsPlugin config section"
   },
-  "GraphMockResponsePluginYaml": {
+  "GraphMockResponsePlugin": {
     "prefix": "devproxy-plugin-graph-mock-response",
     "body": [
       "- name: GraphMockResponsePlugin",
@@ -553,7 +553,7 @@
     ],
     "description": "GraphMockResponsePlugin instance"
   },
-  "GraphMockResponsePluginConfigYaml": {
+  "GraphMockResponsePluginConfig": {
     "prefix": "devproxy-plugin-graph-mock-response-config",
     "body": [
       "graphMockResponsePlugin:",
@@ -562,7 +562,7 @@
     ],
     "description": "GraphMockResponsePlugin config section"
   },
-  "GraphRandomErrorPluginYaml": {
+  "GraphRandomErrorPlugin": {
     "prefix": "devproxy-plugin-graph-random-error",
     "body": [
       "- name: GraphRandomErrorPlugin",
@@ -580,7 +580,7 @@
     ],
     "description": "GraphRandomErrorPlugin instance"
   },
-  "GraphRandomErrorPluginConfigYaml": {
+  "GraphRandomErrorPluginConfig": {
     "prefix": "devproxy-plugin-graph-random-error-config",
     "body": [
       "graphRandomErrorPlugin:",
@@ -596,7 +596,7 @@
     ],
     "description": "GraphRandomErrorPlugin config section"
   },
-  "GraphSdkGuidancePluginYaml": {
+  "GraphSdkGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-sdk-guidance",
     "body": [
       "- name: GraphSdkGuidancePlugin",
@@ -614,7 +614,7 @@
     ],
     "description": "GraphSdkGuidancePlugin instance"
   },
-  "GraphSelectGuidancePluginYaml": {
+  "GraphSelectGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-select-guidance",
     "body": [
       "- name: GraphSelectGuidancePlugin",
@@ -632,7 +632,7 @@
     ],
     "description": "GraphSdkGuidancePlugin instance"
   },
-  "HarGeneratorPluginYaml": {
+  "HarGeneratorPlugin": {
     "prefix": "devproxy-plugin-har-generator",
     "body": [
       "- name: HarGeneratorPlugin",
@@ -642,7 +642,7 @@
     ],
     "description": "HarGeneratorPlugin instance"
   },
-  "HarGeneratorPluginConfigYaml": {
+  "HarGeneratorPluginConfig": {
     "prefix": "devproxy-plugin-har-generator-config",
     "body": [
       "harGeneratorPlugin:",
@@ -652,7 +652,7 @@
     ],
     "description": "HarGeneratorPlugin config section"
   },
-  "HttpFileGeneratorPluginYaml": {
+  "HttpFileGeneratorPlugin": {
     "prefix": "devproxy-plugin-http-file-generator",
     "body": [
       "- name: HttpFileGeneratorPlugin",
@@ -661,7 +661,7 @@
     ],
     "description": "HttpFileGeneratorPlugin instance"
   },
-  "HttpFileGeneratorPluginConfigYaml": {
+  "HttpFileGeneratorPluginConfig": {
     "prefix": "devproxy-plugin-http-file-generator-config",
     "body": [
       "httpFileGeneratorPlugin:",
@@ -670,7 +670,7 @@
     ],
     "description": "HttpFileGeneratorPlugin config section"
   },
-  "LatencyPluginYaml": {
+  "LatencyPlugin": {
     "prefix": "devproxy-plugin-latency",
     "body": [
       "- name: LatencyPlugin",
@@ -680,7 +680,7 @@
     ],
     "description": "LatencyPlugin instance"
   },
-  "LatencyPluginConfigYaml": {
+  "LatencyPluginConfig": {
     "prefix": "devproxy-plugin-latency-config",
     "body": [
       "latencyPlugin:",
@@ -690,7 +690,7 @@
     ],
     "description": "LatencyPlugin config section"
   },
-  "LanguageModelFailurePluginYaml": {
+  "LanguageModelFailurePlugin": {
     "prefix": "devproxy-plugin-language-model-failure",
     "body": [
       "- name: LanguageModelFailurePlugin",
@@ -700,7 +700,7 @@
     ],
     "description": "LanguageModelFailurePlugin instance"
   },
-  "LanguageModelFailurePluginConfigYaml": {
+  "LanguageModelFailurePluginConfig": {
     "prefix": "devproxy-plugin-language-model-failure-config",
     "body": [
       "languageModelFailurePlugin:",
@@ -711,7 +711,7 @@
     ],
     "description": "LanguageModelFailurePlugin config section"
   },
-  "LanguageModelRateLimitingPluginYaml": {
+  "LanguageModelRateLimitingPlugin": {
     "prefix": "devproxy-plugin-language-model-rate-limiting",
     "body": [
       "- name: LanguageModelRateLimitingPlugin",
@@ -721,7 +721,7 @@
     ],
     "description": "LanguageModelRateLimitingPlugin instance"
   },
-  "LanguageModelRateLimitingPluginConfigYaml": {
+  "LanguageModelRateLimitingPluginConfig": {
     "prefix": "devproxy-plugin-language-model-rate-limiting-config",
     "body": [
       "languageModelRateLimitingPlugin:",
@@ -734,7 +734,7 @@
     ],
     "description": "LanguageModelRateLimitingPlugin config section"
   },
-  "MinimalCsomPermissionsPluginYaml": {
+  "MinimalCsomPermissionsPlugin": {
     "prefix": "devproxy-plugin-minimal-csom-permissions",
     "body": [
       "- name: MinimalCsomPermissionsPlugin",
@@ -743,7 +743,7 @@
     ],
     "description": "MinimalCsomPermissionsPlugin instance"
   },
-  "MinimalCsomPermissionsPluginConfigYaml": {
+  "MinimalCsomPermissionsPluginConfig": {
     "prefix": "devproxy-plugin-minimal-csom-permissions-config",
     "body": [
       "minimalCsomPermissionsPlugin:",
@@ -752,7 +752,7 @@
     ],
     "description": "MinimalCsomPermissionsPlugin config section"
   },
-  "MinimalPermissionsPluginYaml": {
+  "MinimalPermissionsPlugin": {
     "prefix": "devproxy-plugin-minimal-permissions",
     "body": [
       "- name: MinimalPermissionsPlugin",
@@ -762,7 +762,7 @@
     ],
     "description": "MinimalPermissionsPlugin instance"
   },
-  "MinimalPermissionsPluginConfigYaml": {
+  "MinimalPermissionsPluginConfig": {
     "prefix": "devproxy-plugin-minimal-permissions-config",
     "body": [
       "minimalPermissionsPlugin:",
@@ -771,7 +771,7 @@
     ],
     "description": "MinimalPermissionsPlugin config section"
   },
-  "MinimalPermissionsGuidancePluginYaml": {
+  "MinimalPermissionsGuidancePlugin": {
     "prefix": "devproxy-plugin-minimal-permissions-guidance",
     "body": [
       "- name: MinimalPermissionsGuidancePlugin",
@@ -781,7 +781,7 @@
     ],
     "description": "MinimalPermissionsGuidancePlugin instance"
   },
-  "MinimalPermissionsGuidancePluginConfigYaml": {
+  "MinimalPermissionsGuidancePluginConfig": {
     "prefix": "devproxy-plugin-minimal-permissions-guidance-config",
     "body": [
       "minimalPermissionsGuidancePlugin:",
@@ -790,7 +790,7 @@
     ],
     "description": "MinimalPermissionsGuidancePlugin config section"
   },
-  "MockGeneratorPluginYaml": {
+  "MockGeneratorPlugin": {
     "prefix": "devproxy-plugin-mock-generator",
     "body": [
       "- name: MockGeneratorPlugin",
@@ -799,7 +799,7 @@
     ],
     "description": "MockGeneratorPlugin instance"
   },
-  "MockRequestPluginYaml": {
+  "MockRequestPlugin": {
     "prefix": "devproxy-plugin-mock-request",
     "body": [
       "- name: MockRequestPlugin",
@@ -809,7 +809,7 @@
     ],
     "description": "MockRequestPlugin instance"
   },
-  "MockRequestPluginConfigYaml": {
+  "MockRequestPluginConfig": {
     "prefix": "devproxy-plugin-mock-request-config",
     "body": [
       "mockRequestPlugin:",
@@ -818,7 +818,7 @@
     ],
     "description": "MockRequestPlugin config section"
   },
-  "MockResponsePluginYaml": {
+  "MockResponsePlugin": {
     "prefix": "devproxy-plugin-mock-response",
     "body": [
       "- name: MockResponsePlugin",
@@ -828,7 +828,7 @@
     ],
     "description": "MockResponsePlugin instance"
   },
-  "MockResponsePluginConfigYaml": {
+  "MockResponsePluginConfig": {
     "prefix": "devproxy-plugin-mock-response-config",
     "body": [
       "mockResponsePlugin:",
@@ -837,14 +837,14 @@
     ],
     "description": "MockResponsePlugin config section"
   },
-  "MockResponsePluginFileSchemaYaml": {
+  "MockResponsePluginFileSchema": {
     "prefix": "devproxy-plugin-mock-response-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\""
     ],
     "description": "MockResponsePlugin schema"
   },
-  "MockStdioResponsePluginYaml": {
+  "MockStdioResponsePlugin": {
     "prefix": "devproxy-plugin-mock-stdio-response",
     "body": [
       "- name: MockStdioResponsePlugin",
@@ -854,7 +854,7 @@
     ],
     "description": "MockStdioResponsePlugin instance"
   },
-  "MockStdioResponsePluginConfigYaml": {
+  "MockStdioResponsePluginConfig": {
     "prefix": "devproxy-plugin-mock-stdio-response-config",
     "body": [
       "mockStdioResponsePlugin:",
@@ -863,7 +863,7 @@
     ],
     "description": "MockStdioResponsePlugin config section"
   },
-  "MockStdioResponsePluginMocksFileYaml": {
+  "MockStdioResponsePluginMocksFile": {
     "prefix": "devproxy-plugin-mock-stdio-response-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\"",
@@ -872,14 +872,14 @@
     ],
     "description": "MockStdioResponsePlugin mocks file"
   },
-  "MockStdioResponsePluginMocksFileSchemaYaml": {
+  "MockStdioResponsePluginMocksFileSchema": {
     "prefix": "devproxy-plugin-mock-stdio-response-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\""
     ],
     "description": "MockStdioResponsePlugin mocks file schema"
   },
-  "ODataPagingGuidancePluginYaml": {
+  "ODataPagingGuidancePlugin": {
     "prefix": "devproxy-plugin-odata-paging-guidance",
     "body": [
       "- name: ODataPagingGuidancePlugin",
@@ -888,7 +888,7 @@
     ],
     "description": "ODataPagingGuidancePlugin instance"
   },
-  "ODSPSearchGuidancePluginYaml": {
+  "ODSPSearchGuidancePlugin": {
     "prefix": "devproxy-plugin-graph-odsp-search-guidance",
     "body": [
       "- name: ODSPSearchGuidancePlugin",
@@ -906,7 +906,7 @@
     ],
     "description": "ODSPSearchGuidancePlugin instance"
   },
-  "OpenAIMockResponsePluginYaml": {
+  "OpenAIMockResponsePlugin": {
     "prefix": "devproxy-plugin-openai-mock-response",
     "body": [
       "- name: OpenAIMockResponsePlugin",
@@ -915,7 +915,7 @@
     ],
     "description": "OpenAIMockResponsePlugin instance"
   },
-  "OpenAITelemetryPluginYaml": {
+  "OpenAITelemetryPlugin": {
     "prefix": "devproxy-plugin-openai-telemetry",
     "body": [
       "- name: OpenAITelemetryPlugin",
@@ -925,7 +925,7 @@
     ],
     "description": "OpenAITelemetryPlugin instance"
   },
-  "OpenAITelemetryPluginConfigYaml": {
+  "OpenAITelemetryPluginConfig": {
     "prefix": "devproxy-plugin-openai-telemetry-config",
     "body": [
       "openAITelemetryPlugin:",
@@ -936,7 +936,7 @@
     ],
     "description": "OpenAITelemetryPlugin config section"
   },
-  "OpenAIUsageDebuggingPluginYaml": {
+  "OpenAIUsageDebuggingPlugin": {
     "prefix": "devproxy-plugin-openai-usage-debugging",
     "body": [
       "- name: OpenAIUsageDebuggingPlugin",
@@ -945,7 +945,7 @@
     ],
     "description": "OpenAIUsageDebuggingPlugin instance"
   },
-  "OpenApiSpecGeneratorPluginYaml": {
+  "OpenApiSpecGeneratorPlugin": {
     "prefix": "devproxy-plugin-open-api-spec-generator",
     "body": [
       "- name: OpenApiSpecGeneratorPlugin",
@@ -954,7 +954,7 @@
     ],
     "description": "OpenApiSpecGeneratorPlugin instance"
   },
-  "OpenApiSpecGeneratorPluginConfigYaml": {
+  "OpenApiSpecGeneratorPluginConfig": {
     "prefix": "devproxy-plugin-open-api-spec-generator-config",
     "body": [
       "openApiSpecGeneratorPlugin:",
@@ -965,7 +965,7 @@
     ],
     "description": "OpenApiSpecGeneratorPlugin config section"
   },
-  "RateLimitingPluginYaml": {
+  "RateLimitingPlugin": {
     "prefix": "devproxy-plugin-rate-limiting",
     "body": [
       "- name: RateLimitingPlugin",
@@ -974,7 +974,7 @@
     ],
     "description": "RateLimitingPlugin instance"
   },
-  "RateLimitingPluginConfigYaml": {
+  "RateLimitingPluginConfig": {
     "prefix": "devproxy-plugin-rate-limiting-config",
     "body": [
       "rateLimiting:",
@@ -985,7 +985,7 @@
     ],
     "description": "RateLimitingPlugin config section"
   },
-  "RateLimitingFileYaml": {
+  "RateLimitingFile": {
     "prefix": "devproxy-plugin-rate-limiting-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json\"",
@@ -996,14 +996,14 @@
     ],
     "description": "Dev Proxy rate limiting file"
   },
-  "RateLimitingFileSchemaYaml": {
+  "RateLimitingFileSchema": {
     "prefix": "devproxy-plugin-rate-limiting-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json\""
     ],
     "description": "Dev Proxy rate limiting file schema"
   },
-  "RetryAfterPluginYaml": {
+  "RetryAfterPlugin": {
     "prefix": "devproxy-plugin-retry-after",
     "body": [
       "- name: RetryAfterPlugin",
@@ -1012,7 +1012,7 @@
     ],
     "description": "RetryAfterPlugin instance"
   },
-  "RewritePluginYaml": {
+  "RewritePlugin": {
     "prefix": "devproxy-plugin-rewrite",
     "body": [
       "- name: RewritePlugin",
@@ -1022,7 +1022,7 @@
     ],
     "description": "RewritePlugin instance"
   },
-  "RewritePluginFileYaml": {
+  "RewritePluginFile": {
     "prefix": "devproxy-plugin-rewrite-file",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json\"",
@@ -1031,14 +1031,14 @@
     ],
     "description": "RewritePlugin rewrites file"
   },
-  "RewritePluginFileSchemaYaml": {
+  "RewritePluginFileSchema": {
     "prefix": "devproxy-plugin-rewrite-file-schema",
     "body": [
       "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json\""
     ],
     "description": "RewritePlugin rewrites file schema"
   },
-  "RewritePluginConfigYaml": {
+  "RewritePluginConfig": {
     "prefix": "devproxy-plugin-rewrite-config",
     "body": [
       "rewritePlugin:",
@@ -1047,7 +1047,7 @@
     ],
     "description": "RewritePlugin config section"
   },
-  "TypeSpecGeneratorPluginYaml": {
+  "TypeSpecGeneratorPlugin": {
     "prefix": "devproxy-plugin-typespec-generator",
     "body": [
       "- name: TypeSpecGeneratorPlugin",
@@ -1056,7 +1056,7 @@
     ],
     "description": "TypeSpecGeneratorPlugin instance"
   },
-  "TypeSpecGeneratorPluginConfigYaml": {
+  "TypeSpecGeneratorPluginConfig": {
     "prefix": "devproxy-plugin-typespec-generator-config",
     "body": [
       "typeSpecGeneratorPlugin:",
@@ -1065,7 +1065,7 @@
     ],
     "description": "TypeSpecGeneratorPlugin config section"
   },
-  "UrlDiscoveryPluginYaml": {
+  "UrlDiscoveryPlugin": {
     "prefix": "devproxy-plugin-url-discovery",
     "body": [
       "- name: UrlDiscoveryPlugin",
@@ -1074,7 +1074,7 @@
     ],
     "description": "UrlDiscoveryPlugin instance"
   },
-  "JsonReporterYaml": {
+  "JsonReporter": {
     "prefix": "devproxy-reporter-json",
     "body": [
       "- name: JsonReporter",
@@ -1083,7 +1083,7 @@
     ],
     "description": "JsonReporter instance"
   },
-  "MarkdownReporterYaml": {
+  "MarkdownReporter": {
     "prefix": "devproxy-reporter-markdown",
     "body": [
       "- name: MarkdownReporter",
@@ -1092,7 +1092,7 @@
     ],
     "description": "MarkdownReporter instance"
   },
-  "PlainTextReporterYaml": {
+  "PlainTextReporter": {
     "prefix": "devproxy-reporter-plain-text",
     "body": [
       "- name: PlainTextReporter",
