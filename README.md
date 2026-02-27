@@ -37,13 +37,10 @@ Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` /
 
 ### Snippets
 
-Type `devproxy-` to access 80+ snippets:
-
-- **JSON** - Config files, plugins, mocks, and more
-- **YAML** - GitHub Actions workflow steps
+Type `devproxy-` to access 100+ snippets in JSON, JSONC, YAML and YML files.
 
 <details>
-<summary><strong>JSON Snippets</strong> (click to expand)</summary>
+<summary><strong>Snippets</strong> (click to expand)</summary>
 
 | Prefix | Description |
 | ------ | ----------- |
@@ -147,22 +144,14 @@ Type `devproxy-` to access 80+ snippets:
 | `devproxy-reporter-json` | JsonReporter instance |
 | `devproxy-reporter-markdown` | MarkdownReporter instance |
 | `devproxy-reporter-plain-text` | PlainTextReporter instance |
-| `devproxy-task-start` | Start Dev Proxy VS Code Task |
-| `devproxy-task-stop` | Stop Dev Proxy VS Code Task |
-
-</details>
-
-<details>
-<summary><strong>YAML Snippets</strong> (click to expand)</summary>
-
-| Prefix | Description |
-| ------ | ----------- |
-| `devproxy-action-setup` | GitHub Actions step: Setup Dev Proxy (recommended) |
-| `devproxy-action-start` | GitHub Actions step: Start Dev Proxy manually |
-| `devproxy-action-stop` | GitHub Actions step: Stop Dev Proxy |
-| `devproxy-action-record-start` | GitHub Actions step: Start Dev Proxy recording |
-| `devproxy-action-record-stop` | GitHub Actions step: Stop Dev Proxy recording |
-| `devproxy-action-chromium-cert` | GitHub Actions step: Install Dev Proxy certificate for Chromium browsers |
+| `devproxy-task-start` | Start Dev Proxy VS Code Task (JSON only) |
+| `devproxy-task-stop` | Stop Dev Proxy VS Code Task (JSON only) |
+| `devproxy-action-setup` | GitHub Actions step: Setup Dev Proxy (YAML only) |
+| `devproxy-action-start` | GitHub Actions step: Start Dev Proxy manually (YAML only) |
+| `devproxy-action-stop` | GitHub Actions step: Stop Dev Proxy (YAML only) |
+| `devproxy-action-record-start` | GitHub Actions step: Start Dev Proxy recording (YAML only) |
+| `devproxy-action-record-stop` | GitHub Actions step: Stop Dev Proxy recording (YAML only) |
+| `devproxy-action-chromium-cert` | GitHub Actions step: Install Dev Proxy certificate for Chromium browsers (YAML only) |
 
 </details>
 

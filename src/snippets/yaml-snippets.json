@@ -63,5 +63,1042 @@
       "  uses: dev-proxy-tools/actions/chromium-cert@v1"
     ],
     "description": "GitHub Actions step: Install Dev Proxy certificate for Chromium browsers"
+  },
+  "ConfigFile": {
+    "prefix": "devproxy-config-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json\"",
+      "plugins:",
+      "  - $1",
+      "urlsToWatch:",
+      "  - $2",
+      "logLevel: information",
+      "newVersionNotification: stable",
+      "showSkipMessages: true"
+    ],
+    "description": "Dev Proxy config file"
+  },
+  "ConfigFileSchema": {
+    "prefix": "devproxy-config-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rc.schema.json\""
+    ],
+    "description": "Dev Proxy config file schema"
+  },
+  "Error": {
+    "prefix": "devproxy-error",
+    "body": [
+      "- request:",
+      "    url: $1",
+      "  responses:",
+      "    - $2"
+    ],
+    "description": "Dev Proxy error"
+  },
+  "MocksFile": {
+    "prefix": "devproxy-mocks-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\"",
+      "mocks:",
+      "  - $1"
+    ],
+    "description": "Dev Proxy mocks file"
+  },
+  "MocksFileSchema": {
+    "prefix": "devproxy-mocks-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\""
+    ],
+    "description": "Dev Proxy mocks file schema"
+  },
+  "Mock": {
+    "prefix": "devproxy-mock",
+    "body": [
+      "- request:",
+      "    url: $1",
+      "  response: $2"
+    ],
+    "description": "Dev Proxy mock"
+  },
+  "PricesFile": {
+    "prefix": "devproxy-prices-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openaitelemetryplugin.pricesfile.schema.json\"",
+      "prices: $1"
+    ],
+    "description": "Dev Proxy prices file"
+  },
+  "Price": {
+    "prefix": "devproxy-price",
+    "body": [
+      "gpt-4:",
+      "  input: 0.03",
+      "  output: 0.06"
+    ],
+    "description": "Dev Proxy price"
+  },
+  "Request": {
+    "prefix": "devproxy-request",
+    "body": [
+      "- request:",
+      "    url: $1",
+      "  response: $2"
+    ],
+    "description": "Dev Proxy request"
+  },
+  "Response": {
+    "prefix": "devproxy-response",
+    "body": [
+      "- statusCode: ${1:400}",
+      "  body: $2",
+      "  headers:",
+      "    - $3"
+    ],
+    "description": "Dev Proxy response"
+  },
+  "ResponseHeader": {
+    "prefix": "devproxy-response-header",
+    "body": [
+      "- name: $1",
+      "  value: $2"
+    ],
+    "description": "Dev Proxy response header"
+  },
+  "Rewrite": {
+    "prefix": "devproxy-rewrite",
+    "body": [
+      "- in:",
+      "    url: $1",
+      "  out:",
+      "    url: $2"
+    ],
+    "description": "Dev Proxy rewrite"
+  },
+  "AuthPlugin": {
+    "prefix": "devproxy-plugin-auth",
+    "body": [
+      "- name: AuthPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: auth"
+    ],
+    "description": "AuthPlugin instance"
+  },
+  "AuthPluginAPIKeyConfig": {
+    "prefix": "devproxy-plugin-auth-config-apikey",
+    "body": [
+      "auth:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/authplugin.schema.json\"",
+      "  type: apiKey",
+      "  apiKey:",
+      "    parameters:",
+      "      - in: header",
+      "        name: x-api-key",
+      "      - in: query",
+      "        name: code",
+      "    allowedKeys:",
+      "      - 1234"
+    ],
+    "description": "AuthPlugin API Key config section"
+  },
+  "AuthPluginOAuth2Config": {
+    "prefix": "devproxy-plugin-auth-config-oauth2",
+    "body": [
+      "auth:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/authplugin.schema.json\"",
+      "  type: oauth2",
+      "  oauth2:",
+      "    metadataUrl: \"https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration\"",
+      "    allowedApplications:",
+      "      - 00000000-0000-0000-0000-000000000000",
+      "    allowedAudiences:",
+      "      - 00000000-0000-0000-0000-000000000000",
+      "    allowedPrincipals:",
+      "      - 00000000-0000-0000-0000-000000000000",
+      "    allowedTenants:",
+      "      - 00000000-0000-0000-0000-000000000000",
+      "    issuer: \"https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000/v2.0\"",
+      "    scopes:",
+      "      - Posts.Read",
+      "    validateLifetime: true",
+      "    validateSigningKey: true"
+    ],
+    "description": "AuthPlugin OAuth2 config section"
+  },
+  "ApiCenterMinimalPermissionsPlugin": {
+    "prefix": "devproxy-plugin-api-center-minimal-permissions",
+    "body": [
+      "- name: ApiCenterOnboardingPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: apiCenterMinimalPermissionsPlugin"
+    ],
+    "description": "ApiCenterMinimalPermissionsPlugin instance"
+  },
+  "ApiCenterMinimalPermissionsPluginConfig": {
+    "prefix": "devproxy-plugin-api-center-minimal-permissions-config",
+    "body": [
+      "apiCenterMinimalPermissionsPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/apicenterminimalpermissionsplugin.schema.json\"",
+      "  subscriptionId: cdae2297-7aa6-4195-bbb1-dcd89153cc72",
+      "  resourceGroupName: resource-group-name",
+      "  serviceName: apic-instance",
+      "  workspaceName: default"
+    ],
+    "description": "ApiCenterMinimalPermissionsPlugin config section"
+  },
+  "ApiCenterOnboardingPlugin": {
+    "prefix": "devproxy-plugin-api-center-onboarding",
+    "body": [
+      "- name: ApiCenterOnboardingPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: apiCenterOnboardingPlugin"
+    ],
+    "description": "ApiCenterOnboardingPlugin instance"
+  },
+  "ApiCenterOnboardingPluginConfig": {
+    "prefix": "devproxy-plugin-api-center-onboarding-config",
+    "body": [
+      "apiCenterOnboardingPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/apicenteronboardingplugin.schema.json\"",
+      "  subscriptionId: cdae2297-7aa6-4195-bbb1-dcd89153cc72",
+      "  resourceGroupName: resource-group-name",
+      "  serviceName: apic-instance",
+      "  workspaceName: default",
+      "  createApicEntryForNewApis: true"
+    ],
+    "description": "ApiCenterOnboardingPlugin config section"
+  },
+  "ApiCenterProductionVersionPlugin": {
+    "prefix": "devproxy-plugin-api-center-production-version",
+    "body": [
+      "- name: ApiCenterProductionVersionPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: apiCenterProductionVersionPlugin"
+    ],
+    "description": "ApiCenterProductionVersionPlugin instance"
+  },
+  "ApiCenterProductionVersionPluginConfig": {
+    "prefix": "devproxy-plugin-api-center-production-version-config",
+    "body": [
+      "apiCenterProductionVersionPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/apicenterproductionversionplugin.schema.json\"",
+      "  subscriptionId: cdae2297-7aa6-4195-bbb1-dcd89153cc72",
+      "  resourceGroupName: resource-group-name",
+      "  serviceName: apic-instance",
+      "  workspaceName: default"
+    ],
+    "description": "ApiCenterProductionVersionPlugin config section"
+  },
+  "CachingGuidancePlugin": {
+    "prefix": "devproxy-plugin-caching-guidance",
+    "body": [
+      "- name: CachingGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "CachingGuidancePlugin instance"
+  },
+  "CachingGuidancePluginConfig": {
+    "prefix": "devproxy-plugin-caching-guidance-config",
+    "body": [
+      "cachingGuidance:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/cachingguidanceplugin.schema.json\"",
+      "  cacheThresholdSeconds: 5"
+    ],
+    "description": "CachingGuidancePlugin config section"
+  },
+  "CrudApiPlugin": {
+    "prefix": "devproxy-plugin-crud-api",
+    "body": [
+      "- name: CrudApiPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: customersApi"
+    ],
+    "description": "CrudApiPlugin instance"
+  },
+  "CrudApiPluginConfig": {
+    "prefix": "devproxy-plugin-crud-api-config",
+    "body": [
+      "customersApi:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.schema.json\"",
+      "  apiFile: customers-api.json"
+    ],
+    "description": "CrudApiPlugin config section"
+  },
+  "CrudApiPluginApiFile": {
+    "prefix": "devproxy-plugin-crud-api-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json\"",
+      "actions:",
+      "  - $1",
+      "baseUrl: $2",
+      "dataFile: $3"
+    ],
+    "description": "CrudApiPlugin API file"
+  },
+  "CrudApiPluginFileSchema": {
+    "prefix": "devproxy-plugin-crud-api-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/crudapiplugin.apifile.schema.json\""
+    ],
+    "description": "CrudApiPlugin API file schema"
+  },
+  "CrudApiPluginAction": {
+    "prefix": "devproxy-plugin-crud-api-action",
+    "body": [
+      "- action: $1",
+      "  method: $2",
+      "  query: $3",
+      "  url: $4"
+    ],
+    "description": "CrudApiPlugin action"
+  },
+  "DevToolsPlugin": {
+    "prefix": "devproxy-plugin-dev-tools",
+    "body": [
+      "- name: DevToolsPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "DevToolsPlugin instance"
+  },
+  "DevToolsPluginConfig": {
+    "prefix": "devproxy-plugin-dev-tools-config",
+    "body": [
+      "devTools:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/devtoolsplugin.schema.json\"",
+      "  preferredBrowser: Edge"
+    ],
+    "description": "DevToolsPlugin config section"
+  },
+  "EntraMockResponsePlugin": {
+    "prefix": "devproxy-plugin-entra-mock-response",
+    "body": [
+      "- name: EntraMockResponsePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: entraMockResponsePlugin"
+    ],
+    "description": "EntraMockResponsePlugin instance"
+  },
+  "EntraMockResponsePluginConfig": {
+    "prefix": "devproxy-plugin-entra-mock-response-config",
+    "body": [
+      "entraMockResponsePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json\"",
+      "  mocksFile: mocks.json"
+    ],
+    "description": "EntraMockResponsePlugin config section"
+  },
+  "ExecutionSummaryPlugin": {
+    "prefix": "devproxy-plugin-execution-summary",
+    "body": [
+      "- name: ExecutionSummaryPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "ExecutionSummaryPlugin instance"
+  },
+  "ExecutionSummaryPluginConfig": {
+    "prefix": "devproxy-plugin-execution-summary-config",
+    "body": [
+      "executionSummaryPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/executionsummaryplugin.schema.json\"",
+      "  groupBy: url"
+    ],
+    "description": "ExecutionSummaryPlugin config section"
+  },
+  "GenericRandomErrorPlugin": {
+    "prefix": "devproxy-plugin-generic-random-error",
+    "body": [
+      "- name: GenericRandomErrorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: genericRandomErrorPlugin"
+    ],
+    "description": "GenericRandomErrorPlugin instance"
+  },
+  "GenericRandomErrorPluginConfig": {
+    "prefix": "devproxy-plugin-generic-random-error-config",
+    "body": [
+      "genericRandomErrorPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.schema.json\"",
+      "  errorsFile: errors.json",
+      "  rate: 50"
+    ],
+    "description": "GenericRandomErrorPlugin config section"
+  },
+  "GenericRandomErrorPluginFile": {
+    "prefix": "devproxy-plugin-generic-random-error-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json\"",
+      "errors:",
+      "  - $1"
+    ],
+    "description": "GenericRandomErrorPlugin errors file"
+  },
+  "GenericRandomErrorPluginFileSchema": {
+    "prefix": "devproxy-plugin-generic-random-error-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/genericrandomerrorplugin.errorsfile.schema.json\""
+    ],
+    "description": "GenericRandomErrorPlugin errors file schema"
+  },
+  "GraphBetaSupportGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-beta-support-guidance",
+    "body": [
+      "- name: GraphBetaSupportGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "GraphBetaSupportGuidancePlugin instance"
+  },
+  "GraphClientRequestIdGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-client-request-id-guidance",
+    "body": [
+      "- name: GraphClientRequestIdGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/v1.0/*\"",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/v1.0/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/v1.0/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/v1.0/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "GraphClientRequestIdGuidancePlugin instance"
+  },
+  "GraphConnectorGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-connector-guidance",
+    "body": [
+      "- name: GraphConnectorGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/*/external/connections/*/schema\"",
+      "    - \"https://graph.microsoft.us/*/external/connections/*/schema\"",
+      "    - \"https://dod-graph.microsoft.us/*/external/connections/*/schema\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/*/external/connections/*/schema\""
+    ],
+    "description": "GraphConnectorGuidancePlugin instance"
+  },
+  "GraphMinimalPermissionsGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-minimal-permissions-guidance",
+    "body": [
+      "- name: GraphMinimalPermissionsGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "GraphMinimalPermissionsGuidancePlugin instance"
+  },
+  "GraphMinimalPermissionsGuidancePluginConfig": {
+    "prefix": "devproxy-plugin-graph-minimal-permissions-guidance-config",
+    "body": [
+      "graphMinimalPermissionsGuidancePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/graphminimalpermissionsguidanceplugin.schema.json\"",
+      "  permissionsToIgnore:",
+      "    - profile",
+      "    - openid",
+      "    - offline_access",
+      "    - email"
+    ],
+    "description": "GraphMinimalPermissionsGuidancePlugin config section"
+  },
+  "GraphMinimalPermissionsPlugin": {
+    "prefix": "devproxy-plugin-graph-minimal-permissions",
+    "body": [
+      "- name: GraphMinimalPermissionsPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "GraphMinimalPermissionsPlugin instance"
+  },
+  "GraphMinimalPermissionsPluginConfig": {
+    "prefix": "devproxy-plugin-graph-minimal-permissions-config",
+    "body": [
+      "graphMinimalPermissionsPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/graphmininalpermissionsplugin.schema.json\"",
+      "  type: delegated"
+    ],
+    "description": "GraphMinimalPermissionsPlugin config section"
+  },
+  "GraphMockResponsePlugin": {
+    "prefix": "devproxy-plugin-graph-mock-response",
+    "body": [
+      "- name: GraphMockResponsePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: graphMockResponsePlugin",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/v1.0/*\"",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/v1.0/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/v1.0/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/v1.0/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "GraphMockResponsePlugin instance"
+  },
+  "GraphMockResponsePluginConfig": {
+    "prefix": "devproxy-plugin-graph-mock-response-config",
+    "body": [
+      "graphMockResponsePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json\"",
+      "  mocksFile: mocks.json"
+    ],
+    "description": "GraphMockResponsePlugin config section"
+  },
+  "GraphRandomErrorPlugin": {
+    "prefix": "devproxy-plugin-graph-random-error",
+    "body": [
+      "- name: GraphRandomErrorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/v1.0/*\"",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/v1.0/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/v1.0/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/v1.0/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "GraphRandomErrorPlugin instance"
+  },
+  "GraphRandomErrorPluginConfig": {
+    "prefix": "devproxy-plugin-graph-random-error-config",
+    "body": [
+      "graphRandomErrorPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/graphrandomerrorplugin.schema.json\"",
+      "  allowedErrors:",
+      "    - 429",
+      "    - 500",
+      "    - 502",
+      "    - 503",
+      "    - 504",
+      "    - 507",
+      "  rate: 50"
+    ],
+    "description": "GraphRandomErrorPlugin config section"
+  },
+  "GraphSdkGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-sdk-guidance",
+    "body": [
+      "- name: GraphSdkGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/v1.0/*\"",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/v1.0/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/v1.0/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/v1.0/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "GraphSdkGuidancePlugin instance"
+  },
+  "GraphSelectGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-select-guidance",
+    "body": [
+      "- name: GraphSelectGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/v1.0/*\"",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/v1.0/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/v1.0/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/v1.0/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "GraphSdkGuidancePlugin instance"
+  },
+  "HarGeneratorPlugin": {
+    "prefix": "devproxy-plugin-har-generator",
+    "body": [
+      "- name: HarGeneratorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: harGeneratorPlugin"
+    ],
+    "description": "HarGeneratorPlugin instance"
+  },
+  "HarGeneratorPluginConfig": {
+    "prefix": "devproxy-plugin-har-generator-config",
+    "body": [
+      "harGeneratorPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/hargeneratorplugin.schema.json\"",
+      "  includeSensitiveInformation: false",
+      "  includeResponse: true"
+    ],
+    "description": "HarGeneratorPlugin config section"
+  },
+  "HttpFileGeneratorPlugin": {
+    "prefix": "devproxy-plugin-http-file-generator",
+    "body": [
+      "- name: HttpFileGeneratorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "HttpFileGeneratorPlugin instance"
+  },
+  "HttpFileGeneratorPluginConfig": {
+    "prefix": "devproxy-plugin-http-file-generator-config",
+    "body": [
+      "httpFileGeneratorPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/httpfilegeneratorplugin.schema.json\"",
+      "  includeOptionsRequests: false"
+    ],
+    "description": "HttpFileGeneratorPlugin config section"
+  },
+  "LatencyPlugin": {
+    "prefix": "devproxy-plugin-latency",
+    "body": [
+      "- name: LatencyPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: latencyPlugin"
+    ],
+    "description": "LatencyPlugin instance"
+  },
+  "LatencyPluginConfig": {
+    "prefix": "devproxy-plugin-latency-config",
+    "body": [
+      "latencyPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/latencyplugin.schema.json\"",
+      "  minMs: 200",
+      "  maxMs: 10000"
+    ],
+    "description": "LatencyPlugin config section"
+  },
+  "LanguageModelFailurePlugin": {
+    "prefix": "devproxy-plugin-language-model-failure",
+    "body": [
+      "- name: LanguageModelFailurePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: languageModelFailurePlugin"
+    ],
+    "description": "LanguageModelFailurePlugin instance"
+  },
+  "LanguageModelFailurePluginConfig": {
+    "prefix": "devproxy-plugin-language-model-failure-config",
+    "body": [
+      "languageModelFailurePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/languagemodelfailureplugin.schema.json\"",
+      "  failures:",
+      "    - rate-limit-reached",
+      "    - quota-exceeded"
+    ],
+    "description": "LanguageModelFailurePlugin config section"
+  },
+  "LanguageModelRateLimitingPlugin": {
+    "prefix": "devproxy-plugin-language-model-rate-limiting",
+    "body": [
+      "- name: LanguageModelRateLimitingPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: languageModelRateLimitingPlugin"
+    ],
+    "description": "LanguageModelRateLimitingPlugin instance"
+  },
+  "LanguageModelRateLimitingPluginConfig": {
+    "prefix": "devproxy-plugin-language-model-rate-limiting-config",
+    "body": [
+      "languageModelRateLimitingPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/languagemodelratelimitingplugin.schema.json\"",
+      "  promptTokenLimit: 5000",
+      "  completionTokenLimit: 5000",
+      "  resetTimeWindowSeconds: 60",
+      "  whenLimitExceeded: Throttle",
+      "  headerRetryAfter: retry-after"
+    ],
+    "description": "LanguageModelRateLimitingPlugin config section"
+  },
+  "MinimalCsomPermissionsPlugin": {
+    "prefix": "devproxy-plugin-minimal-csom-permissions",
+    "body": [
+      "- name: MinimalCsomPermissionsPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "MinimalCsomPermissionsPlugin instance"
+  },
+  "MinimalCsomPermissionsPluginConfig": {
+    "prefix": "devproxy-plugin-minimal-csom-permissions-config",
+    "body": [
+      "minimalCsomPermissionsPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/minimalcsompermissionsplugin.schema.json\"",
+      "  typesFilePath: ./api-specs"
+    ],
+    "description": "MinimalCsomPermissionsPlugin config section"
+  },
+  "MinimalPermissionsPlugin": {
+    "prefix": "devproxy-plugin-minimal-permissions",
+    "body": [
+      "- name: MinimalPermissionsPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: minimalPermissionsPlugin"
+    ],
+    "description": "MinimalPermissionsPlugin instance"
+  },
+  "MinimalPermissionsPluginConfig": {
+    "prefix": "devproxy-plugin-minimal-permissions-config",
+    "body": [
+      "minimalPermissionsPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/minimalpermissionsplugin.schema.json\"",
+      "  apiSpecsFolderPath: ./api-specs"
+    ],
+    "description": "MinimalPermissionsPlugin config section"
+  },
+  "MinimalPermissionsGuidancePlugin": {
+    "prefix": "devproxy-plugin-minimal-permissions-guidance",
+    "body": [
+      "- name: MinimalPermissionsGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: minimalPermissionsGuidancePlugin"
+    ],
+    "description": "MinimalPermissionsGuidancePlugin instance"
+  },
+  "MinimalPermissionsGuidancePluginConfig": {
+    "prefix": "devproxy-plugin-minimal-permissions-guidance-config",
+    "body": [
+      "minimalPermissionsGuidancePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/minimalpermissionsguidanceplugin.schema.json\"",
+      "  apiSpecsFolderPath: ./api-specs"
+    ],
+    "description": "MinimalPermissionsGuidancePlugin config section"
+  },
+  "MockGeneratorPlugin": {
+    "prefix": "devproxy-plugin-mock-generator",
+    "body": [
+      "- name: MockGeneratorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "MockGeneratorPlugin instance"
+  },
+  "MockRequestPlugin": {
+    "prefix": "devproxy-plugin-mock-request",
+    "body": [
+      "- name: MockRequestPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: mockRequestPlugin"
+    ],
+    "description": "MockRequestPlugin instance"
+  },
+  "MockRequestPluginConfig": {
+    "prefix": "devproxy-plugin-mock-request-config",
+    "body": [
+      "mockRequestPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockrequestplugin.schema.json\"",
+      "  mockFile: mock-request.json"
+    ],
+    "description": "MockRequestPlugin config section"
+  },
+  "MockResponsePlugin": {
+    "prefix": "devproxy-plugin-mock-response",
+    "body": [
+      "- name: MockResponsePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: mockResponsePlugin"
+    ],
+    "description": "MockResponsePlugin instance"
+  },
+  "MockResponsePluginConfig": {
+    "prefix": "devproxy-plugin-mock-response-config",
+    "body": [
+      "mockResponsePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.schema.json\"",
+      "  mocksFile: mocks.json"
+    ],
+    "description": "MockResponsePlugin config section"
+  },
+  "MockResponsePluginFileSchema": {
+    "prefix": "devproxy-plugin-mock-response-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockresponseplugin.mocksfile.schema.json\""
+    ],
+    "description": "MockResponsePlugin schema"
+  },
+  "MockStdioResponsePlugin": {
+    "prefix": "devproxy-plugin-mock-stdio-response",
+    "body": [
+      "- name: MockStdioResponsePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: mockStdioResponsePlugin"
+    ],
+    "description": "MockStdioResponsePlugin instance"
+  },
+  "MockStdioResponsePluginConfig": {
+    "prefix": "devproxy-plugin-mock-stdio-response-config",
+    "body": [
+      "mockStdioResponsePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\"",
+      "  mocksFile: stdio-mocks.json"
+    ],
+    "description": "MockStdioResponsePlugin config section"
+  },
+  "MockStdioResponsePluginMocksFile": {
+    "prefix": "devproxy-plugin-mock-stdio-response-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\"",
+      "mocks:",
+      "  - $1"
+    ],
+    "description": "MockStdioResponsePlugin mocks file"
+  },
+  "MockStdioResponsePluginMocksFileSchema": {
+    "prefix": "devproxy-plugin-mock-stdio-response-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/mockstdioresponseplugin.schema.json\""
+    ],
+    "description": "MockStdioResponsePlugin mocks file schema"
+  },
+  "ODataPagingGuidancePlugin": {
+    "prefix": "devproxy-plugin-odata-paging-guidance",
+    "body": [
+      "- name: ODataPagingGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "ODataPagingGuidancePlugin instance"
+  },
+  "ODSPSearchGuidancePlugin": {
+    "prefix": "devproxy-plugin-graph-odsp-search-guidance",
+    "body": [
+      "- name: ODSPSearchGuidancePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  urlsToWatch:",
+      "    - \"https://graph.microsoft.com/v1.0/*\"",
+      "    - \"https://graph.microsoft.com/beta/*\"",
+      "    - \"https://graph.microsoft.us/v1.0/*\"",
+      "    - \"https://graph.microsoft.us/beta/*\"",
+      "    - \"https://dod-graph.microsoft.us/v1.0/*\"",
+      "    - \"https://dod-graph.microsoft.us/beta/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/v1.0/*\"",
+      "    - \"https://microsoftgraph.chinacloudapi.cn/beta/*\""
+    ],
+    "description": "ODSPSearchGuidancePlugin instance"
+  },
+  "OpenAIMockResponsePlugin": {
+    "prefix": "devproxy-plugin-openai-mock-response",
+    "body": [
+      "- name: OpenAIMockResponsePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "OpenAIMockResponsePlugin instance"
+  },
+  "OpenAITelemetryPlugin": {
+    "prefix": "devproxy-plugin-openai-telemetry",
+    "body": [
+      "- name: OpenAITelemetryPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: openAITelemetryPlugin"
+    ],
+    "description": "OpenAITelemetryPlugin instance"
+  },
+  "OpenAITelemetryPluginConfig": {
+    "prefix": "devproxy-plugin-openai-telemetry-config",
+    "body": [
+      "openAITelemetryPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openaitelemetryplugin.schema.json\"",
+      "  application: My app",
+      "  includeCosts: true",
+      "  pricesFile: prices.json"
+    ],
+    "description": "OpenAITelemetryPlugin config section"
+  },
+  "OpenAIUsageDebuggingPlugin": {
+    "prefix": "devproxy-plugin-openai-usage-debugging",
+    "body": [
+      "- name: OpenAIUsageDebuggingPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "OpenAIUsageDebuggingPlugin instance"
+  },
+  "OpenApiSpecGeneratorPlugin": {
+    "prefix": "devproxy-plugin-open-api-spec-generator",
+    "body": [
+      "- name: OpenApiSpecGeneratorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "OpenApiSpecGeneratorPlugin instance"
+  },
+  "OpenApiSpecGeneratorPluginConfig": {
+    "prefix": "devproxy-plugin-open-api-spec-generator-config",
+    "body": [
+      "openApiSpecGeneratorPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/openapispecgeneratorplugin.schema.json\"",
+      "  includeOptionsRequests: false",
+      "  specVersion: v3_0",
+      "  specFormat: Json"
+    ],
+    "description": "OpenApiSpecGeneratorPlugin config section"
+  },
+  "RateLimitingPlugin": {
+    "prefix": "devproxy-plugin-rate-limiting",
+    "body": [
+      "- name: RateLimitingPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "RateLimitingPlugin instance"
+  },
+  "RateLimitingPluginConfig": {
+    "prefix": "devproxy-plugin-rate-limiting-config",
+    "body": [
+      "rateLimiting:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.schema.json\"",
+      "  costPerRequest: 2",
+      "  rateLimit: 120",
+      "  retryAfterSeconds: 5"
+    ],
+    "description": "RateLimitingPlugin config section"
+  },
+  "RateLimitingFile": {
+    "prefix": "devproxy-plugin-rate-limiting-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json\"",
+      "body: $1",
+      "headers:",
+      "  - $2",
+      "statusCode: ${3:429}"
+    ],
+    "description": "Dev Proxy rate limiting file"
+  },
+  "RateLimitingFileSchema": {
+    "prefix": "devproxy-plugin-rate-limiting-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/ratelimitingplugin.customresponsefile.schema.json\""
+    ],
+    "description": "Dev Proxy rate limiting file schema"
+  },
+  "RetryAfterPlugin": {
+    "prefix": "devproxy-plugin-retry-after",
+    "body": [
+      "- name: RetryAfterPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "RetryAfterPlugin instance"
+  },
+  "RewritePlugin": {
+    "prefix": "devproxy-plugin-rewrite",
+    "body": [
+      "- name: RewritePlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\"",
+      "  configSection: rewritePlugin"
+    ],
+    "description": "RewritePlugin instance"
+  },
+  "RewritePluginFile": {
+    "prefix": "devproxy-plugin-rewrite-file",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json\"",
+      "rewrites:",
+      "  - $1"
+    ],
+    "description": "RewritePlugin rewrites file"
+  },
+  "RewritePluginFileSchema": {
+    "prefix": "devproxy-plugin-rewrite-file-schema",
+    "body": [
+      "$schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.rewritesfile.schema.json\""
+    ],
+    "description": "RewritePlugin rewrites file schema"
+  },
+  "RewritePluginConfig": {
+    "prefix": "devproxy-plugin-rewrite-config",
+    "body": [
+      "rewritePlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/rewriteplugin.schema.json\"",
+      "  rewritesFile: rewrites.json"
+    ],
+    "description": "RewritePlugin config section"
+  },
+  "TypeSpecGeneratorPlugin": {
+    "prefix": "devproxy-plugin-typespec-generator",
+    "body": [
+      "- name: TypeSpecGeneratorPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "TypeSpecGeneratorPlugin instance"
+  },
+  "TypeSpecGeneratorPluginConfig": {
+    "prefix": "devproxy-plugin-typespec-generator-config",
+    "body": [
+      "typeSpecGeneratorPlugin:",
+      "  $schema: \"https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.1.0/typespecgeneratorplugin.schema.json\"",
+      "  ignoreResponseTypes: false"
+    ],
+    "description": "TypeSpecGeneratorPlugin config section"
+  },
+  "UrlDiscoveryPlugin": {
+    "prefix": "devproxy-plugin-url-discovery",
+    "body": [
+      "- name: UrlDiscoveryPlugin",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "UrlDiscoveryPlugin instance"
+  },
+  "JsonReporter": {
+    "prefix": "devproxy-reporter-json",
+    "body": [
+      "- name: JsonReporter",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "JsonReporter instance"
+  },
+  "MarkdownReporter": {
+    "prefix": "devproxy-reporter-markdown",
+    "body": [
+      "- name: MarkdownReporter",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "MarkdownReporter instance"
+  },
+  "PlainTextReporter": {
+    "prefix": "devproxy-reporter-plain-text",
+    "body": [
+      "- name: PlainTextReporter",
+      "  enabled: true",
+      "  pluginPath: \"~appFolder/plugins/DevProxy.Plugins.dll\""
+    ],
+    "description": "PlainTextReporter instance"
   }
 }
