@@ -93,27 +93,37 @@ async function installOnMac(versionPreference: VersionPreference): Promise<void>
   }
 }
 
-async function installOnLinux(versionPreference: VersionPreference): Promise<void> {
-  const scriptUrl = getInstallScriptUrl(versionPreference);
-
-  // Check if bash is available
+async function checkLinuxPrerequisites(): Promise<boolean> {
   try {
     await executeCommand('bash --version');
   } catch {
-    vscode.window.showErrorMessage('Bash is not available. Please install bash and try again.');
-    return;
+    vscode.window.showErrorMessage('Bash is not available. Please install Bash and try again.');
+    return false;
   }
 
-  // Check if curl is available
   try {
     await executeCommand('curl --version');
   } catch {
     vscode.window.showErrorMessage('curl is not installed. Please install curl and try again.');
+    return false;
+  }
+
+  return true;
+}
+
+function buildLinuxInstallCommand(scriptUrl: string): string {
+  return `bash -c "$(curl -sL ${scriptUrl})"`;
+}
+
+async function installOnLinux(versionPreference: VersionPreference): Promise<void> {
+  if (!(await checkLinuxPrerequisites())) {
     return;
   }
 
+  const scriptUrl = getInstallScriptUrl(versionPreference);
+
   try {
-    await executeCommand(`bash -c "$(curl -sL ${scriptUrl})"`);
+    await executeCommand(buildLinuxInstallCommand(scriptUrl));
     const result = await vscode.window.showInformationMessage('Dev Proxy installed.', 'Reload');
     if (result === 'Reload') {
       await vscode.commands.executeCommand('workbench.action.reloadWindow');
@@ -130,12 +140,17 @@ async function upgradeDevProxy(configuration: vscode.WorkspaceConfiguration): Pr
 
   // Linux uses install script to upgrade
   if (platform === 'linux') {
+    if (!(await checkLinuxPrerequisites())) {
+      openUpgradeDocumentation();
+      return;
+    }
+
     const scriptUrl = getInstallScriptUrl(versionPreference);
     const versionText = isBeta ? 'Dev Proxy Beta' : 'Dev Proxy';
     const statusMessage = vscode.window.setStatusBarMessage(`Upgrading ${versionText}...`);
 
     try {
-      await executeCommand(`bash -c "$(curl -sL ${scriptUrl})"`);
+      await executeCommand(buildLinuxInstallCommand(scriptUrl));
       statusMessage.dispose();
 
       const result = await vscode.window.showInformationMessage(
