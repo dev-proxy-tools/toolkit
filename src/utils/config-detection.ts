@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
 import parse from 'json-to-ast';
 
 /**
@@ -98,7 +97,9 @@ export function isProxyFile(document: vscode.TextDocument): boolean {
  * @returns The version string (e.g., "0.24.0") or empty string if not found.
  */
 export function extractVersionFromSchemaUrl(schemaUrl: string): string {
-  const match = schemaUrl.match(/\/v(\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?)\//);
+  // Matches /vX.Y.Z/ or /vX.Y.Z-prerelease/ in schema URLs
+  const versionPattern = /\/v(\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?)\//;
+  const match = schemaUrl.match(versionPattern);
   return match ? match[1] : '';
 }
 
@@ -118,14 +119,21 @@ export async function findOutdatedConfigFiles(devProxyVersion: string): Promise<
 
   for (const uri of jsonFiles) {
     try {
-      const content = fs.readFileSync(uri.fsPath, 'utf-8');
+      const contentBytes = await vscode.workspace.fs.readFile(uri);
+      const content = Buffer.from(contentBytes).toString('utf-8');
 
       // Quick check before parsing
       if (!content.includes('dev-proxy') || !content.includes('schema')) {
         continue;
       }
 
-      const documentNode = parse(content) as parse.ObjectNode;
+      const rootNode = parse(content);
+
+      if (rootNode.type !== 'Object') {
+        continue;
+      }
+
+      const documentNode = rootNode as parse.ObjectNode;
       const schemaNode = getASTNode(documentNode.children, 'Identifier', '$schema');
 
       if (!schemaNode) {

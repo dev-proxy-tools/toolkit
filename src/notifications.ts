@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DevProxyInstall } from './types';
 import { Commands } from './constants';
-import { findOutdatedConfigFiles } from './utils';
+import { findOutdatedConfigFiles, getNormalizedVersion } from './utils';
 
 export const handleStartNotification = (context: vscode.ExtensionContext) => {
     const devProxyInstall = context.globalState.get<DevProxyInstall>('devProxyInstall');
@@ -68,9 +68,7 @@ export async function handleOutdatedConfigFilesNotification(
         return;
     }
 
-    const devProxyVersion = devProxyInstall.isBeta
-        ? devProxyInstall.version.split('-')[0]
-        : devProxyInstall.version;
+    const devProxyVersion = getNormalizedVersion(devProxyInstall);
 
     const outdatedFiles = await findOutdatedConfigFiles(devProxyVersion);
 

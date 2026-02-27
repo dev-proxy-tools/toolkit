@@ -30,7 +30,7 @@ export {
 } from './shell';
 
 // Re-export from detect for convenience
-export { getDevProxyExe } from '../detect';
+export { getDevProxyExe, getNormalizedVersion } from '../detect';
 
 // Workspace recommendations utilities
 export {

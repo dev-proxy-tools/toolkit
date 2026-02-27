@@ -103,3 +103,13 @@ export const getDevProxyExe = (versionPreference: VersionPreference) => {
         ? VersionExeName.Stable
         : VersionExeName.Beta;
 };
+
+/**
+ * Get the normalized Dev Proxy version from an install object.
+ * Strips the beta pre-release suffix for version comparison.
+ */
+export const getNormalizedVersion = (devProxyInstall: DevProxyInstall): string => {
+    return devProxyInstall.isBeta
+        ? devProxyInstall.version.split('-')[0]
+        : devProxyInstall.version;
+};
