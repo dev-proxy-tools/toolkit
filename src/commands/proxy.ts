@@ -48,7 +48,7 @@ async function startDevProxy(
   const configFilePath = getActiveConfigFilePath();
   const command = configFilePath ? `${devProxyExe} --config-file "${configFilePath}"` : devProxyExe;
 
-  logger.debug('Starting Dev Proxy', { command });
+  logger.debug('Starting Dev Proxy', { configFile: configFilePath ?? 'default' });
   terminalService.sendCommand(terminal, command);
 }
 

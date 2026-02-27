@@ -32,7 +32,7 @@ export const detectDevProxyInstall = async (versionPreference: VersionPreference
     const isOutdated = isInstalled && outdatedVersion !== '';
     const isRunning = await isDevProxyRunning(devProxyExe);
     vscode.commands.executeCommand('setContext', 'isDevProxyRunning', isRunning);
-    const install = {
+    const devProxyInstall = {
         version,
         isInstalled,
         isBeta,
@@ -41,8 +41,8 @@ export const detectDevProxyInstall = async (versionPreference: VersionPreference
         isOutdated,
         isRunning
     };
-    logger.debug('Dev Proxy installation detected', install);
-    return install;
+    logger.debug('Dev Proxy installation detected', devProxyInstall);
+    return devProxyInstall;
 };
 
 export const extractVersionFromOutput = (output: string): string => {
