@@ -266,6 +266,10 @@ This extension includes an MCP server for AI-assisted development. See [Dev Prox
 
 ## Troubleshooting
 
+**View debug logs**
+- Open the Output panel (`View > Output`) and select **Dev Proxy Toolkit** from the dropdown to see extension logs
+- Use the log level setting to control verbosity (trace, debug, info, warning, error)
+
 **Dev Proxy not detected?**
 - Ensure Dev Proxy is installed and available in your PATH
 - Check the `dev-proxy-toolkit.version` setting if you have both stable and beta installed
