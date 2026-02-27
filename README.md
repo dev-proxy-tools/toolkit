@@ -201,6 +201,12 @@ Shows Dev Proxy status at a glance:
 - Running state (radio tower icon when active)
 - Error indicator if Dev Proxy is not installed
 
+### Workspace Recommendations
+
+When you open a workspace containing `devproxyrc.json` or `devproxyrc.jsonc` files, the extension will prompt you to add it to your workspace's recommended extensions (`.vscode/extensions.json`). This helps teams ensure all contributors have the Dev Proxy Toolkit installed for a consistent development experience.
+
+The prompt appears once per workspace and can be accepted or dismissed. If accepted, the extension will create or update `.vscode/extensions.json` with the recommendation.
+
 ## Configuration
 
 | Setting | Type | Default | Description |

@@ -12,10 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added:
 
 - Quick Fixes: Enable local language model fix now adds or updates `languageModel.enabled: true` for supported plugins only
+- Workspace: Added automatic prompt to recommend extension in `.vscode/extensions.json` when Dev Proxy config files are detected
 
 ### Fixed:
 
 - Diagnostics: Language model diagnostic now correctly targets plugins that can use a local language model (OpenAIMockResponsePlugin, OpenApiSpecGeneratorPlugin, TypeSpecGeneratorPlugin) and shows as an informational hint instead of a warning
+- Tests: Fixed test fixture path resolution for Windows compatibility
 
 ## [1.12.0] - 2026-01-29
 
