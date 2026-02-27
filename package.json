@@ -172,10 +172,6 @@
       {
         "language": "yaml",
         "path": "./dist/yaml-snippets.json"
-      },
-      {
-        "language": "yml",
-        "path": "./dist/yaml-snippets.json"
       }
     ],
     "configuration": {
