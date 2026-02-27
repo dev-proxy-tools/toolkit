@@ -6,7 +6,20 @@
 		{
 			"type": "npm",
 			"script": "watch",
-			"problemMatcher": "$ts-webpack-watch",
+			"problemMatcher": {
+				"owner": "webpack",
+				"severity": "error",
+				"fileLocation": "absolute",
+				"pattern": {
+					"regexp": "ERROR in (.+)",
+					"file": 1
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": "webpack .+ compilat",
+					"endsPattern": "webpack .+ compiled"
+				}
+			},
 			"isBackground": true,
 			"presentation": {
 				"reveal": "never",
