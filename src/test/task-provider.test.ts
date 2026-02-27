@@ -165,10 +165,11 @@ suite('DevProxyTaskProvider', () => {
     test('should handle env in definition', () => {
       const provider = new DevProxyTaskProvider(mockContext);
 
+      const env = { 'NODE_ENV': 'test', 'DEBUG': 'true' };
       const taskDefinition = {
         type: 'devproxy',
         command: 'start' as const,
-        env: { 'NODE_ENV': 'test', 'DEBUG': 'true' },
+        env,
         label: 'Start with Env',
       };
 
@@ -182,6 +183,8 @@ suite('DevProxyTaskProvider', () => {
       const resolved = provider.resolveTask(mockTask);
 
       assert.ok(resolved, 'Should resolve task with env');
+      const execution = resolved!.execution as vscode.ShellExecution;
+      assert.deepStrictEqual(execution.options?.env, env, 'Should pass env to shell execution options');
     });
   });
 
