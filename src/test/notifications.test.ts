@@ -73,7 +73,7 @@ suite('notifications', () => {
     assert.strictEqual(actual, expected);
   });
 
-  test('should not show install notification when running in unsupported operating system', async () => {
+  test('should not show install notification when devproxy is installed on linux', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
       'devProxyInstall',

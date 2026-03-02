@@ -59,6 +59,15 @@ export function getPackageIdentifier(
 }
 
 /**
+ * Get the Linux install script URL based on version preference.
+ */
+export function getInstallScriptUrl(versionPreference: VersionPreference): string {
+  return versionPreference === VersionPreference.Stable
+    ? Urls.linuxSetupScript
+    : Urls.linuxSetupBetaScript;
+}
+
+/**
  * Upgrade Dev Proxy using a package manager.
  *
  * @returns true if upgrade was successful, false otherwise
