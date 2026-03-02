@@ -129,7 +129,7 @@
         },
         {
           "command": "dev-proxy-toolkit.start-with-options",
-          "group": "navigation@1",
+          "group": "navigation@2",
           "when": "!activeEditorIsDirty && isDevProxyConfigFile && !isDevProxyRunning"
         },
         {

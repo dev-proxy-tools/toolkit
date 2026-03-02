@@ -258,7 +258,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // Watch PIDs
   const watchPids = await vscode.window.showInputBox({
-    title: 'Start with Options (13/13): Watch PIDs and process names',
+    title: 'Start with Options (13/13): Watch PIDs',
     prompt: 'Enter process IDs to watch (space separated). Leave empty to skip.',
     placeHolder: '1234 5678',
     value: '',
@@ -306,8 +306,15 @@ function validateIpAddress(value: string): string | undefined {
   if (!value) {
     return undefined;
   }
-  if (!/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(value)) {
+  const parts = value.split('.');
+  if (parts.length !== 4) {
     return 'Enter a valid IPv4 address (e.g. 127.0.0.1)';
+  }
+  for (const part of parts) {
+    const num = Number(part);
+    if (!/^\d{1,3}$/.test(part) || num < 0 || num > 255) {
+      return 'Enter a valid IPv4 address (e.g. 127.0.0.1)';
+    }
   }
   return undefined;
 }
