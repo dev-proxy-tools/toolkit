@@ -34,6 +34,8 @@ Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` /
 | Create configuration file | Dev Proxy installed |
 | Discover URLs to watch | Dev Proxy not running |
 | Generate JWT | Dev Proxy installed |
+| Add to Workspace Recommendations | Always |
+| Reset State | Always |
 
 ### Snippets
 
@@ -205,7 +207,13 @@ Shows Dev Proxy status at a glance:
 
 When you open a workspace containing `devproxyrc.json` or `devproxyrc.jsonc` files, the extension will prompt you to add it to your workspace's recommended extensions (`.vscode/extensions.json`). This helps teams ensure all contributors have the Dev Proxy Toolkit installed for a consistent development experience.
 
-The prompt appears once per workspace and can be accepted or dismissed. If accepted, the extension will create or update `.vscode/extensions.json` with the recommendation.
+The prompt offers three options:
+
+- **Yes** — adds the extension to workspace recommendations
+- **No** — dismisses the prompt, it will appear again next session
+- **Don't ask again** — permanently suppresses the prompt for this workspace
+
+You can also manually add the extension to recommendations at any time using the `Add to Workspace Recommendations` command, or use `Reset State` to clear all extension state including prompt preferences.
 
 ## Configuration
 

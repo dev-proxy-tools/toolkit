@@ -11,8 +11,7 @@ import { Extension } from '../constants';
  */
 export async function hasDevProxyConfig(): Promise<boolean> {
   const files = await vscode.workspace.findFiles(
-    '{devproxyrc.json,devproxyrc.jsonc}',
-    '**/node_modules/**'
+    '{devproxyrc.json,devproxyrc.jsonc}'
   );
   return files.length > 0;
 }
@@ -125,12 +124,9 @@ export async function promptForWorkspaceRecommendation(context: vscode.Extension
     return;
   }
 
-  // Mark as prompted to avoid showing again
-  await context.globalState.update(storageKey, true);
-
   // Show prompt
   const message = 'This workspace contains Dev Proxy configuration files. Would you like to add the Dev Proxy Toolkit extension to workspace recommendations?';
-  const result = await vscode.window.showInformationMessage(message, 'Yes', 'No');
+  const result = await vscode.window.showInformationMessage(message, 'Yes', 'No', 'Don\'t ask again');
 
   if (result === 'Yes') {
     const success = await addExtensionToRecommendations();
@@ -139,5 +135,7 @@ export async function promptForWorkspaceRecommendation(context: vscode.Extension
     } else {
       vscode.window.showErrorMessage('Failed to add extension to workspace recommendations.');
     }
+  } else if (result === 'Don\'t ask again') {
+    await context.globalState.update(storageKey, true);
   }
 }
