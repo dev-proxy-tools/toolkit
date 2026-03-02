@@ -36,6 +36,7 @@ Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` /
 | Generate JWT | Dev Proxy installed |
 | Add to Workspace Recommendations | Always |
 | Reset State | Always |
+| Upgrade config files | Dev Proxy installed |
 
 ### Snippets
 
@@ -216,6 +217,10 @@ The prompt offers three options:
 - **Don't ask again** — permanently suppresses the prompt for this workspace
 
 You can also manually add the extension to recommendations at any time using the `Add to Workspace Recommendations` command, or use `Reset State` to clear all extension state including prompt preferences.
+
+### Notifications
+
+- **Outdated config files** - On activation, scans workspace for Dev Proxy config files with a schema version that doesn't match the installed Dev Proxy version. Offers a one-click upgrade using Copilot Chat and Dev Proxy MCP tools.
 
 ## Configuration
 

@@ -1,10 +1,11 @@
 /**
  * Config file detection tests.
  * Verifies isConfigFile correctly identifies Dev Proxy configuration files.
+ * Verifies extractVersionFromSchemaUrl correctly extracts versions from schema URLs.
  */
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { isConfigFile, sleep } from '../utils';
+import { isConfigFile, extractVersionFromSchemaUrl, sleep } from '../utils';
 import { getFixturePath, testDevProxyInstall, getExtensionContext } from './helpers';
 
 suite('isConfigFile', () => {
@@ -81,5 +82,31 @@ suite('isConfigFile', () => {
     const expected = false;
     const actual = isConfigFile(document);
     assert.strictEqual(actual, expected);
+  });
+});
+
+suite('extractVersionFromSchemaUrl', () => {
+  test('should extract version from standard schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v0.24.0/rc.schema.json';
+    assert.strictEqual(extractVersionFromSchemaUrl(url), '0.24.0');
+  });
+
+  test('should extract version from legacy schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/microsoft/dev-proxy/main/schemas/v0.14.1/rc.schema.json';
+    assert.strictEqual(extractVersionFromSchemaUrl(url), '0.14.1');
+  });
+
+  test('should extract pre-release version from schema URL', () => {
+    const url = 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v0.24.0-beta.1/rc.schema.json';
+    assert.strictEqual(extractVersionFromSchemaUrl(url), '0.24.0-beta.1');
+  });
+
+  test('should return empty string for URL without version', () => {
+    const url = 'https://example.com/schema.json';
+    assert.strictEqual(extractVersionFromSchemaUrl(url), '');
+  });
+
+  test('should return empty string for empty string', () => {
+    assert.strictEqual(extractVersionFromSchemaUrl(''), '');
   });
 });

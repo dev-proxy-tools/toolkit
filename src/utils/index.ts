@@ -16,7 +16,7 @@ export {
 } from './ast';
 
 // Config file detection
-export { isConfigFile, isProxyFile } from './config-detection';
+export { isConfigFile, isProxyFile, extractVersionFromSchemaUrl, findOutdatedConfigFiles } from './config-detection';
 
 // Shell execution utilities
 export {
@@ -30,7 +30,7 @@ export {
 } from './shell';
 
 // Re-export from detect for convenience
-export { getDevProxyExe } from '../detect';
+export { getDevProxyExe, getNormalizedVersion } from '../detect';
 
 // Workspace recommendations utilities
 export {
