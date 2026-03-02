@@ -10,6 +10,7 @@
 export const Commands = {
   // Proxy lifecycle commands
   start: 'dev-proxy-toolkit.start',
+  startWithOptions: 'dev-proxy-toolkit.start-with-options',
   stop: 'dev-proxy-toolkit.stop',
   restart: 'dev-proxy-toolkit.restart',
 

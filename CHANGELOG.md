@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added:
 
+- Command: Added `Start with Options...` to launch Dev Proxy with interactive prompts for CLI settings
 - Install: Added automated install and upgrade support for Linux using official setup scripts
 - Notification: Detect outdated Dev Proxy config files in workspace and show warning when schema versions don't match installed version
 - Command: `dev-proxy-toolkit.upgrade-configs` - Upgrade config files with Copilot Chat using Dev Proxy MCP tools

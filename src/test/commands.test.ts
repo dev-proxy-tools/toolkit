@@ -21,6 +21,13 @@ suite('Command Registration', () => {
     );
   });
 
+  test('start-with-options command should be registered', () => {
+    assert.ok(
+      registeredCommands.includes(Commands.startWithOptions),
+      `Command ${Commands.startWithOptions} should be registered`
+    );
+  });
+
   test('stop command should be registered', () => {
     assert.ok(
       registeredCommands.includes(Commands.stop),
