@@ -89,6 +89,16 @@
         "title": "Generate JWT",
         "category": "Dev Proxy Toolkit",
         "enablement": "isDevProxyInstalled"
+      },
+      {
+        "command": "dev-proxy-toolkit.add-to-recommendations",
+        "title": "Add to Workspace Recommendations",
+        "category": "Dev Proxy Toolkit"
+      },
+      {
+        "command": "dev-proxy-toolkit.reset-state",
+        "title": "Reset State",
+        "category": "Dev Proxy Toolkit"
       }
     ],
     "mcpServerDefinitionProviders": [

@@ -39,6 +39,10 @@ export const Commands = {
 
   // Language model commands
   addLanguageModelConfig: 'dev-proxy-toolkit.addLanguageModelConfig',
+
+  // Workspace commands
+  addToRecommendations: 'dev-proxy-toolkit.add-to-recommendations',
+  resetState: 'dev-proxy-toolkit.reset-state',
 } as const;
 
 /**
@@ -91,4 +95,12 @@ export const Urls = {
   linuxInstall: 'https://aka.ms/devproxy/start/linux',
   schemaBase: 'https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas',
   diagnosticsDoc: 'https://learn.microsoft.com/microsoft-cloud/dev/dev-proxy/technical-reference/toolkit-diagnostics',
+} as const;
+
+/**
+ * Extension-related constants.
+ */
+export const Extension = {
+  id: 'garrytrinder.dev-proxy-toolkit',
+  extensionsJsonPath: '.vscode/extensions.json',
 } as const;
