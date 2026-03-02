@@ -142,7 +142,7 @@ export async function findOutdatedConfigFiles(devProxyVersion: string): Promise<
 
       const schemaValue = (schemaNode.value as parse.LiteralNode).value as string;
 
-      if (!schemaValue.includes('dev-proxy') || !schemaValue.endsWith('rc.schema.json')) {
+      if (!schemaValue.includes('dev-proxy') || !schemaValue.endsWith('.schema.json')) {
         continue;
       }
 
