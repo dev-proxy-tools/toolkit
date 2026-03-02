@@ -774,13 +774,14 @@ function registerInvalidConfigSectionFixes(context: vscode.ExtensionContext): vo
             .children as parse.ObjectNode[];
 
           // Find plugins that don't have a configSection property
-          const availablePlugins: { name: string; node: parse.ObjectNode }[] = [];
-          pluginNodes.forEach(pluginNode => {
+          const availablePlugins: { name: string; index: number; node: parse.ObjectNode }[] = [];
+          pluginNodes.forEach((pluginNode, index) => {
             const nameNode = getASTNode(pluginNode.children, 'Identifier', 'name');
             const configSectionNode = getASTNode(pluginNode.children, 'Identifier', 'configSection');
             if (nameNode && !configSectionNode) {
               availablePlugins.push({
                 name: (nameNode.value as parse.LiteralNode).value as string,
+                index,
                 node: pluginNode,
               });
             }
@@ -791,8 +792,21 @@ function registerInvalidConfigSectionFixes(context: vscode.ExtensionContext): vo
             return;
           }
 
+          // Check for duplicate plugin names to disambiguate in the picker
+          const nameCounts = new Map<string, number>();
+          availablePlugins.forEach(p => {
+            nameCounts.set(p.name, (nameCounts.get(p.name) ?? 0) + 1);
+          });
+
+          const quickPickItems = availablePlugins.map(p => ({
+            label: nameCounts.get(p.name)! > 1
+              ? `${p.name} (plugin #${p.index + 1})`
+              : p.name,
+            plugin: p,
+          }));
+
           const selected = await vscode.window.showQuickPick(
-            availablePlugins.map(p => p.name),
+            quickPickItems,
             { placeHolder: 'Select a plugin to link this config section to' }
           );
 
@@ -800,8 +814,8 @@ function registerInvalidConfigSectionFixes(context: vscode.ExtensionContext): vo
             return;
           }
 
-          const selectedPlugin = availablePlugins.find(p => p.name === selected);
-          if (!selectedPlugin || selectedPlugin.node.children.length === 0) {
+          const selectedPlugin = selected.plugin;
+          if (selectedPlugin.node.children.length === 0) {
             return;
           }
 
