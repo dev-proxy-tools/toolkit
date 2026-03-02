@@ -53,8 +53,8 @@ suite('Code Actions', () => {
 
       registerCodeActions(contextWithInstall);
 
-      // Should register 14 providers (2 per fix type: json + jsonc, 7 fix types)
-      assert.strictEqual(registerSpy.callCount, 14, 'Should register 14 code action providers');
+      // Should register 16 providers (2 per fix type: json + jsonc, 8 fix types)
+      assert.strictEqual(registerSpy.callCount, 16, 'Should register 16 code action providers');
     });
 
     test('should handle beta version correctly', () => {
@@ -460,6 +460,92 @@ suite('Code Actions', () => {
       await vscode.commands.executeCommand('workbench.action.files.revert');
     });
   });
+
+  suite('Invalid Config Section Fix', () => {
+    test('should provide remove and link fixes when invalidConfigSection diagnostic exists', async () => {
+      const context = await getExtensionContext();
+      await context.globalState.update(
+        'devProxyInstall',
+        createDevProxyInstall({ version: '0.24.0' })
+      );
+
+      const fileName = 'config-invalid-config-section.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const invalidConfigDiagnostic = diagnostics.find(d =>
+        d.message.includes('does not correspond to any plugin')
+      );
+
+      assert.ok(invalidConfigDiagnostic, 'Should have invalidConfigSection diagnostic');
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        invalidConfigDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const removeFix = codeActions?.find(a => a.title.includes('Remove'));
+      assert.ok(removeFix, 'Should provide remove section fix');
+      assert.ok(removeFix!.edit, 'Remove fix should have an edit');
+
+      const linkFix = codeActions?.find(a => a.title.includes('Link'));
+      assert.ok(linkFix, 'Should provide link to plugin fix');
+      assert.ok(linkFix!.command, 'Link fix should have a command');
+
+      await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+    });
+
+    test('should remove config section when remove fix is applied', async () => {
+      const context = await getExtensionContext();
+      await context.globalState.update(
+        'devProxyInstall',
+        createDevProxyInstall({ version: '0.24.0' })
+      );
+
+      const fileName = 'config-invalid-config-section.json';
+      const filePath = getFixturePath(fileName);
+      const document = await vscode.workspace.openTextDocument(filePath);
+      await vscode.window.showTextDocument(document);
+      await sleep(1000);
+
+      const diagnostics = vscode.languages.getDiagnostics(document.uri);
+      const invalidConfigDiagnostic = diagnostics.find(d =>
+        d.message.includes('does not correspond to any plugin')
+      );
+
+      assert.ok(invalidConfigDiagnostic, 'Should have invalidConfigSection diagnostic');
+
+      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
+        'vscode.executeCodeActionProvider',
+        document.uri,
+        invalidConfigDiagnostic!.range,
+        vscode.CodeActionKind.QuickFix.value
+      );
+
+      const removeFix = codeActions?.find(a => a.title.includes('Remove'));
+      assert.ok(removeFix, 'Should have remove fix');
+
+      // Apply the edit
+      const applied = await vscode.workspace.applyEdit(removeFix!.edit!);
+      assert.ok(applied, 'Edit should be applied successfully');
+
+      // Verify the config section was removed
+      const updatedText = document.getText();
+      assert.ok(
+        !updatedText.includes('"orphanedConfig"'),
+        'Config section should be removed'
+      );
+
+      // Revert the changes
+      await vscode.commands.executeCommand('workbench.action.files.revert');
+      await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
+    });
+  });
 });
 
 suite('Invalid Schema Code Action Logic', () => {
@@ -613,8 +699,8 @@ suite('Code Action Provider Registration', () => {
     const jsonCalls = registerSpy.getCalls().filter(call => call.args[0] === 'json');
     const jsoncCalls = registerSpy.getCalls().filter(call => call.args[0] === 'jsonc');
 
-    assert.strictEqual(jsonCalls.length, 7, 'Should register 7 providers for json');
-    assert.strictEqual(jsoncCalls.length, 7, 'Should register 7 providers for jsonc');
+    assert.strictEqual(jsonCalls.length, 8, 'Should register 8 providers for json');
+    assert.strictEqual(jsoncCalls.length, 8, 'Should register 8 providers for jsonc');
   });
 
   test('should add subscriptions to context', () => {
@@ -637,7 +723,7 @@ suite('Code Action Provider Registration', () => {
 
     registerCodeActions(contextWithInstall);
 
-    assert.strictEqual(subscriptions.length, 14, 'Should add 14 subscriptions');
+    assert.strictEqual(subscriptions.length, 16, 'Should add 16 subscriptions');
   });
 
   test('should strip beta suffix from version for schema URL', () => {

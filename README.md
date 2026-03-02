@@ -190,6 +190,8 @@ One-click fixes for common issues:
 - **Enable local language model** - Add or update `languageModel.enabled: true` for plugins that support it
 - **Add plugin configuration** - Add optional config section for plugins that support it
 - **Add missing config section** - Create config section when plugin references one that doesn't exist
+- **Remove orphaned config section** - Remove config sections not linked to any plugin
+- **Link config section to plugin** - Link an orphaned config section to a plugin via quick pick
 
 ### Code Lens
 
