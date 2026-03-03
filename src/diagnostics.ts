@@ -3,7 +3,7 @@ import parse from 'json-to-ast';
 import { pluginSnippets } from './data';
 import { getASTNode, getRangeFromASTNode } from './utils';
 import {DevProxyInstall, PluginConfig} from './types';
-import { DiagnosticCodes } from './constants';
+import { DiagnosticCodes, GlobalStateKeys } from './constants';
 import { getDiagnosticCode } from './utils';
 import * as semver from 'semver';
 import { fetchSchema, validateAgainstSchema } from './services';
@@ -23,7 +23,7 @@ export const updateConfigFileDiagnostics = async (
   collection: vscode.DiagnosticCollection,
 ): Promise<void> => {
   const devProxyInstall =
-    context.globalState.get<DevProxyInstall>('devProxyInstall');
+    context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
   if (!devProxyInstall) {
     logger.warn('No Dev Proxy install found, skipping config diagnostics');
     return;
@@ -60,7 +60,7 @@ export const updateFileDiagnostics = (
   collection: vscode.DiagnosticCollection,
 ): void => {
   const devProxyInstall =
-    context.globalState.get<DevProxyInstall>('devProxyInstall');
+    context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
   if (!devProxyInstall) {
     logger.warn('No Dev Proxy install found, skipping file diagnostics');
     return;

@@ -54,6 +54,15 @@ export const Commands = {
 export type CommandId = (typeof Commands)[keyof typeof Commands];
 
 /**
+ * Keys used for VS Code globalState storage.
+ *
+ * All keys use kebab-case for consistency.
+ */
+export const GlobalStateKeys = {
+  devProxyInstall: 'dev-proxy-install',
+} as const;
+
+/**
  * VS Code context keys set by this extension.
  *
  * These are used in when clauses for command enablement and menu visibility.

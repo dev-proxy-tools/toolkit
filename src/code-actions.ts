@@ -4,6 +4,7 @@ import parse from 'json-to-ast';
 import { getASTNode, getRangeFromASTNode } from './utils';
 import { pluginSnippets } from './data';
 import snippetsJson from './snippets/json-snippets.json';
+import { GlobalStateKeys } from './constants';
 import * as logger from './logger';
 
 /**
@@ -58,7 +59,7 @@ function registerJsonCodeActionProvider(
 
 export const registerCodeActions = (context: vscode.ExtensionContext) => {
   const devProxyInstall =
-    context.globalState.get<DevProxyInstall>('devProxyInstall');
+    context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
 
   if (!devProxyInstall) {
     logger.debug('Dev Proxy install not found, code actions disabled');

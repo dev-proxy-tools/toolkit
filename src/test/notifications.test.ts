@@ -3,24 +3,25 @@
  * Verifies install and upgrade notifications.
  */
 import * as assert from 'assert';
+import { GlobalStateKeys } from '../constants';
 import { handleStartNotification } from '../notifications';
 import { testDevProxyInstall, getExtensionContext, createDevProxyInstall } from './helpers';
 
 suite('notifications', () => {
   suiteSetup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   teardown(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   test('should show install notification when devproxy is not installed on mac', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isInstalled: false, platform: 'darwin', version: '' })
     );
 
@@ -34,7 +35,7 @@ suite('notifications', () => {
   test('should show install notification when devproxy is not installed on windows', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isInstalled: false, platform: 'win32', version: '' })
     );
 
@@ -48,7 +49,7 @@ suite('notifications', () => {
   test('should not show install notification when devproxy is installed on mac', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isInstalled: true, isOutdated: false, platform: 'darwin' })
     );
 
@@ -62,7 +63,7 @@ suite('notifications', () => {
   test('should not show install notification when devproxy is installed on windows', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isInstalled: true, isOutdated: false, platform: 'win32' })
     );
 
@@ -76,7 +77,7 @@ suite('notifications', () => {
   test('should not show install notification when devproxy is installed on linux', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isInstalled: true, isOutdated: false, platform: 'linux' })
     );
 
@@ -90,7 +91,7 @@ suite('notifications', () => {
   test('should show upgrade notification when devproxy is not latest version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isOutdated: true, version: '0.1.0' })
     );
 

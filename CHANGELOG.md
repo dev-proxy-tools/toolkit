@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quick Fixes: Added fix to remove orphaned config sections not linked to any plugin
 - Quick Fixes: Added fix to link orphaned config section to a plugin
 
+### Changed:
+
+- State: Standardized globalState keys to kebab-case (`devProxyInstall` → `dev-proxy-install`) with one-time migration
+
 ### Fixed:
 
 - Logging: Fixed log flooding from repeated running state checks by only logging on state changes

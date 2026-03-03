@@ -5,6 +5,7 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { sleep } from '../utils';
+import { GlobalStateKeys } from '../constants';
 import {
   getFixturePath,
   testDevProxyInstall,
@@ -15,7 +16,7 @@ import {
 suite('schema', () => {
   setup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   teardown(async () => {
@@ -25,7 +26,7 @@ suite('schema', () => {
   test('should show warning when $schema property does not match installed version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isOutdated: true, version: '0.1.0' })
     );
 
@@ -50,7 +51,7 @@ suite('schema', () => {
   test('should not show warning when $schema property matches installed version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isOutdated: false, outdatedVersion: '', version: '0.24.0' })
     );
 
@@ -102,7 +103,7 @@ suite('schema', () => {
 suite('config section schema validation', () => {
   setup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   teardown(async () => {
@@ -112,7 +113,7 @@ suite('config section schema validation', () => {
   test('should show warning when config section $schema does not match installed version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ version: '0.24.0' })
     );
 
@@ -141,7 +142,7 @@ suite('config section schema validation', () => {
   test('should not show warning when config section $schema matches installed version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ version: '0.24.0' })
     );
 
@@ -165,7 +166,7 @@ suite('config section schema validation', () => {
   test('should show multiple warnings for multiple config sections with schema mismatches', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ version: '0.24.0' })
     );
 

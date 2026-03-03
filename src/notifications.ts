@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import { DevProxyInstall } from './types';
-import { Commands } from './constants';
+import { Commands, GlobalStateKeys } from './constants';
 import { findOutdatedConfigFiles, getNormalizedVersion } from './utils';
 import * as logger from './logger';
 
 export const handleStartNotification = (context: vscode.ExtensionContext) => {
-    const devProxyInstall = context.globalState.get<DevProxyInstall>('devProxyInstall');
+    const devProxyInstall = context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
     if (!devProxyInstall) {
         logger.warn('Dev Proxy install not found in global state');
         return () => {
@@ -67,7 +67,7 @@ export const processNotification = (notification: (() => { message: string; show
 export async function handleOutdatedConfigFilesNotification(
     context: vscode.ExtensionContext,
 ): Promise<void> {
-    const devProxyInstall = context.globalState.get<DevProxyInstall>('devProxyInstall');
+    const devProxyInstall = context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
     if (!devProxyInstall?.isInstalled) {
         return;
     }

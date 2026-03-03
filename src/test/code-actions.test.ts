@@ -7,7 +7,7 @@ import * as sinon from 'sinon';
 import * as vscode from 'vscode';
 import { registerCodeActions, extractSchemaFilename } from '../code-actions';
 import { getExtensionContext, createDevProxyInstall, getFixturePath } from './helpers';
-import { DiagnosticCodes } from '../constants';
+import { DiagnosticCodes, GlobalStateKeys } from '../constants';
 import { getDiagnosticCode, sleep } from '../utils';
 
 suite('Code Actions', () => {
@@ -114,7 +114,7 @@ suite('Code Actions', () => {
     test('should provide fix when invalidConfigSectionSchema diagnostic exists', async () => {
       const context = await getExtensionContext();
       await context.globalState.update(
-        'devProxyInstall',
+        GlobalStateKeys.devProxyInstall,
         createDevProxyInstall({ version: '0.24.0' })
       );
 
@@ -153,7 +153,7 @@ suite('Code Actions', () => {
     test('should provide bulk fix when multiple config section schemas are outdated', async () => {
       const context = await getExtensionContext();
       await context.globalState.update(
-        'devProxyInstall',
+        GlobalStateKeys.devProxyInstall,
         createDevProxyInstall({ version: '0.24.0' })
       );
 
@@ -191,7 +191,7 @@ suite('Code Actions', () => {
     test('should apply config section schema fix correctly', async () => {
       const context = await getExtensionContext();
       await context.globalState.update(
-        'devProxyInstall',
+        GlobalStateKeys.devProxyInstall,
         createDevProxyInstall({ version: '0.24.0' })
       );
 
@@ -465,7 +465,7 @@ suite('Code Actions', () => {
     test('should provide remove and link fixes when invalidConfigSection diagnostic exists', async () => {
       const context = await getExtensionContext();
       await context.globalState.update(
-        'devProxyInstall',
+        GlobalStateKeys.devProxyInstall,
         createDevProxyInstall({ version: '0.24.0' })
       );
 
@@ -503,7 +503,7 @@ suite('Code Actions', () => {
     test('should remove config section when remove fix is applied', async () => {
       const context = await getExtensionContext();
       await context.globalState.update(
-        'devProxyInstall',
+        GlobalStateKeys.devProxyInstall,
         createDevProxyInstall({ version: '0.24.0' })
       );
 

@@ -11,7 +11,7 @@ import {
   addExtensionToRecommendations,
   sleep,
 } from '../utils';
-import { Extension } from '../constants';
+import { Extension, GlobalStateKeys } from '../constants';
 import { getExtensionContext, testDevProxyInstall } from './helpers';
 
 suite('Workspace Recommendations', () => {
@@ -20,7 +20,7 @@ suite('Workspace Recommendations', () => {
 
   setup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
 
     // Create a temporary directory for test files
     tempDir = path.join(process.cwd(), '.test-workspace-' + Date.now());

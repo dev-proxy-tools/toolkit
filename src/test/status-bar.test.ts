@@ -7,24 +7,25 @@ import * as vscode from 'vscode';
 import * as sinon from 'sinon';
 import * as detect from '../detect';
 import { VersionPreference } from '../enums';
+import { GlobalStateKeys } from '../constants';
 import { handleStatusBarUpdate, statusBarLoop } from '../status-bar';
 import { testDevProxyInstall, getExtensionContext, createDevProxyInstall } from './helpers';
 
 suite('statusbar', () => {
   suiteSetup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   teardown(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   test('should show error statusbar when devproxy is not installed', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isInstalled: false })
     );
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -38,7 +39,7 @@ suite('statusbar', () => {
   test('should show warning statusbar when devproxy is not latest version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isOutdated: true, version: '0.1.0' })
     );
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -52,7 +53,7 @@ suite('statusbar', () => {
   test('should show success statusbar when devproxy is installed and latest version', async () => {
     const context = await getExtensionContext();
     await context.globalState.update(
-      'devProxyInstall',
+      GlobalStateKeys.devProxyInstall,
       createDevProxyInstall({ isOutdated: false, outdatedVersion: '' })
     );
     const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);

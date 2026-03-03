@@ -5,13 +5,14 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { sleep } from '../utils';
+import { GlobalStateKeys } from '../constants';
 import { createCodeLensForPluginNodes } from '../code-lens';
 import { getFixturePath, testDevProxyInstall, getExtensionContext } from './helpers';
 
 suite('plugins', () => {
   suiteSetup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   teardown(async () => {

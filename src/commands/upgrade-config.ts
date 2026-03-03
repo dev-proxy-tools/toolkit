@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Commands } from '../constants';
+import { Commands, GlobalStateKeys } from '../constants';
 import { DevProxyInstall } from '../types';
 import { getNormalizedVersion } from '../utils';
 
@@ -21,7 +21,7 @@ async function upgradeConfigsWithCopilot(
   context: vscode.ExtensionContext,
   fileUris?: vscode.Uri[],
 ): Promise<void> {
-  const devProxyInstall = context.globalState.get<DevProxyInstall>('devProxyInstall');
+  const devProxyInstall = context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
   if (!devProxyInstall?.isInstalled) {
     return;
   }

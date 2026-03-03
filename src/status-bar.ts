@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { GlobalStateKeys } from './constants';
 import { DevProxyInstall } from './types';
 import { getDevProxyExe, isDevProxyRunning } from './detect';
 import { VersionPreference } from './enums';
@@ -17,7 +18,7 @@ export const updateStatusBar = (context: vscode.ExtensionContext, statusBar: vsc
 };
 
 export const handleStatusBarUpdate = (context: vscode.ExtensionContext, statusBar: vscode.StatusBarItem): vscode.StatusBarItem => {
-    const devProxyInstall = context.globalState.get<DevProxyInstall>('devProxyInstall');
+    const devProxyInstall = context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
     if (!devProxyInstall) { return statusBar; }
     if (!devProxyInstall.isInstalled) {
         statusBar.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
@@ -55,11 +56,11 @@ export const statusBarLoop = async (context: vscode.ExtensionContext, statusBar:
 
         const devProxyExe = getDevProxyExe(versionPreference);
         const isRunning = await isDevProxyRunning(devProxyExe);
-        const globalState = context.globalState.get<DevProxyInstall>('devProxyInstall');
+        const globalState = context.globalState.get<DevProxyInstall>(GlobalStateKeys.devProxyInstall);
         
         // Only update if context is still valid
         if (context.globalState) {
-            await context.globalState.update('devProxyInstall', { ...globalState, isRunning });
+            await context.globalState.update(GlobalStateKeys.devProxyInstall, { ...globalState, isRunning });
             vscode.commands.executeCommand('setContext', 'isDevProxyRunning', isRunning);
             updateStatusBar(context, statusBar);
         }

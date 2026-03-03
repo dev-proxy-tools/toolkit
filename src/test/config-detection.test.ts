@@ -6,12 +6,13 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { isConfigFile, extractVersionFromSchemaUrl, sleep } from '../utils';
+import { GlobalStateKeys } from '../constants';
 import { getFixturePath, testDevProxyInstall, getExtensionContext } from './helpers';
 
 suite('isConfigFile', () => {
   setup(async () => {
     const context = await getExtensionContext();
-    await context.globalState.update('devProxyInstall', testDevProxyInstall);
+    await context.globalState.update(GlobalStateKeys.devProxyInstall, testDevProxyInstall);
   });
 
   teardown(async () => {
