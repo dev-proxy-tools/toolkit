@@ -61,33 +61,14 @@ async function startDevProxy(
 async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
   const args: string[] = [];
 
-  // Config file
-  const configFiles = await vscode.workspace.findFiles(
-    '**/devproxyrc.{json,jsonc}',
-    '**/node_modules/**'
-  );
-  const configItems: vscode.QuickPickItem[] = [
-    { label: '$(remove) None', description: 'Use default configuration' },
-    ...configFiles.map(f => ({
-      label: vscode.workspace.asRelativePath(f),
-      description: f.fsPath,
-    })),
-  ];
-
-  const selectedConfig = await vscode.window.showQuickPick(configItems, {
-    title: 'Start with Options (1/13): Config file',
-    placeHolder: 'Select a config file',
-  });
-  if (selectedConfig === undefined) {
-    return;
-  }
-  if (selectedConfig.description && selectedConfig.description !== 'Use default configuration') {
-    args.push('--config-file', `"${selectedConfig.description}"`);
+  const configFilePath = getActiveConfigFilePath();
+  if (configFilePath) {
+    args.push('--config-file', `"${configFilePath}"`);
   }
 
   // Port
   const port = await vscode.window.showInputBox({
-    title: 'Start with Options (2/13): Port',
+    title: 'Start with Options (1/12): Port',
     prompt: 'Enter the proxy port number',
     value: '8000',
     validateInput: validatePortNumber,
@@ -101,7 +82,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // API port
   const apiPort = await vscode.window.showInputBox({
-    title: 'Start with Options (3/13): API port',
+    title: 'Start with Options (2/12): API port',
     prompt: 'Enter the API port number',
     value: '8897',
     validateInput: validatePortNumber,
@@ -115,7 +96,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // IP address
   const ipAddress = await vscode.window.showInputBox({
-    title: 'Start with Options (4/13): IP address',
+    title: 'Start with Options (3/12): IP address',
     prompt: 'Enter the IP address to listen on',
     value: '127.0.0.1',
     validateInput: validateIpAddress,
@@ -134,7 +115,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
       { label: 'No', description: 'Do not register as system proxy' },
     ],
     {
-      title: 'Start with Options (5/13): As system proxy',
+      title: 'Start with Options (4/12): As system proxy',
       placeHolder: 'Register Dev Proxy as a system proxy?',
     }
   );
@@ -152,7 +133,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
       { label: 'No', description: 'Do not install certificate' },
     ],
     {
-      title: 'Start with Options (6/13): Install certificate',
+      title: 'Start with Options (5/12): Install certificate',
       placeHolder: 'Install the root certificate?',
     }
   );
@@ -167,7 +148,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
   const logLevel = await vscode.window.showQuickPick(
     ['trace', 'debug', 'information', 'warning', 'error'],
     {
-      title: 'Start with Options (7/13): Log level',
+      title: 'Start with Options (6/12): Log level',
       placeHolder: 'Select a log level',
     }
   );
@@ -180,7 +161,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // Failure rate
   const failureRate = await vscode.window.showInputBox({
-    title: 'Start with Options (8/13): Failure rate',
+    title: 'Start with Options (7/12): Failure rate',
     prompt: 'Enter the failure rate (0-100)',
     value: '50',
     validateInput: validateFailureRate,
@@ -194,7 +175,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // URLs to watch
   const urlsToWatch = await vscode.window.showInputBox({
-    title: 'Start with Options (9/13): URLs to watch',
+    title: 'Start with Options (8/12): URLs to watch',
     prompt: 'Enter URLs to watch (space separated). Leave empty to use config file values.',
     placeHolder: 'https://api.example.com/* https://graph.microsoft.com/v1.0/*',
     value: '',
@@ -213,7 +194,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
       { label: 'Yes', description: 'Start recording immediately' },
     ],
     {
-      title: 'Start with Options (10/13): Record',
+      title: 'Start with Options (9/12): Record',
       placeHolder: 'Start recording on launch?',
     }
   );
@@ -231,7 +212,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
       { label: 'Yes', description: 'Skip first run experience' },
     ],
     {
-      title: 'Start with Options (11/13): No first run',
+      title: 'Start with Options (10/12): No first run',
       placeHolder: 'Skip the first run experience?',
     }
   );
@@ -244,7 +225,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // Timeout
   const timeout = await vscode.window.showInputBox({
-    title: 'Start with Options (12/13): Timeout',
+    title: 'Start with Options (11/12): Timeout',
     prompt: 'Enter timeout in seconds. Leave empty for no timeout.',
     value: '',
     validateInput: validateTimeout,
@@ -258,7 +239,7 @@ async function startDevProxyWithOptions(devProxyExe: string): Promise<void> {
 
   // Watch PIDs
   const watchPids = await vscode.window.showInputBox({
-    title: 'Start with Options (13/13): Watch PIDs',
+    title: 'Start with Options (12/12): Watch PIDs',
     prompt: 'Enter process IDs to watch (space separated). Leave empty to skip.',
     placeHolder: '1234 5678',
     value: '',
