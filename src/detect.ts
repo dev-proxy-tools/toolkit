@@ -5,21 +5,23 @@ import { executeCommand, resolveDevProxyExecutable } from './utils/shell';
 import * as vscode from 'vscode';
 import * as logger from './logger';
 
+let lastKnownRunningState: boolean | undefined;
+
 export const getVersion = async (devProxyExe: string) => {
     try {
         const version = await executeCommand(`${devProxyExe} --version`);
         const versionLines = version.trim().split('\n');
         const lastLine = versionLines[versionLines.length - 1];
-        logger.debug('Dev Proxy version detected', lastLine.trim());
+        logger.info('Dev Proxy version detected', lastLine.trim());
         return lastLine.trim();
     } catch (error) {
-        logger.debug('Failed to get Dev Proxy version', error);
+        logger.warn('Failed to get Dev Proxy version', error);
         return "";
     }
 };
 
 export const detectDevProxyInstall = async (versionPreference: VersionPreference): Promise<DevProxyInstall> => {
-    logger.debug('Detecting Dev Proxy installation', { versionPreference });
+    logger.info('Detecting Dev Proxy installation', { versionPreference });
     const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
     const customPath = configuration.get<string>('devProxyPath');
     const exeName = getDevProxyExe(versionPreference);
@@ -41,7 +43,7 @@ export const detectDevProxyInstall = async (versionPreference: VersionPreference
         isOutdated,
         isRunning
     };
-    logger.debug('Dev Proxy installation detected', devProxyInstall);
+    logger.info('Dev Proxy installation detected', devProxyInstall);
     return devProxyInstall;
 };
 
@@ -98,11 +100,17 @@ export const isDevProxyRunning = async (devProxyExe: string): Promise<boolean> =
         
         // If we get any response (even an error), Dev Proxy is running
         const running = response.status >= 200 && response.status < 500;
-        logger.debug('Dev Proxy running check', { running, status: response.status });
+        if (running !== lastKnownRunningState) {
+            logger.info('Dev Proxy running state changed', { running, status: response.status });
+            lastKnownRunningState = running;
+        }
         return running;
     } catch (error) {
         // If the request fails (connection refused, timeout, etc.), Dev Proxy is not running
-        logger.debug('Dev Proxy is not running');
+        if (lastKnownRunningState !== false) {
+            logger.info('Dev Proxy is not running');
+            lastKnownRunningState = false;
+        }
         return false;
     }
 };

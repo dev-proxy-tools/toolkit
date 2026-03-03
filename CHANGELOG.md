@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Install: Added automated install and upgrade support for Linux using official setup scripts
 - Notification: Detect outdated Dev Proxy config files in workspace and show warning when schema versions don't match installed version
 - Command: `dev-proxy-toolkit.upgrade-configs` - Upgrade config files with Copilot Chat using Dev Proxy MCP tools
-- Logging: Added debug logging to Output panel (`Dev Proxy Toolkit`) to help investigate issues
+- Logging: Added leveled logging to Output panel (`Dev Proxy Toolkit`) across the entire extension covering commands, diagnostics, services, and utilities to help investigate issues
 - Quick Fixes: Enable local language model fix now adds or updates `languageModel.enabled: true` for supported plugins only
 - Workspace: Added automatic prompt to recommend extension in `.vscode/extensions.json` when Dev Proxy config files are detected
 - Command: Added `Add to Workspace Recommendations` to manually add extension to workspace recommendations
@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quick Fixes: Added fix to link orphaned config section to a plugin
 
 ### Fixed:
+
+- Logging: Fixed log flooding from repeated running state checks by only logging on state changes
+- Logging: Fixed log feedback loop caused by Output Channel document events triggering diagnostics
 
 - Diagnostics: Language model diagnostic now correctly targets plugins that can use a local language model (OpenAIMockResponsePlugin, OpenApiSpecGeneratorPlugin, TypeSpecGeneratorPlugin) and shows as an informational hint instead of a warning
 

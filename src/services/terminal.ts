@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as logger from '../logger';
 
 /**
  * Service for managing terminal instances used by Dev Proxy.
@@ -38,9 +39,11 @@ export class TerminalService {
    */
   getOrCreateTerminal(): vscode.Terminal {
     if (!this.createNewTerminal && vscode.window.activeTerminal) {
+      logger.debug('Reusing active terminal', { name: vscode.window.activeTerminal.name });
       return vscode.window.activeTerminal;
     }
 
+    logger.debug('Creating new Dev Proxy terminal');
     const terminal = vscode.window.createTerminal('Dev Proxy');
 
     if (this.showTerminal) {
@@ -57,11 +60,13 @@ export class TerminalService {
    */
   disposeDevProxyTerminals(): void {
     if (!this.closeTerminalOnStop) {
+      logger.debug('closeTerminal disabled, preserving Dev Proxy terminals');
       return;
     }
 
     vscode.window.terminals.forEach(terminal => {
       if (terminal.name === 'Dev Proxy') {
+        logger.debug('Disposing Dev Proxy terminal');
         terminal.dispose();
       }
     });
@@ -71,6 +76,7 @@ export class TerminalService {
    * Send a command to a terminal.
    */
   sendCommand(terminal: vscode.Terminal, command: string): void {
+    logger.debug('Sending command to terminal', { terminal: terminal.name, command });
     terminal.sendText(command);
   }
 }

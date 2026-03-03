@@ -3,6 +3,7 @@ import { Commands } from '../constants';
 import { executeCommand } from '../utils/shell';
 import { getDevProxyExe } from '../detect';
 import { VersionPreference } from '../enums';
+import * as logger from '../logger';
 
 /**
  * Configuration file commands: open, create new.
@@ -25,6 +26,7 @@ export function registerConfigCommands(
 }
 
 async function openConfig(devProxyExe: string): Promise<void> {
+  logger.debug('Opening Dev Proxy config', { devProxyExe });
   await executeCommand(`${devProxyExe} config open`);
 }
 
@@ -36,15 +38,18 @@ async function createNewConfig(devProxyExe: string): Promise<void> {
 
   const workspaceFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
   if (!workspaceFolder) {
+    logger.warn('Cannot create config: no workspace folder open');
     vscode.window.showErrorMessage('No workspace folder open');
     return;
   }
+  logger.info('Creating new config file', { fileName, workspaceFolder });
 
   const devProxyFolder = vscode.Uri.file(`${workspaceFolder}/.devproxy`);
   const configUri = vscode.Uri.file(`${workspaceFolder}/.devproxy/${fileName}`);
 
   // Check if file already exists
   if (await fileExists(configUri)) {
+    logger.warn('Config file already exists', { path: configUri.fsPath });
     vscode.window.showErrorMessage('A file with that name already exists');
     return;
   }
@@ -67,9 +72,11 @@ async function createNewConfig(devProxyExe: string): Promise<void> {
     );
 
     // Open the newly created file
+    logger.info('Config file created', { path: configUri.fsPath });
     const document = await vscode.workspace.openTextDocument(configUri);
     await vscode.window.showTextDocument(document);
   } catch (error) {
+    logger.error('Failed to create new config file', error);
     vscode.window.showErrorMessage('Failed to create new config file');
   }
 }

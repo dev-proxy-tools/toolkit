@@ -3,6 +3,7 @@ import { Commands } from '../constants';
 import { executeCommand } from '../utils/shell';
 import { getDevProxyExe } from '../detect';
 import { VersionPreference } from '../enums';
+import * as logger from '../logger';
 
 /**
  * JWT (JSON Web Token) generation commands.
@@ -36,8 +37,10 @@ interface JwtParams {
 async function createJwt(devProxyExe: string): Promise<void> {
   const params = await collectJwtParams();
   if (!params) {
+    logger.debug('JWT creation cancelled by user');
     return; // User cancelled
   }
+  logger.info('Generating JWT', { name: params.name, issuer: params.issuer, audiences: params.audiences.length, roles: params.roles.length, scopes: params.scopes.length, validFor: params.validFor });
 
   await vscode.window.withProgress(
     {
@@ -50,8 +53,10 @@ async function createJwt(devProxyExe: string): Promise<void> {
         const command = buildJwtCommand(devProxyExe, params);
         const result = await executeCommand(command);
         const token = extractToken(result);
+        logger.info('JWT token generated successfully');
         await presentToken(token, command);
       } catch (error) {
+        logger.error('Failed to generate JWT token', error);
         vscode.window.showErrorMessage(`Failed to generate JWT token: ${error}`);
       }
     }

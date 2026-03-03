@@ -4,6 +4,7 @@ import parse from 'json-to-ast';
 import { getASTNode, getRangeFromASTNode } from './utils';
 import { pluginSnippets } from './data';
 import snippetsJson from './snippets/json-snippets.json';
+import * as logger from './logger';
 
 /**
  * Extract the diagnostic code value from the object format.
@@ -60,6 +61,7 @@ export const registerCodeActions = (context: vscode.ExtensionContext) => {
     context.globalState.get<DevProxyInstall>('devProxyInstall');
 
   if (!devProxyInstall) {
+    logger.debug('Dev Proxy install not found, code actions disabled');
     return;
   }
 
@@ -124,8 +126,8 @@ export function extractSchemaFilename(schemaUrl: string): string {
     if (match) {
       return match[1];
     }
-  } catch {
-    // Fall through to default
+  } catch (error) {
+    logger.warn('Failed to extract schema filename, using default', { schemaUrl, error });
   }
   
   return defaultSchema;

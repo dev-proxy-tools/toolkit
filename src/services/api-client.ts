@@ -41,7 +41,8 @@ export class DevProxyApiClient {
         signal: AbortSignal.timeout(2000),
       });
       return response.status >= 200 && response.status < 500;
-    } catch {
+    } catch (error) {
+      logger.debug('Dev Proxy API unreachable', error);
       return false;
     }
   }
@@ -88,10 +89,12 @@ export class DevProxyApiClient {
         signal: AbortSignal.timeout(this.timeout),
       });
       if (!response.ok) {
+        logger.debug('Failed to get proxy status', { status: response.status });
         return null;
       }
       return (await response.json()) as ProxyStatus;
-    } catch {
+    } catch (error) {
+      logger.debug('Failed to get proxy status', error);
       return null;
     }
   }

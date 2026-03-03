@@ -6,6 +6,9 @@ import * as logger from './logger';
 export const registerDocumentListeners = (context: vscode.ExtensionContext, collection: vscode.DiagnosticCollection) => {
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(document => {
+            if (document.uri.scheme !== 'file') {
+                return;
+            }
             try {
                 if (isProxyFile(document)) {
                     logger.debug('Proxy file opened', { path: document.uri.fsPath });
@@ -28,6 +31,9 @@ export const registerDocumentListeners = (context: vscode.ExtensionContext, coll
 
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument(event => {
+            if (event.document.uri.scheme !== 'file') {
+                return;
+            }
             try {
                 if (!isConfigFile(event.document) && !isProxyFile(event.document)) {
                     collection.delete(event.document.uri);

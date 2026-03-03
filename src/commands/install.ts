@@ -8,6 +8,7 @@ import {
   openUpgradeDocumentation,
 } from '../utils/shell';
 import { PackageManager, VersionPreference } from '../enums';
+import * as logger from '../logger';
 
 /**
  * Installation and upgrade commands.
@@ -34,6 +35,7 @@ async function installDevProxy(
 ): Promise<void> {
   const message = vscode.window.setStatusBarMessage('Installing Dev Proxy...');
   const versionPreference = configuration.get('version') as VersionPreference;
+  logger.info('Installing Dev Proxy', { platform, versionPreference });
 
   try {
     if (platform === 'win32') {
@@ -55,17 +57,21 @@ async function installOnWindows(versionPreference: VersionPreference): Promise<v
   try {
     await executeCommand('winget --version');
   } catch {
+    logger.warn('Winget not found on PATH');
     vscode.window.showErrorMessage('Winget is not installed. Please install winget and try again.');
     return;
   }
 
   try {
+    logger.info('Installing Dev Proxy via winget', { packageId });
     await executeCommand(`winget install ${packageId} --silent`);
+    logger.info('Dev Proxy installed successfully via winget');
     const result = await vscode.window.showInformationMessage('Dev Proxy installed.', 'Reload');
     if (result === 'Reload') {
       await vscode.commands.executeCommand('workbench.action.reloadWindow');
     }
   } catch (error) {
+    logger.error('Failed to install Dev Proxy via winget', error);
     vscode.window.showErrorMessage(`Failed to install Dev Proxy.\n${error}`);
   }
 }
@@ -77,18 +83,22 @@ async function installOnMac(versionPreference: VersionPreference): Promise<void>
   try {
     await executeCommand('brew --version');
   } catch {
+    logger.warn('Homebrew not found on PATH');
     vscode.window.showErrorMessage('Homebrew is not installed. Please install brew and try again.');
     return;
   }
 
   try {
+    logger.info('Installing Dev Proxy via Homebrew', { packageId });
     await executeCommand('brew tap dotnet/dev-proxy');
     await executeCommand(`brew install ${packageId}`);
+    logger.info('Dev Proxy installed successfully via Homebrew');
     const result = await vscode.window.showInformationMessage('Dev Proxy installed.', 'Reload');
     if (result === 'Reload') {
       await vscode.commands.executeCommand('workbench.action.reloadWindow');
     }
   } catch (error) {
+    logger.error('Failed to install Dev Proxy via Homebrew', error);
     vscode.window.showErrorMessage(`Failed to install Dev Proxy.\n${error}`);
   }
 }
@@ -137,6 +147,7 @@ async function upgradeDevProxy(configuration: vscode.WorkspaceConfiguration): Pr
   const platform = process.platform;
   const versionPreference = configuration.get('version') as VersionPreference;
   const isBeta = versionPreference === VersionPreference.Beta;
+  logger.info('Upgrading Dev Proxy', { platform, versionPreference });
 
   // Linux uses install script to upgrade
   if (platform === 'linux') {
@@ -182,6 +193,7 @@ async function upgradeDevProxy(configuration: vscode.WorkspaceConfiguration): Pr
       isBeta
     );
     if (!upgraded) {
+      logger.warn('Upgrade via winget failed, opening upgrade docs');
       openUpgradeDocumentation();
     }
     return;
@@ -202,11 +214,13 @@ async function upgradeDevProxy(configuration: vscode.WorkspaceConfiguration): Pr
       isBeta
     );
     if (!upgraded) {
+      logger.warn('Upgrade via Homebrew failed, opening upgrade docs');
       openUpgradeDocumentation();
     }
     return;
   }
 
   // Unknown platform
+  logger.warn('Unknown platform, opening upgrade docs', { platform });
   openUpgradeDocumentation();
 }

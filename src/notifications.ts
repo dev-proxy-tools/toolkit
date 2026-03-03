@@ -7,7 +7,7 @@ import * as logger from './logger';
 export const handleStartNotification = (context: vscode.ExtensionContext) => {
     const devProxyInstall = context.globalState.get<DevProxyInstall>('devProxyInstall');
     if (!devProxyInstall) {
-        logger.debug('Dev Proxy install not found in global state');
+        logger.warn('Dev Proxy install not found in global state');
         return () => {
             const message = `Dev Proxy is not installed, or not in PATH.`;
             return {
@@ -22,7 +22,7 @@ export const handleStartNotification = (context: vscode.ExtensionContext) => {
         };
     };
     if (!devProxyInstall.isInstalled) {
-        logger.debug('Dev Proxy is not installed');
+        logger.warn('Dev Proxy is not installed');
         return () => {
             const message = `Dev Proxy is not installed, or not in PATH.`;
             return {
@@ -37,7 +37,7 @@ export const handleStartNotification = (context: vscode.ExtensionContext) => {
         };
     };
     if (devProxyInstall.isOutdated) {
-        logger.debug('Dev Proxy is outdated', { current: devProxyInstall.version, available: devProxyInstall.outdatedVersion });
+        logger.warn('Dev Proxy is outdated', { current: devProxyInstall.version, available: devProxyInstall.outdatedVersion });
         return () => {
             const message = `New Dev Proxy version ${devProxyInstall.outdatedVersion} is available.`;
             return {

@@ -8,5 +8,5 @@ export const updateGlobalState = async (context: vscode.ExtensionContext, versio
     const devProxyInstall = await detectDevProxyInstall(versionPreference);
     vscode.commands.executeCommand('setContext', 'isDevProxyInstalled', devProxyInstall.isInstalled);
     context.globalState.update('devProxyInstall', devProxyInstall);
-    logger.debug('Global state updated', { isInstalled: devProxyInstall.isInstalled, version: devProxyInstall.version });
+    logger.info('Global state updated', { isInstalled: devProxyInstall.isInstalled, version: devProxyInstall.version });
 };

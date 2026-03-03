@@ -3,6 +3,7 @@ import { Commands } from '../constants';
 import { TerminalService } from '../services/terminal';
 import { getDevProxyExe } from '../detect';
 import { VersionPreference } from '../enums';
+import * as logger from '../logger';
 
 /**
  * URL discovery command.
@@ -40,10 +41,12 @@ async function discoverUrlsToWatch(
 
   // User cancelled
   if (processNames === undefined) {
+    logger.debug('URL discovery cancelled by user');
     return;
   }
 
   const command = buildDiscoverCommand(devProxyExe, processNames);
+  logger.info('Starting URL discovery', { processNames: processNames || '(all processes)', command });
   terminalService.sendCommand(terminal, command);
 }
 

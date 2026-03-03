@@ -49,6 +49,7 @@ export interface SchemaValidationError {
 export async function fetchSchema(schemaUrl: string): Promise<object | undefined> {
   // Check cache first
   if (schemaCache.has(schemaUrl)) {
+    logger.debug('Schema loaded from cache', { schemaUrl });
     return schemaCache.get(schemaUrl);
   }
 

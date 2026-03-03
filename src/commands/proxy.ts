@@ -62,10 +62,12 @@ async function stopDevProxy(
 
   const closeTerminal = configuration.get<boolean>('closeTerminal', true);
   if (closeTerminal) {
+    logger.debug('Waiting for Dev Proxy to stop before closing terminal');
     await waitForProxyToStop(apiClient);
 
     const terminalService = TerminalService.fromConfiguration();
     terminalService.disposeDevProxyTerminals();
+    logger.debug('Dev Proxy terminals disposed');
   }
 }
 
@@ -88,7 +90,9 @@ async function restartDevProxy(
       : devProxyExe;
 
     terminalService.sendCommand(terminal, command);
-  } catch {
+    logger.debug('Dev Proxy restart command sent');
+  } catch (error) {
+    logger.error('Failed to restart Dev Proxy', error);
     vscode.window.showErrorMessage('Failed to restart Dev Proxy');
   }
 }
