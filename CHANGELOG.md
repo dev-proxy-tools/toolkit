@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
-## [1.13.0] - Unreleased
+## [1.13.1] - Unreleased
 
 ### Added:
 
@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command: Added `Reset State` to clear all extension state
 - Quick Fixes: Added fix to remove orphaned config sections not linked to any plugin
 - Quick Fixes: Added fix to link orphaned config section to a plugin
+
+### Changed:
+
+- Snippets: Updated schema URLs from Dev Proxy v2.1.0 to v2.2.0
 
 ### Fixed:
 
