@@ -76,4 +76,26 @@ export const registerDocumentListeners = (context: vscode.ExtensionContext, coll
             });
         })
     );
+
+    // Process already-open documents that were opened before the extension activated
+    for (const document of vscode.workspace.textDocuments) {
+        if (document.uri.scheme !== 'file') {
+            continue;
+        }
+        try {
+            if (isConfigFile(document)) {
+                updateConfigFileDiagnostics(context, document, collection);
+            } else if (isProxyFile(document)) {
+                updateFileDiagnostics(context, document, collection);
+            }
+        } catch (error) {
+            console.error('Error processing already-open document:', error);
+        }
+    }
+
+    // Set context for the active editor if it contains a config file
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor && activeEditor.document.uri.scheme === 'file') {
+        vscode.commands.executeCommand('setContext', 'isDevProxyConfigFile', isConfigFile(activeEditor.document));
+    }
 };
