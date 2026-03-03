@@ -89,7 +89,7 @@ export const registerDocumentListeners = (context: vscode.ExtensionContext, coll
                 updateFileDiagnostics(context, document, collection);
             }
         } catch (error) {
-            console.error('Error processing already-open document:', error);
+            console.error('Error processing already-open document:', document.uri.fsPath, error);
         }
     }
 
