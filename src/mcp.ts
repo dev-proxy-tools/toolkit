@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
+import * as logger from './logger';
 
 export const registerMcpServer = (context: vscode.ExtensionContext) => {
+  logger.debug('Registering MCP server definition provider');
   const didChangeEmitter = new vscode.EventEmitter<void>();
 
   context.subscriptions.push(

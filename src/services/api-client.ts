@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as logger from '../logger';
 
 /**
  * Client for communicating with the Dev Proxy API.
@@ -40,7 +41,8 @@ export class DevProxyApiClient {
         signal: AbortSignal.timeout(2000),
       });
       return response.status >= 200 && response.status < 500;
-    } catch {
+    } catch (error) {
+      logger.debug('Dev Proxy API unreachable', error);
       return false;
     }
   }
@@ -49,6 +51,7 @@ export class DevProxyApiClient {
    * Stop the proxy.
    */
   async stop(): Promise<void> {
+    logger.debug('Stopping Dev Proxy');
     await this.post('/proxy/stopproxy');
   }
 
@@ -56,6 +59,7 @@ export class DevProxyApiClient {
    * Raise a mock request.
    */
   async raiseMockRequest(): Promise<void> {
+    logger.debug('Raising mock request');
     await this.post('/proxy/mockrequest');
   }
 
@@ -63,6 +67,7 @@ export class DevProxyApiClient {
    * Start recording API requests.
    */
   async startRecording(): Promise<void> {
+    logger.debug('Starting recording');
     await this.post('/proxy', { recording: true });
   }
 
@@ -70,6 +75,7 @@ export class DevProxyApiClient {
    * Stop recording API requests.
    */
   async stopRecording(): Promise<void> {
+    logger.debug('Stopping recording');
     await this.post('/proxy', { recording: false });
   }
 
@@ -83,10 +89,12 @@ export class DevProxyApiClient {
         signal: AbortSignal.timeout(this.timeout),
       });
       if (!response.ok) {
+        logger.debug('Failed to get proxy status', { status: response.status });
         return null;
       }
       return (await response.json()) as ProxyStatus;
-    } catch {
+    } catch (error) {
+      logger.debug('Failed to get proxy status', error);
       return null;
     }
   }

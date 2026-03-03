@@ -9,6 +9,7 @@ import {
   VersionPreference,
   WingetPackageIdentifier,
 } from '../enums';
+import * as logger from '../logger';
 
 /**
  * Utility functions for shell execution and package management.
@@ -81,6 +82,7 @@ export async function upgradeDevProxyWithPackageManager(
   try {
     // Check if package manager is available
     await executeCommand(`${packageManager} --version`);
+    logger.debug('Package manager available', { packageManager });
 
     // Check if Dev Proxy is installed via package manager
     const listCommand =
@@ -88,6 +90,7 @@ export async function upgradeDevProxyWithPackageManager(
     const listOutput = await executeCommand(listCommand);
 
     if (!listOutput.includes(packageId)) {
+      logger.warn('Dev Proxy not found in package manager', { packageManager, packageId });
       return false;
     }
 
@@ -111,6 +114,7 @@ export async function upgradeDevProxyWithPackageManager(
     try {
       await executeCommand(upgradeCommand);
       statusMessage.dispose();
+      logger.info('Dev Proxy upgraded successfully', { packageManager });
 
       const result = await vscode.window.showInformationMessage(
         `${versionText} has been successfully upgraded!`,
@@ -122,10 +126,12 @@ export async function upgradeDevProxyWithPackageManager(
       return true;
     } catch (error) {
       statusMessage.dispose();
+      logger.error('Failed to upgrade Dev Proxy', { packageManager, error });
       vscode.window.showErrorMessage(`Failed to upgrade ${versionText}: ${error}`);
       return false;
     }
   } catch {
+    logger.warn('Package manager not available for upgrade', { packageManager });
     return false;
   }
 }
@@ -164,13 +170,16 @@ export async function resolveDevProxyExecutable(
 ): Promise<string> {
   // 1. Use custom path if provided
   if (customPath && customPath.trim() !== '') {
+    logger.info('Using custom Dev Proxy path from settings', { customPath: customPath.trim() });
     return customPath.trim();
   }
 
   // 2. Try bare command first
   if (await canExecute(exeName)) {
+    logger.info('Dev Proxy found on PATH', { exeName });
     return exeName;
   }
+  logger.debug('Dev Proxy not found on PATH, trying alternatives', { exeName });
 
   const platform = os.platform();
 
@@ -178,6 +187,7 @@ export async function resolveDevProxyExecutable(
   if (platform !== 'win32') {
     const loginShellPath = await tryLoginShell(exeName);
     if (loginShellPath) {
+      logger.info('Dev Proxy found via login shell', { path: loginShellPath });
       return loginShellPath;
     }
   }
@@ -187,11 +197,13 @@ export async function resolveDevProxyExecutable(
   for (const dir of commonPaths) {
     const fullPath = `${dir}/${exeName}`;
     if (fs.existsSync(fullPath)) {
+      logger.info('Dev Proxy found at common path', { path: fullPath });
       return fullPath;
     }
   }
 
   // Fallback to bare command (will fail gracefully in getVersion)
+  logger.warn('Dev Proxy executable not found, falling back to bare command', { exeName });
   return exeName;
 }
 
@@ -220,13 +232,14 @@ async function tryLoginShell(exeName: string): Promise<string | undefined> {
     }
 
     try {
+      logger.debug('Trying login shell', { shell, exeName });
       const result = await executeCommand(`${shell} -l -c "which ${exeName}"`);
       const path = result.trim();
       if (path && !path.includes('not found')) {
         return path;
       }
     } catch {
-      // Shell failed, try next
+      logger.debug('Login shell did not find executable', { shell, exeName });
     }
   }
 

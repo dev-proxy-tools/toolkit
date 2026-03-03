@@ -7,6 +7,15 @@ import { DiagnosticCodes } from './constants';
 import { getDiagnosticCode } from './utils';
 import * as semver from 'semver';
 import { fetchSchema, validateAgainstSchema } from './services';
+import * as logger from './logger';
+
+const logDiagnostics = (diagnostics: vscode.Diagnostic[]) => {
+  for (const d of diagnostics) {
+    const severity = ['Error', 'Warning', 'Information', 'Hint'][d.severity];
+    const line = d.range.start.line + 1;
+    logger.info(`[${severity}] Line ${line}: ${d.message}`);
+  }
+};
 
 export const updateConfigFileDiagnostics = async (
   context: vscode.ExtensionContext,
@@ -16,8 +25,10 @@ export const updateConfigFileDiagnostics = async (
   const devProxyInstall =
     context.globalState.get<DevProxyInstall>('devProxyInstall');
   if (!devProxyInstall) {
+    logger.warn('No Dev Proxy install found, skipping config diagnostics');
     return;
   }
+  logger.info('Running config diagnostics', { file: document.fileName });
   const diagnostics: vscode.Diagnostic[] = [];
   const documentNode = getObjectNodeFromDocument(document);
   const pluginsNode = getPluginsNode(documentNode);
@@ -31,10 +42,14 @@ export const updateConfigFileDiagnostics = async (
 
   // Set initial diagnostics synchronously
   collection.set(document.uri, diagnostics);
+  logger.info('Config diagnostics complete', { file: document.fileName, count: diagnostics.length });
+  logDiagnostics(diagnostics);
 
   // Run async schema content validation and update diagnostics
   const asyncDiagnostics = await validateConfigSectionContents(document, documentNode);
   if (asyncDiagnostics.length > 0) {
+    logger.info('Async schema validation found issues', { file: document.fileName, count: asyncDiagnostics.length });
+    logDiagnostics(asyncDiagnostics);
     collection.set(document.uri, [...diagnostics, ...asyncDiagnostics]);
   }
 };
@@ -47,8 +62,10 @@ export const updateFileDiagnostics = (
   const devProxyInstall =
     context.globalState.get<DevProxyInstall>('devProxyInstall');
   if (!devProxyInstall) {
+    logger.warn('No Dev Proxy install found, skipping file diagnostics');
     return;
   }
+  logger.info('Running file diagnostics', { file: document.fileName });
 
   const diagnostics: vscode.Diagnostic[] = [];
   const documentNode = getObjectNodeFromDocument(document);
@@ -56,6 +73,8 @@ export const updateFileDiagnostics = (
   checkSchemaCompatibility(documentNode, devProxyInstall, diagnostics);
 
   collection.set(document.uri, diagnostics);
+  logger.info('File diagnostics complete', { file: document.fileName, count: diagnostics.length });
+  logDiagnostics(diagnostics);
 };
 
 const checkConfigSection = (
@@ -119,6 +138,7 @@ const checkSchemaCompatibility = (
     const devProxyVersion = devProxyInstall.isBeta
       ? devProxyInstall.version.split('-')[0]
       : devProxyInstall.version;
+    logger.debug('Checking schema compatibility', { schema: schemaValue, installedVersion: devProxyVersion });
     if (!schemaValue.includes(`${devProxyVersion}`)) {
       const diagnostic = new vscode.Diagnostic(
         getRangeFromASTNode(schemaValueNode),
@@ -140,6 +160,7 @@ const checkPlugins = (
   if (pluginsNode && (pluginsNode.value as parse.ArrayNode)) {
     const pluginNodes = (pluginsNode.value as parse.ArrayNode)
       .children as parse.ObjectNode[];
+    logger.debug('Checking plugins', { count: pluginNodes.length });
 
     checkAtLeastOneEnabledPlugin(pluginNodes, diagnostics, pluginsNode);
     warnOnReporterPosition(pluginNodes, diagnostics);
@@ -778,7 +799,7 @@ async function validateSingleConfigSection(
       });
     }
   } catch (error) {
-    console.warn(`Error validating config section ${configSectionName}:`, error);
+    logger.warn(`Error validating config section ${configSectionName}`, error);
   }
 }
 

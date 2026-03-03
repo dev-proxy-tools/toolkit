@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { getDevProxyExe } from './detect';
 import { VersionPreference } from './enums';
+import * as logger from './logger';
 
 interface DevProxyTaskDefinition extends vscode.TaskDefinition {
     type: 'devproxy';
@@ -134,6 +135,7 @@ export class DevProxyTaskProvider implements vscode.TaskProvider {
 }
 
 export const registerTaskProvider = (context: vscode.ExtensionContext) => {
+    logger.debug('Registering task provider');
     const provider = new DevProxyTaskProvider(context);
     context.subscriptions.push(
         vscode.tasks.registerTaskProvider(DevProxyTaskProvider.DevProxyType, provider)

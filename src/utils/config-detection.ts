@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import parse from 'json-to-ast';
+import * as logger from '../logger';
 
 /**
  * Find a property node by its key type and value.
@@ -62,7 +63,8 @@ export function isConfigFile(document: vscode.TextDocument): boolean {
     }
 
     return false;
-  } catch {
+  } catch (error) {
+    logger.debug('Failed to parse document for config file detection', { file: document.fileName, error });
     return false;
   }
 }
@@ -83,7 +85,8 @@ export function isProxyFile(document: vscode.TextDocument): boolean {
     }
 
     return false;
-  } catch {
+  } catch (error) {
+    logger.debug('Failed to parse document for proxy file detection', { file: document.fileName, error });
     return false;
   }
 }

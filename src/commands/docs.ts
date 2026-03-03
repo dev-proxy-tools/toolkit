@@ -3,6 +3,7 @@ import { Commands } from '../constants';
 import { pluginDocs } from '../data';
 import parse from 'json-to-ast';
 import { getASTNode, getRangeFromASTNode } from '../utils/ast';
+import * as logger from '../logger';
 
 /**
  * Documentation and language model configuration commands.
@@ -21,8 +22,11 @@ export function registerDocCommands(context: vscode.ExtensionContext): void {
 function openPluginDocumentation(pluginName: string): void {
   const doc = pluginDocs[pluginName];
   if (doc) {
+    logger.debug('Opening plugin docs', { pluginName, url: doc.url });
     const target = vscode.Uri.parse(doc.url);
     vscode.env.openExternal(target);
+  } else {
+    logger.warn('Plugin docs not found', { pluginName });
   }
 }
 
@@ -42,11 +46,13 @@ async function addLanguageModelConfig(uri: vscode.Uri): Promise<void> {
     }
   } catch (error) {
     // Fallback to simple text-based insertion
+    logger.debug('Failed to parse document with json-to-ast, using text-based fallback', error);
     addLanguageModelFallback(document, edit, uri);
   }
 
   await vscode.workspace.applyEdit(edit);
   await document.save();
+  logger.info('Language model configuration added');
 
   vscode.window.showInformationMessage('Language model configuration added');
 }
