@@ -40,20 +40,22 @@ Run after a regular release ships to start the next development cycle.
 Release a new beta to the VS Code Marketplace as a pre-release.
 
 1. Read current version from `package.json` — this is the version to release (already set by Workflow 1 or a previous beta bump)
-2. Push: `git push origin main` (confirm with user first)
-3. Generate release notes from git log since last beta/release tag — see [release-notes-template.md](references/release-notes-template.md)
-4. Create GitHub release:
+2. Ask the user for the target Dev Proxy version (e.g., "v2.2.0"). They know which Dev Proxy release this beta targets.
+3. Push: `git push origin main` (confirm with user first)
+4. Generate release notes from git log since last beta/release tag — see [release-notes-template.md](references/release-notes-template.md)
+5. Create GitHub release:
    - Tag: `vX.Y.Z-beta` (e.g., `v1.13.0-beta` for first beta, `v1.13.2-beta` for subsequent)
    - Title: `vX.Y.Z-beta`
    - Mark as **pre-release**
    - Body: generated release notes
-5. Determine target Dev Proxy version from https://github.com/dotnet/dev-proxy/releases
+   - **Important**: Write release notes to a temp file and use `gh release create --notes-file <file>`. Do NOT use inline `--notes` — multi-line content gets garbled by the terminal.
 6. Create or move `devproxy-vX.Y.Z` tag to this commit:
-   - First beta in cycle: `git tag devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z`
-   - Subsequent beta: `git tag -f devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
+   - First beta in cycle: `git tag -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z`
+   - Subsequent beta: `git tag -f -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
 7. Bump version for next beta: `npm version patch --no-git-tag-version` (e.g., 1.13.0 → 1.13.1)
 8. Commit: `git add package.json package-lock.json && git commit -m "Increment version to vX.Y.Z"`
 9. Push: `git push origin main` (confirm with user first)
+10. Clean up any temp files created during the workflow (e.g., release notes temp file)
 
 ## Workflow 3: Prepare Regular Release
 
@@ -77,7 +79,7 @@ Create the stable GitHub release after preparing.
    - **Not** marked as pre-release
    - Body: cumulative release notes
 3. Move `devproxy-vX.Y.Z` tag to the release commit:
-   - `git tag -f devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
+   - `git tag -f -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
 
 ## During Development
 
@@ -111,5 +113,7 @@ Verify locally: `npm run compile && npm test`
 - Do not modify files other than those listed above during release workflows
 - Always confirm with the user before pushing to remote or creating GitHub releases
 - Beta release notes are incremental (since last beta), regular release notes are cumulative (full cycle)
-- The `devproxy-vX.Y.Z` tag version comes from https://github.com/dotnet/dev-proxy/releases
+- The `devproxy-vX.Y.Z` tag version comes from the user — ask them, don't guess
 - Do not bypass CI checks or use `--no-verify`
+- Always use `--notes-file` (not `--notes`) when creating GitHub releases with `gh release create`
+- Always use `-m "message"` when creating git tags — bare `git tag <name>` opens an editor and fails in automation
