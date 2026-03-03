@@ -29,6 +29,13 @@
         "enablement": "!isDevProxyRunning"
       },
       {
+        "command": "dev-proxy-toolkit.start-with-options",
+        "title": "Start with Options...",
+        "category": "Dev Proxy Toolkit",
+        "icon": "$(debug-alt)",
+        "enablement": "!isDevProxyRunning"
+      },
+      {
         "command": "dev-proxy-toolkit.stop",
         "title": "Stop",
         "category": "Dev Proxy Toolkit",
@@ -118,6 +125,11 @@
         {
           "command": "dev-proxy-toolkit.start",
           "group": "navigation@1",
+          "when": "!activeEditorIsDirty && isDevProxyConfigFile && !isDevProxyRunning"
+        },
+        {
+          "command": "dev-proxy-toolkit.start-with-options",
+          "group": "navigation@2",
           "when": "!activeEditorIsDirty && isDevProxyConfigFile && !isDevProxyRunning"
         },
         {

@@ -25,6 +25,7 @@ Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` /
 | Command | When Available |
 |---------|----------------|
 | Start | Dev Proxy not running |
+| Start with Options... | Dev Proxy not running |
 | Stop | Dev Proxy running |
 | Restart | Dev Proxy running |
 | Raise mock request | Dev Proxy running |
