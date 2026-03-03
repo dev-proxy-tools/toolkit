@@ -53,9 +53,10 @@ Release a new beta to the VS Code Marketplace as a pre-release.
    - First beta in cycle: `git tag -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z`
    - Subsequent beta: `git tag -f -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
 7. Bump version for next beta: `npm version patch --no-git-tag-version` (e.g., 1.13.0 → 1.13.1)
-8. Commit: `git add package.json package-lock.json && git commit -m "Increment version to vX.Y.Z"`
-9. Push: `git push origin main` (confirm with user first)
-10. Clean up any temp files created during the workflow (e.g., release notes temp file)
+8. Update `CHANGELOG.md`: change the unreleased section header version to match the new version (e.g., `## [1.13.0] - Unreleased` → `## [1.13.1] - Unreleased`)
+9. Commit: `git add package.json package-lock.json CHANGELOG.md && git commit -m "Increment version to vX.Y.Z"`
+10. Push: `git push origin main` (confirm with user first)
+11. Clean up any temp files created during the workflow (e.g., release notes temp file)
 
 ## Workflow 3: Prepare Regular Release
 
