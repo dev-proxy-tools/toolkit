@@ -39,20 +39,21 @@ Run after a regular release ships to start the next development cycle.
 
 Release a new beta to the VS Code Marketplace as a pre-release.
 
-1. Run `npm version patch --no-git-tag-version` (e.g., 1.13.0 → 1.13.1, or 1.13.1 → 1.13.2)
-2. Read new version from `package.json`
-3. Commit: `git add package.json package-lock.json && git commit -m "Increment version to vX.Y.Z"`
-4. Push: `git push origin main` (confirm with user first)
-5. Generate release notes from git log since last beta/release tag — see [release-notes-template.md](references/release-notes-template.md)
-6. Create GitHub release:
-   - Tag: `vX.Y.Z-beta` (e.g., `v1.13.1-beta`)
+1. Read current version from `package.json` — this is the version to release (already set by Workflow 1 or a previous beta bump)
+2. Push: `git push origin main` (confirm with user first)
+3. Generate release notes from git log since last beta/release tag — see [release-notes-template.md](references/release-notes-template.md)
+4. Create GitHub release:
+   - Tag: `vX.Y.Z-beta` (e.g., `v1.13.0-beta` for first beta, `v1.13.2-beta` for subsequent)
    - Title: `vX.Y.Z-beta`
    - Mark as **pre-release**
    - Body: generated release notes
-7. Determine target Dev Proxy version from https://github.com/dotnet/dev-proxy/releases
-8. Create or move `devproxy-vX.Y.Z` tag to this commit:
+5. Determine target Dev Proxy version from https://github.com/dotnet/dev-proxy/releases
+6. Create or move `devproxy-vX.Y.Z` tag to this commit:
    - First beta in cycle: `git tag devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z`
    - Subsequent beta: `git tag -f devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
+7. Bump version for next beta: `npm version patch --no-git-tag-version` (e.g., 1.13.0 → 1.13.1)
+8. Commit: `git add package.json package-lock.json && git commit -m "Increment version to vX.Y.Z"`
+9. Push: `git push origin main` (confirm with user first)
 
 ## Workflow 3: Prepare Regular Release
 
