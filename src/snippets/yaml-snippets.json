@@ -67,7 +67,7 @@
   "ConfigFile": {
     "prefix": "devproxy-config-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/rc.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/rc.schema.json",
       "plugins:",
       "  - $1",
       "urlsToWatch:",
@@ -91,7 +91,7 @@
   "MocksFile": {
     "prefix": "devproxy-mocks-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/mockresponseplugin.mocksfile.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/mockresponseplugin.mocksfile.schema.json",
       "mocks:",
       "  - $1"
     ],
@@ -109,7 +109,7 @@
   "PricesFile": {
     "prefix": "devproxy-prices-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/openaitelemetryplugin.pricesfile.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/openaitelemetryplugin.pricesfile.schema.json",
       "prices: $1"
     ],
     "description": "Dev Proxy prices file"
@@ -311,7 +311,7 @@
   "CrudApiPluginApiFile": {
     "prefix": "devproxy-plugin-crud-api-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/crudapiplugin.apifile.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/crudapiplugin.apifile.schema.json",
       "actions:",
       "  - $1",
       "baseUrl: $2",
@@ -403,7 +403,7 @@
   "GenericRandomErrorPluginFile": {
     "prefix": "devproxy-plugin-generic-random-error-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/genericrandomerrorplugin.errorsfile.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/genericrandomerrorplugin.errorsfile.schema.json",
       "errors:",
       "  - $1"
     ],
@@ -805,7 +805,7 @@
   "MockStdioResponsePluginMocksFile": {
     "prefix": "devproxy-plugin-mock-stdio-response-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/mockstdioresponseplugin.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/mockstdioresponseplugin.schema.json",
       "mocks:",
       "  - $1"
     ],
@@ -917,7 +917,7 @@
   "RateLimitingFile": {
     "prefix": "devproxy-plugin-rate-limiting-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/ratelimitingplugin.customresponsefile.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/ratelimitingplugin.customresponsefile.schema.json",
       "body: $1",
       "headers:",
       "  - $2",
@@ -947,7 +947,7 @@
   "RewritePluginFile": {
     "prefix": "devproxy-plugin-rewrite-file",
     "body": [
-      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.2.0/rewriteplugin.rewritesfile.schema.json",
+      "# yaml-language-server: \\$schema=https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.0/rewriteplugin.rewritesfile.schema.json",
       "rewrites:",
       "  - $1"
     ],
