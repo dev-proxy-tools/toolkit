@@ -43,18 +43,18 @@ Release a new beta to the VS Code Marketplace as a pre-release.
 2. Ask the user for the target Dev Proxy version (e.g., "v2.2.0"). They know which Dev Proxy release this beta targets.
 3. Push: `git push origin main` (confirm with user first)
 4. Generate release notes from git log since last beta/release tag — see [release-notes-template.md](references/release-notes-template.md)
-5. Create GitHub release:
+5. Update `README.md` Pre-release badge version to match the version being released (e.g., `Pre--release-v1.13.0`). The badge is on line 4, uses shields.io format with double dash for hyphenated words. This reflects what's published to the marketplace.
+6. Create GitHub release:
    - Tag: `vX.Y.Z-beta` (e.g., `v1.13.0-beta` for first beta, `v1.13.2-beta` for subsequent)
    - Title: `vX.Y.Z-beta`
    - Mark as **pre-release**
    - Body: generated release notes
    - **Important**: Write release notes to a temp file and use `gh release create --notes-file <file>`. Do NOT use inline `--notes` — multi-line content gets garbled by the terminal.
-6. Create or move `devproxy-vX.Y.Z` tag to this commit:
+7. Create or move `devproxy-vX.Y.Z` tag to this commit:
    - First beta in cycle: `git tag -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z`
    - Subsequent beta: `git tag -f -m "Dev Proxy vX.Y.Z" devproxy-vX.Y.Z && git push origin devproxy-vX.Y.Z --force`
-7. Bump version for next beta: `npm version patch --no-git-tag-version` (e.g., 1.13.0 → 1.13.1)
-8. Update `CHANGELOG.md`: change the unreleased section header version to match the new version (e.g., `## [1.13.0] - Unreleased` → `## [1.13.1] - Unreleased`)
-9. Update `README.md` Pre-release badge version to match the new version (e.g., `Pre--release-v1.13.1`). The badge is on line 4, uses shields.io format with double dash for hyphenated words.
+8. Bump version for next beta: `npm version patch --no-git-tag-version` (e.g., 1.13.0 → 1.13.1)
+9. Update `CHANGELOG.md`: change the unreleased section header version to match the new version (e.g., `## [1.13.0] - Unreleased` → `## [1.13.1] - Unreleased`)
 10. Commit: `git add package.json package-lock.json CHANGELOG.md README.md && git commit -m "Increment version to vX.Y.Z"`
 11. Push: `git push origin main` (confirm with user first)
 12. Clean up any temp files created during the workflow (e.g., release notes temp file)
