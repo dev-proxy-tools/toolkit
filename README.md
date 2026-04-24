@@ -1,7 +1,7 @@
 # Dev Proxy Toolkit
 
 <!-- Update version badges when releasing: Stable = last published release, Pre-release = current manifest version -->
-[![Stable Version](https://img.shields.io/badge/Stable-v1.18.0-007ACC)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit) [![Pre-release Version](https://img.shields.io/badge/Pre--release-v1.19.0-24bfa5)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit) [![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/garrytrinder.dev-proxy-toolkit?label=Installs)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit)
+[![Stable Version](https://img.shields.io/badge/Stable-v1.20.0-007ACC)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit) [![Pre-release Version](https://img.shields.io/badge/Pre--release-v1.19.0-24bfa5)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit) [![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/garrytrinder.dev-proxy-toolkit?label=Installs)](https://marketplace.visualstudio.com/items?itemName=garrytrinder.dev-proxy-toolkit)
 
 [![Install Stable](https://img.shields.io/badge/VS%20Code-Install_Stable-007ACC?logo=visualstudiocode)](vscode:extension/garrytrinder.dev-proxy-toolkit) [![Install Pre-release](https://img.shields.io/badge/VS%20Code%20Insiders-Install_Pre--release-24bfa5?logo=visualstudiocode)](vscode-insiders:extension/garrytrinder.dev-proxy-toolkit)
 
