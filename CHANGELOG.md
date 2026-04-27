@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed:
 
-- Snippets: All snippets that reference schemas updated to use `v2.4.0` schema
+- Snippets: All snippets that reference schemas updated to use `v2.3.4` schema
 
 ## [1.22.0] - 2026-04-24
 
