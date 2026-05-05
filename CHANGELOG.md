@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.27.0] - Unreleased
 
+### Fixed:
+
+- Problem matcher: `$devproxy-watch` `beginsPattern` updated to match actual Dev Proxy output
+
 ## [1.26.0] - 2026-05-05
 
 ### Changed:

@@ -262,7 +262,7 @@
         ],
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "^.*Starting Dev Proxy.*$",
+          "beginsPattern": "^.*Dev Proxy listening on.*$",
           "endsPattern": "^.*(?:Dev Proxy is ready|Press CTRL\\+C to stop Dev Proxy).*$"
         }
       }
