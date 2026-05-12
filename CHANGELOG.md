@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.27.1] - Unreleased
 
+### Added:
+
+- Agent Skill: [Dev Proxy](https://github.com/dotnet/dev-proxy/tree/main/skills/dev-proxy)
+
 ### Fixed:
 
 - Problem matcher: `$devproxy-watch` `beginsPattern` updated to match actual Dev Proxy output

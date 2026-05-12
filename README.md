@@ -265,6 +265,12 @@ Run Dev Proxy as a VS Code task for integration with build workflows.
 
 This extension includes an MCP server for AI-assisted development. See [Dev Proxy MCP Server](https://github.com/dev-proxy-tools/mcp) for available tools.
 
+## Agent Skill
+
+This extension contributes a Dev Proxy [agent skill](https://code.visualstudio.com/docs/copilot/customization/agent-skills) for GitHub Copilot. The skill teaches Copilot how to configure Dev Proxy, mock API responses, simulate errors, test rate limiting, and more — without you having to explain the setup every time.
+
+The skill is automatically available when the extension is installed. Type `/dev-proxy` in Copilot Chat to invoke it, or let Copilot load it automatically when your question is relevant.
+
 ## Troubleshooting
 
 **View debug logs**
