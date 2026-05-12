@@ -48,6 +48,25 @@
 				"npm: watch-tests"
 			],
 			"problemMatcher": []
+		},
+		{
+			"label": "fetch-skill",
+			"type": "shell",
+			"command": "bash scripts/fetch-skill.sh",
+			"presentation": {
+				"reveal": "silent",
+				"group": "build"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "pre-launch",
+			"dependsOn": [
+				"fetch-skill",
+				"npm: watch"
+			],
+			"dependsOrder": "sequence",
+			"problemMatcher": []
 		}
 	]
 }
