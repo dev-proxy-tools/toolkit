@@ -18,13 +18,13 @@ echo "Fetching Dev Proxy skill from $REPO@$BRANCH..."
 # Ensure gitload-cli is available
 if ! command -v gitload &> /dev/null; then
   echo "Installing gitload-cli..."
-  npm install -g gitload-cli
+  npm install -g gitload-cli || { echo "Failed to install gitload-cli"; exit 1; }
 fi
 
 # Clean existing skill directory
 rm -rf "$ROOT_DIR/$TARGET_DIR"
 
 # Download skill folder using gitload-cli
-gitload "https://github.com/$REPO/tree/$BRANCH/$SKILL_PATH" -o "$ROOT_DIR/$TARGET_DIR"
+gitload "https://github.com/$REPO/tree/$BRANCH/$SKILL_PATH" -o "$ROOT_DIR/$TARGET_DIR" || { echo "Failed to download skill using gitload-cli"; exit 1; }
 
 echo "Dev Proxy skill fetched successfully."
