@@ -119,6 +119,13 @@ suite('Command Registration', () => {
     );
   });
 
+  test('switch-version command should be registered', () => {
+    assert.ok(
+      registeredCommands.includes(Commands.switchVersion),
+      `Command ${Commands.switchVersion} should be registered`
+    );
+  });
+
   test('all Commands constants should be registered', () => {
     const allCommandIds = Object.values(Commands) as string[];
     const missingCommands = allCommandIds.filter(id => !registeredCommands.includes(id));

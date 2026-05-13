@@ -9,6 +9,8 @@ import { registerDocCommands } from './docs';
 import { Commands } from '../constants';
 import { addExtensionToRecommendations } from '../utils';
 import { registerUpgradeConfigCommands } from './upgrade-config';
+import { VersionPreference } from '../enums';
+import * as logger from '../logger';
 
 /**
  * Register all commands for the extension.
@@ -57,6 +59,27 @@ export function registerCommands(
           vscode.commands.executeCommand('workbench.action.reloadWindow');
         }
       });
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand(Commands.switchVersion, async () => {
+      const currentVersion = (configuration.get<string>('version') as VersionPreference) || VersionPreference.Stable;
+      const newVersion = currentVersion === VersionPreference.Stable
+        ? VersionPreference.Beta
+        : VersionPreference.Stable;
+
+      logger.info('Switching Dev Proxy version', { from: currentVersion, to: newVersion });
+
+      await vscode.workspace.getConfiguration('dev-proxy-toolkit').update('version', newVersion, vscode.ConfigurationTarget.Global);
+
+      const result = await vscode.window.showInformationMessage(
+        `Switched to Dev Proxy ${newVersion}. Reload the window to apply changes.`,
+        'Reload'
+      );
+      if (result === 'Reload') {
+        await vscode.commands.executeCommand('workbench.action.reloadWindow');
+      }
     })
   );
 
