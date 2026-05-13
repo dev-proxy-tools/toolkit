@@ -38,6 +38,7 @@ Control Dev Proxy directly from VS Code via the Command Palette (`Cmd+Shift+P` /
 | Add to Workspace Recommendations | Always |
 | Reset State | Always |
 | Upgrade config files | Dev Proxy installed |
+| Switch Version (Stable/Beta) | Always |
 
 ### Snippets
 
