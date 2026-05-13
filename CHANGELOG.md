@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Agent Skill: [Dev Proxy](https://github.com/dotnet/dev-proxy/tree/main/skills/dev-proxy)
 
+### Changed:
+
+- Snippets: All snippets that reference schemas updated to use `v3.0.0` schema
+
 ### Fixed:
 
 - Problem matcher: `$devproxy-watch` `beginsPattern` updated to match actual Dev Proxy output
