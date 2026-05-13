@@ -112,6 +112,11 @@
         "title": "Upgrade config files",
         "category": "Dev Proxy Toolkit",
         "enablement": "isDevProxyInstalled"
+      },
+      {
+        "command": "dev-proxy-toolkit.switch-version",
+        "title": "Switch Version (Stable/Beta)",
+        "category": "Dev Proxy Toolkit"
       }
     ],
     "mcpServerDefinitionProviders": [

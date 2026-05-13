@@ -41,6 +41,9 @@ export const Commands = {
   // Language model commands
   addLanguageModelConfig: 'dev-proxy-toolkit.addLanguageModelConfig',
 
+  // Version commands
+  switchVersion: 'dev-proxy-toolkit.switch-version',
+
 // Workspace commands
   addToRecommendations: 'dev-proxy-toolkit.add-to-recommendations',
   resetState: 'dev-proxy-toolkit.reset-state',
