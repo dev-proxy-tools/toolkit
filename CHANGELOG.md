@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
+## [1.28.1] - 2026-05-28
+
+### Changed:
+
+- Agent Skill: Updated to v1.1.0 with CRUD API plugin API Key authentication support and v3.0.0 schema references
+
 ## [1.28.0] - 2026-05-28
 
 ### Added:
