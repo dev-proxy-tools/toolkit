@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
-## [1.29.1] - Unreleased
+## [1.30.0] - 2026-06-08
+
+### Changed:
+
+- Snippets: All snippets that reference schemas updated to use `v3.0.1` schema
+- Agent Skill: Updated schema references to `v3.0.1`
 
 ## [1.28.1] - 2026-05-28
 
