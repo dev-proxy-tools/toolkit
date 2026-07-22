@@ -2,7 +2,7 @@
   "name": "dev-proxy-toolkit",
   "displayName": "Dev Proxy Toolkit",
   "description": "Makes it easy to create and update Dev Proxy configuration files.",
-  "version": "1.33.2",
+  "version": "1.34.0",
   "publisher": "garrytrinder",
   "engines": {
     "vscode": "^1.109.0"
@@ -295,7 +295,8 @@
     "lint": "eslint src/**/*.ts",
     "test": "vscode-test",
     "fix": "eslint --fix src/**/*.ts && prettier --write src/**/*.ts",
-    "format": "prettier --write src/**/*.ts"
+    "format": "prettier --write src/**/*.ts",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@types/json-to-ast": "2.1.4",
@@ -306,11 +307,12 @@
     "@types/vscode": "1.109.0",
     "@typescript-eslint/eslint-plugin": "8.44.1",
     "@typescript-eslint/parser": "8.44.1",
-    "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "2.5.2",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.0.0",
     "copy-webpack-plugin": "13.0.1",
     "eslint": "9.36.0",
     "eslint-config-prettier": "^10.1.8",
+    "patch-package": "^8.0.1",
     "prettier": "^3.7.4",
     "sinon": "21.0.0",
     "ts-loader": "9.5.4",

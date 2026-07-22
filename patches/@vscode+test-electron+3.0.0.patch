@@ -1,0 +1,22 @@
+diff --git a/node_modules/@vscode/test-electron/out/util.js b/node_modules/@vscode/test-electron/out/util.js
+index 418f164..23e675b 100644
+--- a/node_modules/@vscode/test-electron/out/util.js
++++ b/node_modules/@vscode/test-electron/out/util.js
+@@ -181,7 +181,7 @@ function downloadDirToExecutablePath(dir, platform) {
+             return path.resolve(dir, 'Code.exe');
+         }
+         else if (isPlatformDarwin(platform)) {
+-            return path.resolve(dir, 'Visual Studio Code.app/Contents/MacOS/Electron');
++            return path.resolve(dir, 'Visual Studio Code.app/Contents/MacOS/Code');
+         }
+         else {
+             return path.resolve(dir, 'code');
+@@ -202,7 +202,7 @@ function insidersDownloadDirToExecutablePath(dir, platform) {
+             return path.resolve(dir, 'Code - Insiders.exe');
+         }
+         else if (isPlatformDarwin(platform)) {
+-            return path.resolve(dir, 'Visual Studio Code - Insiders.app/Contents/MacOS/Electron');
++            return path.resolve(dir, 'Visual Studio Code - Insiders.app/Contents/MacOS/Code - Insiders');
+         }
+         else {
+             return path.resolve(dir, 'code-insiders');
