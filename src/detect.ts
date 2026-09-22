@@ -4,6 +4,7 @@ import { VersionExeName, VersionPreference } from './enums';
 import { executeCommand, resolveDevProxyExecutable } from './utils/shell';
 import * as vscode from 'vscode';
 import * as logger from './logger';
+import { DevProxyApiClient } from './services/api-client';
 
 let lastKnownRunningState: boolean | undefined;
 
@@ -87,32 +88,15 @@ export const getOutdatedVersion = async (devProxyExe: string): Promise<string> =
 };
 
 export const isDevProxyRunning = async (devProxyExe: string): Promise<boolean> => {
-    try {
-        // Get the API port from configuration
-        const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
-        const apiPort = configuration.get('apiPort') as number;
-        
-        // Try to connect to the Dev Proxy API on the configured port
-        const response = await fetch(`http://127.0.0.1:${apiPort}/proxy`, {
-            method: 'GET',
-            signal: AbortSignal.timeout(2000), // 2 second timeout
-        });
-        
-        // If we get any response (even an error), Dev Proxy is running
-        const running = response.status >= 200 && response.status < 500;
-        if (running !== lastKnownRunningState) {
-            logger.info('Dev Proxy running state changed', { running, status: response.status });
-            lastKnownRunningState = running;
-        }
-        return running;
-    } catch (error) {
-        // If the request fails (connection refused, timeout, etc.), Dev Proxy is not running
-        if (lastKnownRunningState !== false) {
-            logger.info('Dev Proxy is not running');
-            lastKnownRunningState = false;
-        }
-        return false;
+    const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
+    const apiPort = configuration.get('apiPort') as number;
+    const running = await DevProxyApiClient.forInstance(devProxyExe, apiPort).isRunning();
+
+    if (running !== lastKnownRunningState) {
+        logger.info('Dev Proxy running state changed', { running });
+        lastKnownRunningState = running;
     }
+    return running;
 };
 
 export const getDevProxyExe = (versionPreference: VersionPreference) => {

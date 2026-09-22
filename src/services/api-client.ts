@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
-import { getDevProxyExe } from '../detect';
-import { VersionPreference } from '../enums';
+import { VersionExeName, VersionPreference } from '../enums';
 import * as logger from '../logger';
 import { executeFile } from '../utils/shell';
 
@@ -80,6 +79,7 @@ export async function getDevProxyApiToken(
  * - POST /proxy/mockrequest - Raise a mock request
  */
 export class DevProxyApiClient {
+  private static readonly instances = new Map<string, DevProxyApiClient>();
   private readonly baseUrl: string;
   private readonly timeout: number;
   private readonly tokenProvider?: ApiTokenProvider;
@@ -98,8 +98,20 @@ export class DevProxyApiClient {
     const config = vscode.workspace.getConfiguration('dev-proxy-toolkit');
     const port = config.get<number>('apiPort', 8897);
     const versionPreference = config.get('version') as VersionPreference;
-    const devProxyExe = getDevProxyExe(versionPreference);
-    return new DevProxyApiClient(port, 5000, () => getDevProxyApiToken(devProxyExe, port));
+    const devProxyExe = versionPreference === VersionPreference.Stable
+      ? VersionExeName.Stable
+      : VersionExeName.Beta;
+    return DevProxyApiClient.forInstance(devProxyExe, port);
+  }
+
+  static forInstance(devProxyExe: string, port: number): DevProxyApiClient {
+    const key = `${devProxyExe}:${port}`;
+    let client = DevProxyApiClient.instances.get(key);
+    if (!client) {
+      client = new DevProxyApiClient(port, 5000, () => getDevProxyApiToken(devProxyExe, port));
+      DevProxyApiClient.instances.set(key, client);
+    }
+    return client;
   }
 
   /**
@@ -107,11 +119,11 @@ export class DevProxyApiClient {
    */
   async isRunning(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}/proxy`, {
+      const response = await this.request('/proxy', {
         method: 'GET',
         signal: AbortSignal.timeout(2000),
       });
-      return response.status >= 200 && response.status < 500;
+      return response.status >= 200 && response.status < 500 && response.status !== 401;
     } catch (error) {
       logger.debug('Dev Proxy API unreachable', error);
       return false;

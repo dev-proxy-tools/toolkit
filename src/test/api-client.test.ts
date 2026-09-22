@@ -59,6 +59,32 @@ suite('DevProxyApiClient', () => {
       assert.strictEqual(result, true);
     });
 
+    test('should authenticate once and reuse the token for liveness checks', async () => {
+      const tokenProvider = sinon.stub().resolves('a'.repeat(64));
+      const authenticatedClient = new DevProxyApiClient(8897, 5000, tokenProvider);
+      fetchStub.onFirstCall().resolves(new Response(null, { status: 401 }));
+      fetchStub.onSecondCall().resolves(new Response(null, { status: 200 }));
+      fetchStub.onThirdCall().resolves(new Response(null, { status: 200 }));
+
+      assert.strictEqual(await authenticatedClient.isRunning(), true);
+      assert.strictEqual(await authenticatedClient.isRunning(), true);
+
+      assert.strictEqual(tokenProvider.calledOnce, true);
+      assert.strictEqual(fetchStub.callCount, 3);
+      const retryHeaders = new Headers(fetchStub.secondCall.args[1].headers);
+      const cachedHeaders = new Headers(fetchStub.thirdCall.args[1].headers);
+      assert.strictEqual(retryHeaders.get('Authorization'), `Bearer ${'a'.repeat(64)}`);
+      assert.strictEqual(cachedHeaders.get('Authorization'), `Bearer ${'a'.repeat(64)}`);
+    });
+
+    test('should return false when authentication is unavailable', async () => {
+      fetchStub.resolves(new Response(null, { status: 401 }));
+
+      const result = await client.isRunning();
+
+      assert.strictEqual(result, false);
+    });
+
     test('should return false when proxy responds with 5xx', async () => {
       fetchStub.resolves(new Response(null, { status: 500 }));
 
@@ -211,6 +237,13 @@ suite('DevProxyApiClient', () => {
       // This test just verifies the static factory method exists and returns a client
       const configClient = DevProxyApiClient.fromConfiguration();
       assert.ok(configClient instanceof DevProxyApiClient);
+    });
+
+    test('should reuse the client for the same executable and API port', () => {
+      const firstClient = DevProxyApiClient.forInstance('devproxy-test', 8899);
+      const secondClient = DevProxyApiClient.forInstance('devproxy-test', 8899);
+
+      assert.strictEqual(secondClient, firstClient);
     });
   });
 
