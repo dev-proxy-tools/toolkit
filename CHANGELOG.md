@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 > **Note**: odd version numbers, for example, `0.13.0`, are not included in this changelog. They are used to test the new features and fixes before the final release.
 
-## [1.37.2] - Unreleased
+## [1.38.0] - 2026-09-22
 
 ### Changed:
 
-- Snippets: All snippets that reference schemas updated to use `v4.0.0` schema
+- Snippets: All snippets that reference schemas updated to use `v3.3.1` schema
+
+### Fixed:
+
+- Dev Proxy API commands now authenticate using the instance bearer token
 
 ## [1.36.0] - 2026-09-15
 

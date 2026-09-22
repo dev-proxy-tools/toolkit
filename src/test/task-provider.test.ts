@@ -195,6 +195,15 @@ suite('DevProxyTaskProvider', () => {
         'Stop task should be in build group'
       );
     });
+
+    test('stop task should use authenticated custom execution', async () => {
+      const provider = new DevProxyTaskProvider(mockContext);
+      const tasks = await provider.provideTasks();
+
+      const stopTask = tasks!.find(t => t.name.includes('Stop'));
+
+      assert.ok(stopTask?.execution instanceof vscode.CustomExecution);
+    });
   });
 });
 

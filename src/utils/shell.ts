@@ -1,4 +1,4 @@
-import { exec, ExecOptions } from 'child_process';
+import { exec, execFile, ExecOptions } from 'child_process';
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as fs from 'fs';
@@ -21,6 +21,21 @@ import * as logger from '../logger';
 export async function executeCommand(cmd: string, options: ExecOptions = {}): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(cmd, options, (error, stdout, stderr) => {
+      if (error) {
+        reject(`exec error: ${error}${stderr ? `\nstderr: ${stderr.toString()}` : ''}`);
+      } else {
+        resolve(stdout.toString());
+      }
+    });
+  });
+}
+
+/**
+ * Execute a program with arguments without invoking a shell.
+ */
+export async function executeFile(file: string, args: string[]): Promise<string> {
+  return new Promise((resolve, reject) => {
+    execFile(file, args, (error, stdout, stderr) => {
       if (error) {
         reject(`exec error: ${error}${stderr ? `\nstderr: ${stderr.toString()}` : ''}`);
       } else {

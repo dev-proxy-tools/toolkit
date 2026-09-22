@@ -4,7 +4,7 @@
  */
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import { DevProxyApiClient } from '../services/api-client';
+import { DevProxyApiClient, getDevProxyApiToken } from '../services/api-client';
 
 suite('DevProxyApiClient', () => {
   let client: DevProxyApiClient;
@@ -86,6 +86,35 @@ suite('DevProxyApiClient', () => {
       const [url, options] = fetchStub.firstCall.args;
       assert.ok(url.includes('/proxy/stopproxy'));
       assert.strictEqual(options.method, 'POST');
+    });
+
+    test('should authenticate and retry after a 401 response', async () => {
+      const authenticatedClient = new DevProxyApiClient(8897, 5000, async () => 'a'.repeat(64));
+      fetchStub.onFirstCall().resolves(new Response(null, { status: 401 }));
+      fetchStub.onSecondCall().resolves(new Response(null, { status: 200 }));
+
+      await authenticatedClient.stop();
+
+      assert.strictEqual(fetchStub.callCount, 2);
+      const headers = new Headers(fetchStub.secondCall.args[1].headers);
+      assert.strictEqual(headers.get('Authorization'), `Bearer ${'a'.repeat(64)}`);
+    });
+
+    test('should remain compatible with an API that does not require authentication', async () => {
+      const tokenProvider = sinon.stub().resolves('a'.repeat(64));
+      const compatibleClient = new DevProxyApiClient(8897, 5000, tokenProvider);
+      fetchStub.resolves(new Response(null, { status: 200 }));
+
+      await compatibleClient.stop();
+
+      assert.strictEqual(tokenProvider.called, false);
+      assert.strictEqual(fetchStub.callCount, 1);
+    });
+
+    test('should throw when the API rejects a request', async () => {
+      fetchStub.resolves(new Response(null, { status: 500 }));
+
+      await assert.rejects(client.stop(), /Dev Proxy API request failed: 500/);
     });
   });
 
@@ -182,6 +211,40 @@ suite('DevProxyApiClient', () => {
       // This test just verifies the static factory method exists and returns a client
       const configClient = DevProxyApiClient.fromConfiguration();
       assert.ok(configClient instanceof DevProxyApiClient);
+    });
+  });
+
+  suite('getDevProxyApiToken', () => {
+    test('should retrieve the token for the instance using the configured API port', async () => {
+      const execute = sinon.stub();
+      execute.onFirstCall().resolves([
+        JSON.stringify({ pid: 123, apiUrl: 'http://127.0.0.1:8898' }),
+        JSON.stringify({ pid: 456, apiUrl: 'http://127.0.0.1:8897' }),
+      ].join('\n'));
+      execute.onSecondCall().resolves(JSON.stringify({
+        pid: 456,
+        apiUrl: 'http://127.0.0.1:8897',
+        token: 'b'.repeat(64),
+      }));
+
+      const token = await getDevProxyApiToken('devproxy', 8897, execute);
+
+      assert.strictEqual(token, 'b'.repeat(64));
+      assert.deepStrictEqual(execute.secondCall.args, [
+        'devproxy',
+        ['api', 'token', '--pid', '456', '--output', 'json'],
+      ]);
+    });
+
+    test('should reject malformed tokens', async () => {
+      const execute = sinon.stub();
+      execute.onFirstCall().resolves(JSON.stringify({ pid: 456, apiUrl: 'http://localhost:8897' }));
+      execute.onSecondCall().resolves(JSON.stringify({ token: 'not-a-token' }));
+
+      await assert.rejects(
+        getDevProxyApiToken('devproxy', 8897, execute),
+        /invalid API token/
+      );
     });
   });
 });

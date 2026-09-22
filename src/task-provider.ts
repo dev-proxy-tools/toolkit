@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { getDevProxyExe } from './detect';
 import { VersionPreference } from './enums';
+import { DevProxyApiClient } from './services/api-client';
 import * as logger from './logger';
 
 interface DevProxyTaskDefinition extends vscode.TaskDefinition {
@@ -14,11 +15,13 @@ interface DevProxyTaskDefinition extends vscode.TaskDefinition {
 export class DevProxyTaskProvider implements vscode.TaskProvider {
     static DevProxyType = 'devproxy';
     private devProxyExe: string;
+    private apiClient: DevProxyApiClient;
 
     constructor(private context: vscode.ExtensionContext) {
         const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
         const versionPreference = configuration.get('version') as VersionPreference;
         this.devProxyExe = getDevProxyExe(versionPreference);
+        this.apiClient = DevProxyApiClient.fromConfiguration();
     }
 
     provideTasks(): Thenable<vscode.Task[]> | undefined {
@@ -65,7 +68,7 @@ export class DevProxyTaskProvider implements vscode.TaskProvider {
     }
 
     private createTaskFromDefinition(definition: DevProxyTaskDefinition): vscode.Task {
-        let execution: vscode.ShellExecution;
+        let execution: vscode.ShellExecution | vscode.CustomExecution;
 
         if (definition.command === 'start') {
             const args = this.buildArgumentsFromDefinition(definition);
@@ -73,13 +76,7 @@ export class DevProxyTaskProvider implements vscode.TaskProvider {
                 cwd: '${workspaceFolder}'
             });
         } else if (definition.command === 'stop') {
-            // Use curl to stop Dev Proxy via API
-            const configuration = vscode.workspace.getConfiguration('dev-proxy-toolkit');
-            const apiPort = configuration.get('apiPort', 8897);
-            execution = new vscode.ShellExecution('curl', [
-                '-X', 'POST',
-                `http://localhost:${apiPort}/proxy/stopproxy`
-            ]);
+            execution = new vscode.CustomExecution(async () => new ApiStopTerminal(this.apiClient));
         } else {
             throw new Error(`Unsupported command: ${definition.command}`);
         }
@@ -132,6 +129,31 @@ export class DevProxyTaskProvider implements vscode.TaskProvider {
 
         return args;
     }
+}
+
+class ApiStopTerminal implements vscode.Pseudoterminal {
+    private readonly writeEmitter = new vscode.EventEmitter<string>();
+    private readonly closeEmitter = new vscode.EventEmitter<number>();
+
+    readonly onDidWrite = this.writeEmitter.event;
+    readonly onDidClose = this.closeEmitter.event;
+
+    open(): void {
+        this.apiClient.stop().then(() => {
+            this.writeEmitter.fire('Dev Proxy stopped.\r\n');
+            this.closeEmitter.fire(0);
+        }).catch(error => {
+            this.writeEmitter.fire(`Failed to stop Dev Proxy: ${String(error)}\r\n`);
+            this.closeEmitter.fire(1);
+        });
+    }
+
+    close(): void {
+        this.writeEmitter.dispose();
+        this.closeEmitter.dispose();
+    }
+
+    constructor(private readonly apiClient: DevProxyApiClient) {}
 }
 
 export const registerTaskProvider = (context: vscode.ExtensionContext) => {
